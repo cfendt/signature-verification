@@ -1,2 +1,0 @@
-Main-Class: com.hp.hpl.inkml.test.InkMLProcessorTest
-Manifest-Version: 0.5.245 (HP Labs, India, Project Site: http://inkmltk.sf.net)

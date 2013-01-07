@@ -4,7 +4,7 @@
 	<groupId>signature-verification</groupId>
 	<artifactId>sigverify-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.6.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>Signature-Verification</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

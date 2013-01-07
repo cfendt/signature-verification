@@ -8,7 +8,7 @@ package org.thoughtworks.signatureverification.main;
 
 // This source code is release under the GNU General Public License v3
 
-import org.thoughtworks.signatureverification.Main;
+import org.thoughtworks.signatureverification.main.utils.Main;
 
 public class StartApp {
     public static void main(final String[] args) {

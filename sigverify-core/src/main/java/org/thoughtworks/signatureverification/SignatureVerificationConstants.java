@@ -1,7 +1,7 @@
 package org.thoughtworks.signatureverification;
 
 public interface SignatureVerificationConstants {
-    public static String ENV_PROPERTIES= "settings.properties";
+    public static String ENV_PROPERTIES = "settings.properties";
     public static String FIRST_TEMPLATE_SIGNATURE = "sig1";
     public static String FIRST_TEMPLATE_SIGNATURE_NORM = "sig1Norm";
     public static String FIRST_TEMPLATE_SIGNATURE_NORM_DIGEST = "sig1NormDigest";

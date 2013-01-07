@@ -1,23 +1,27 @@
 /**
  * Project: Signature Verification
+ * 
  * @author Ajay R, Keshav Kumar HK and Sachin Sudheendra
  */
 
 package org.thoughtworks.signatureverification;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.Scanner;
+
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.LinkedList;
-import java.io.*;
-
 public class DataIO {
-    public static SignatureData readData(String folderName, String fileName) throws IOException {
-        FileInputStream ip = new FileInputStream(folderName + "\\" + fileName);
-        LinkedList<Double> xData = new LinkedList<Double>();
-        LinkedList<Double> yData = new LinkedList<Double>();
-        Scanner sc = new Scanner(ip);
+    public static SignatureData readData(final String folderName, final String fileName) throws IOException {
+        final FileInputStream ip = new FileInputStream(folderName + "\\" + fileName);
+        final LinkedList<Double> xData = new LinkedList<Double>();
+        final LinkedList<Double> yData = new LinkedList<Double>();
+        final Scanner sc = new Scanner(ip);
         while (sc.hasNext()) {
             xData.add(sc.nextDouble());
             yData.add(sc.nextDouble());
@@ -27,15 +31,15 @@ public class DataIO {
         return new SignatureData(xData, yData, 0);
     }
 
-    public static void writeData(SignatureData signatureData, String folderName, String fileName) throws IOException {
-        LinkedList<Double> x = signatureData.getX();
-        LinkedList<Double> y = signatureData.getY();
-        File file = new File(folderName);
+    public static void writeData(final SignatureData signatureData, final String folderName, final String fileName) throws IOException {
+        final LinkedList<Double> x = signatureData.getX();
+        final LinkedList<Double> y = signatureData.getY();
+        final File file = new File(folderName);
         if (!file.isDirectory()) {
-            createDir(folderName);
+            DataIO.createDir(folderName);
         }
-        FileOutputStream op = new FileOutputStream(folderName + "\\" + fileName);
-        PrintWriter pw = new PrintWriter(op);
+        final FileOutputStream op = new FileOutputStream(folderName + "\\" + fileName);
+        final PrintWriter pw = new PrintWriter(op);
         for (int i = 0; i < x.size(); i++) {
             pw.println(x.get(i) + " " + y.get(i));
         }
@@ -43,8 +47,8 @@ public class DataIO {
         op.close();
     }
 
-    private static void createDir(String folderName) {
-        File file = new File(folderName);
+    private static void createDir(final String folderName) {
+        final File file = new File(folderName);
         if (!file.mkdir()) {
             throw new RuntimeException("Cannot Create Directory");
         }

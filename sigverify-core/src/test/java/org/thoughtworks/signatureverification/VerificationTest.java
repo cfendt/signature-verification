@@ -1,14 +1,16 @@
 package org.thoughtworks.signatureverification;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class VerificationTest {
-    String folderName= "sss";
+    String folderName = "sss";
+
     @Test
     public void shouldVerifyTwoDigests() throws Exception {
-        Verification verification = new Verification();
-        verification.verifyDigest(folderName);
+        final Verification verification = new Verification();
+        verification.verifyDigest(this.folderName);
 
     }
-
 }

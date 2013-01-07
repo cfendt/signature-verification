@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -32,7 +33,7 @@ import java.util.regex.Pattern;
 
 public class Trace implements TraceDataElement {
     private final HashMap<String, String> attributesMap;
-    private LinkedHashMap<String, ArrayList> traceData;
+    private LinkedHashMap<String, List<Object>> traceData;
 
     /**
      * This is used to qulaify if the trace is a penDown which means created using the pen in contact of the writing surface. pen up trace - trace created while
@@ -131,11 +132,11 @@ public class Trace implements TraceDataElement {
             final TraceFormat traceFormat = this.associatedContext.getTraceFormat();
             final ArrayList<Channel> channelList = traceFormat.getChannelList();
             final int nChannel = channelList.size();
-            this.traceData = new LinkedHashMap<String, ArrayList>();
+            this.traceData = new LinkedHashMap<String, List<Object>>();
             for (int i = 0; i < nChannel; i++) {
                 final Channel chn = channelList.get(i);
                 final String channelName = chn.getName();
-                this.traceData.put(channelName, new ArrayList());
+                this.traceData.put(channelName, new ArrayList<Object>());
             }
         }
     }
@@ -150,11 +151,11 @@ public class Trace implements TraceDataElement {
         final TraceFormat traceFormat = this.getAssociatedContext().getTraceFormat();
         final ArrayList<Channel> channelList = traceFormat.getChannelList();
         final int nChannel = channelList.size();
-        final LinkedHashMap<String, ArrayList> newTraceData = new LinkedHashMap<String, ArrayList>();
+        final LinkedHashMap<String, List<Object>> newTraceData = new LinkedHashMap<String, List<Object>>();
         for (int i = 0; i < nChannel; i++) {
             final Channel chn = channelList.get(i);
             final String channelName = chn.getName();
-            newTraceData.put(channelName, new ArrayList());
+            newTraceData.put(channelName, new ArrayList<Object>());
         }
         final Trace traceObject = new Trace();
         // To Do: add contextRef and brushRef
@@ -453,7 +454,7 @@ public class Trace implements TraceDataElement {
      * @return List of Channel values
      * @throws InkMLException
      */
-    public ArrayList getChannelValueList(final String channalName) throws InkMLException {
+    public List<Object> getChannelValueList(final String channalName) throws InkMLException {
         if (!this.traceData.containsKey(channalName)) {
             throw new InkMLException("Invalid Channel Name (" + channalName + ").");
         }
@@ -614,13 +615,13 @@ public class Trace implements TraceDataElement {
     public String[] getTraceDataAsString() {
         final StringBuffer traceDataBuffer = new StringBuffer();
         final int lineSize = 75;
-        final Set channelNames = this.traceData.keySet();
+        final Set<String> channelNames = this.traceData.keySet();
         final int nChannels = channelNames.size();
-        final ArrayList[] channelValues = new ArrayList[nChannels];
-        final Iterator itr = channelNames.iterator();
+        final List<Object>[] channelValues = new List[nChannels];
+        final Iterator<String> itr = channelNames.iterator();
         int index = 0;
         while (itr.hasNext()) {
-            final String channelName = (String) itr.next();
+            final String channelName = itr.next();
             channelValues[index++] = this.traceData.get(channelName);
         }
         final int sampleSize = channelValues[0].size();
@@ -712,13 +713,13 @@ public class Trace implements TraceDataElement {
 
                 // Select the data in the range defined by the traceView and -
                 // add to the selection resul Trace object.
-                final LinkedHashMap<String, ArrayList> newTraceData = new LinkedHashMap<String, ArrayList>();
-                final Iterator iterator = this.traceData.entrySet().iterator();
+                final LinkedHashMap<String, List<Object>> newTraceData = new LinkedHashMap<String, List<Object>>();
+                final Iterator<Map.Entry<String, List<Object>>> iterator = this.traceData.entrySet().iterator();
                 while (iterator.hasNext()) {
-                    final Map.Entry entry = (Map.Entry) iterator.next();
-                    final String key = (String) entry.getKey();
-                    final ArrayList channelValueList = (ArrayList) entry.getValue();
-                    final ArrayList newChannelValueList = new ArrayList();
+                    final Map.Entry<String, List<Object>> entry = iterator.next();
+                    final String key = entry.getKey();
+                    final List<Object> channelValueList = entry.getValue();
+                    final List<Object> newChannelValueList = new ArrayList<Object>();
                     for (int i = fromIndex - 1; i < nSamples; i++) {
                         newChannelValueList.add(channelValueList.get(i));
                     }
@@ -734,13 +735,13 @@ public class Trace implements TraceDataElement {
                 // Select the data in the range defined by the traceView and -
                 // add to the new Trace object which is under construction to become -
                 // the target of the traceView
-                final LinkedHashMap<String, ArrayList> newTraceData = new LinkedHashMap<String, ArrayList>();
-                final Iterator iterator = this.traceData.entrySet().iterator();
+                final LinkedHashMap<String, List<Object>> newTraceData = new LinkedHashMap<String, List<Object>>();
+                final Iterator<Map.Entry<String, List<Object>>> iterator = this.traceData.entrySet().iterator();
                 while (iterator.hasNext()) {
-                    final Map.Entry entry = (Map.Entry) iterator.next();
-                    final String key = (String) entry.getKey();
-                    final ArrayList channelValueList = (ArrayList) entry.getValue();
-                    final ArrayList newChannelValueList = new ArrayList();
+                    final Map.Entry<String, List<Object>> entry = iterator.next();
+                    final String key = entry.getKey();
+                    final List<Object> channelValueList = entry.getValue();
+                    final List<Object> newChannelValueList = new ArrayList<Object>();
                     for (int i = 0; i < toIndex; i++) {
                         newChannelValueList.add(channelValueList.get(i));
                     }
@@ -761,13 +762,13 @@ public class Trace implements TraceDataElement {
 
                 // Select the data in the range defined by the traceView and -
                 // add to the selection resul Trace object.
-                final LinkedHashMap<String, ArrayList> newTraceData = new LinkedHashMap<String, ArrayList>();
-                final Iterator iterator = this.traceData.entrySet().iterator();
+                final LinkedHashMap<String, List<Object>> newTraceData = new LinkedHashMap<String, List<Object>>();
+                final Iterator<Map.Entry<String, List<Object>>> iterator = this.traceData.entrySet().iterator();
                 while (iterator.hasNext()) {
-                    final Map.Entry entry = (Map.Entry) iterator.next();
-                    final String key = (String) entry.getKey();
-                    final ArrayList channelValueList = (ArrayList) entry.getValue();
-                    final ArrayList newChannelValueList = new ArrayList();
+                    final Map.Entry<String, List<Object>> entry = iterator.next();
+                    final String key = entry.getKey();
+                    final List<Object> channelValueList = entry.getValue();
+                    final List<Object> newChannelValueList = new ArrayList<Object>();
                     for (int i = fromIndex - 1; i < toIndex; i++) {
                         newChannelValueList.add(channelValueList.get(i));
                     }
@@ -793,7 +794,7 @@ public class Trace implements TraceDataElement {
      * 
      * @param newTraceData
      */
-    public void setTraceData(final LinkedHashMap<String, ArrayList> newTraceData) {
+    public void setTraceData(final LinkedHashMap<String, List<Object>> newTraceData) {
         this.traceData = newTraceData;
     }
 
@@ -803,7 +804,7 @@ public class Trace implements TraceDataElement {
      * @param channelName
      * @param dataList
      */
-    public void setTraceData(final String channelName, final ArrayList dataList) {
+    public void setTraceData(final String channelName, final List<Object> dataList) {
         this.traceData.put(channelName, dataList);
     }
 
@@ -814,7 +815,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void setTraceData(final String channelName, final long[] data) {
-        final ArrayList<Long> dataList = new ArrayList<Long>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Long(data[i]));
         }
@@ -828,7 +829,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void setTraceData(final String channelName, final int[] data) {
-        final ArrayList<Integer> dataList = new ArrayList<Integer>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Integer(data[i]));
         }
@@ -842,7 +843,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void setTraceData(final String channelName, final float[] data) {
-        final ArrayList<Float> dataList = new ArrayList<Float>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Float(data[i]));
         }
@@ -856,7 +857,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void setTraceData(final String channelName, final boolean[] data) {
-        final ArrayList<Boolean> dataList = new ArrayList<Boolean>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Boolean(data[i]));
         }
@@ -868,7 +869,7 @@ public class Trace implements TraceDataElement {
      * 
      * @param newTraceData
      */
-    public void addToTraceData(final LinkedHashMap<String, ArrayList> newTraceData) {
+    public void addToTraceData(final LinkedHashMap<String, List<Object>> newTraceData) {
         this.traceData.putAll(newTraceData);
     }
 
@@ -878,7 +879,7 @@ public class Trace implements TraceDataElement {
      * @param channelName
      * @param dataList
      */
-    public void addToTraceData(final String channelName, final ArrayList dataList) {
+    public void addToTraceData(final String channelName, final List<Object> dataList) {
         this.traceData.put(channelName, dataList);
     }
 
@@ -889,7 +890,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void addToTraceData(final String channelName, final long[] data) {
-        final ArrayList<Long> dataList = new ArrayList<Long>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Long(data[i]));
         }
@@ -903,7 +904,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void addToTraceData(final String channelName, final int[] data) {
-        final ArrayList<Integer> dataList = new ArrayList<Integer>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Integer(data[i]));
         }
@@ -917,7 +918,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void addToTraceData(final String channelName, final float[] data) {
-        final ArrayList<Float> dataList = new ArrayList<Float>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Float(data[i]));
         }
@@ -931,7 +932,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void addToTraceData(final String channelName, final boolean[] data) {
-        final ArrayList<Boolean> dataList = new ArrayList<Boolean>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Boolean(data[i]));
         }
@@ -978,7 +979,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void setChanneldataLong(final String channelName, final long[] data) {
-        final ArrayList<Long> dataList = new ArrayList<Long>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Long(data[i]));
         }
@@ -993,7 +994,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void setChanneldataInt(final String channelName, final int[] data) {
-        final ArrayList<Integer> dataList = new ArrayList<Integer>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Integer(data[i]));
         }
@@ -1009,7 +1010,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void setChanneldataFloat(final String channelName, final float[] data) {
-        final ArrayList<Float> dataList = new ArrayList<Float>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Float(data[i]));
         }
@@ -1024,7 +1025,7 @@ public class Trace implements TraceDataElement {
      * @param data
      */
     public void setChanneldataDouble(final String channelName, final double[] data) {
-        final ArrayList<Double> dataList = new ArrayList<Double>(data.length);
+        final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
             dataList.add(new Double(data[i]));
         }
@@ -1127,14 +1128,14 @@ public class Trace implements TraceDataElement {
         strInkML += ">";
 
         final Object keys[] = this.traceData.keySet().toArray();
-        final ArrayList channels[] = new ArrayList[keys.length];
+        final List<Object> channels[] = new List[keys.length];
         for (int i = 0; i < keys.length; i++) {
             channels[i] = this.traceData.get(keys[i].toString());
         }
         final int dataLen = channels[0].size();
         for (int i = 0; i < dataLen; i++) {
             for (int j = 0; j < keys.length; j++) {
-                final ArrayList al = channels[j];
+                final List<Object> al = channels[j];
                 strInkML += " " + al.get(i);
             }
             if (i < dataLen - 1) {
@@ -1154,7 +1155,7 @@ public class Trace implements TraceDataElement {
      * @param factor
      */
     public void applyTransform(final String channelName, final double factor) {
-        final ArrayList channelValues = this.traceData.get(channelName);
+        final List<Object> channelValues = this.traceData.get(channelName);
         for (int i = 0; i < channelValues.size(); i++) {
             final double oldValue = ((Number) channelValues.get(i)).doubleValue();
             channelValues.set(i, new Double(oldValue * factor));
@@ -1166,7 +1167,7 @@ public class Trace implements TraceDataElement {
      * 
      * @return the traceData map
      */
-    public LinkedHashMap<String, ArrayList> getTraceData() {
+    public LinkedHashMap<String, List<Object>> getTraceData() {
         return this.traceData;
     }
 

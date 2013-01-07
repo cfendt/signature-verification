@@ -9,11 +9,9 @@ public class MessageDigestCalculatorTest {
 
     @Test
     public void shouldComputeDigestForNormalizedSignatureData() throws Exception {
-        final String folderName = "test\\org\\thoughtworks\\signatureverification";
         final BASE64Encoder base64Encoder = new BASE64Encoder();
         final MessageDigestCalculator messageDigestCalculator = new MessageDigestCalculator();
-        final byte[] digest = messageDigestCalculator.computeDigest(folderName, "sig1NormTest");
+        final byte[] digest = messageDigestCalculator.computeDigest(this.getClass().getResourceAsStream("/org/thoughtworks/signatureverification/sig1NormTest"));
         Assert.assertEquals("hzEV9SH32QzlXgG73tQeOQ==", base64Encoder.encode(digest));
-
     }
 }

@@ -1,15 +1,17 @@
 package org.thoughtworks.signatureverification;
 
+import java.io.InputStream;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
 public class DataIOTest {
-    String testInputFolder = "D:\\Projects\\signature-verification\\test\\org\\thoughtworks\\signatureverification";
 
     @Test
     public void shouldReadDataFromDisk() throws Exception {
-        final SignatureData signatureData = DataIO.readData(this.testInputFolder, "sig1NormTest");
+        final InputStream ip = this.getClass().getResourceAsStream("/org/thoughtworks/signatureverification/sig1NormTest");
+        final SignatureData signatureData = DataIO.readData(ip);
         Assert.assertEquals(139, signatureData.getX().size());
         Assert.assertEquals(139, signatureData.getY().size());
     }

@@ -6,6 +6,7 @@
 
 package org.thoughtworks.signatureverification;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,26 +23,37 @@ public class MessageDigestCalculator {
 
     private final BASE64Encoder base64Encoder;
 
+    /**
+     * Constructor
+     */
     public MessageDigestCalculator() {
+        super();
         this.base64Encoder = new BASE64Encoder();
     }
 
     public byte[] computeDigest(final String folderName, final String fileName) throws NoSuchAlgorithmException, IOException {
-        final InputStream ip = new FileInputStream(folderName + "\\" + fileName);
+        final InputStream ip = new FileInputStream(folderName + File.separatorChar + fileName);
+        try {
+            return this.computeDigest(ip);
+        } finally {
+            ip.close();
+        }
+    }
+
+    public byte[] computeDigest(final InputStream input) throws NoSuchAlgorithmException, IOException {
         MessageDigest messageDigest;
         DigestInputStream digestInputStream;
         messageDigest = MessageDigest.getInstance("MD5");
-        digestInputStream = new DigestInputStream(ip, messageDigest);
+        digestInputStream = new DigestInputStream(input, messageDigest);
         final byte[] buffer = new byte[8000];
         while (digestInputStream.read(buffer) != -1) {
             ;
         }
-        ip.close();
         return messageDigest.digest();
     }
 
     public String fetchDigest(final String folderName, final String fileName) throws IOException {
-        final FileInputStream ip = new FileInputStream(folderName + "\\" + fileName);
+        final FileInputStream ip = new FileInputStream(folderName + File.separatorChar + fileName);
         final String digest = new Scanner(ip).next();
         ip.close();
         return digest;
@@ -50,7 +62,7 @@ public class MessageDigestCalculator {
     public void recordDigestToDisk(final byte[] dig, final String folderName, final String firstTemplateSignatureNormDigest) {
         FileOutputStream op;
         try {
-            op = new FileOutputStream(folderName + "\\" + firstTemplateSignatureNormDigest);
+            op = new FileOutputStream(folderName + File.separatorChar + firstTemplateSignatureNormDigest);
             final PrintWriter printWriter = new PrintWriter(op);
             printWriter.print(this.base64Encoder.encode(dig));
             printWriter.close();

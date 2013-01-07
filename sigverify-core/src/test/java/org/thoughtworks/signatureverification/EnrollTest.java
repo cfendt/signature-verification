@@ -1,7 +1,6 @@
 package org.thoughtworks.signatureverification;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.thoughtworks.signatureverification.bean.SignatureData;
@@ -12,10 +11,8 @@ public class EnrollTest {
 
     @Before
     public void setUp() throws Exception {
-        final String stdIpPath = "D:\\Projects\\signature-verification\\test\\org\\thoughtworks\\signatureverification";
-        final String normIpPath = "D:\\Projects\\signature-verification\\test\\org\\thoughtworks\\signatureverification";
-        this.standardSignatureData = DataIO.readData(stdIpPath, "sig1Test");
-        this.normSignatureData = DataIO.readData(normIpPath, "sig1NormTest");
+        this.standardSignatureData = DataIO.readData(this.getClass().getResourceAsStream("/org/thoughtworks/signatureverification/sig1Test"));
+        this.normSignatureData = DataIO.readData(this.getClass().getResourceAsStream("/org/thoughtworks/signatureverification/sig1NormTest"));
     }
 
     @Test

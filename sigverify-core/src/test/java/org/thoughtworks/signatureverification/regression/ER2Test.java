@@ -12,6 +12,9 @@ import org.thoughtworks.signatureverification.bean.SignatureData;
 
 public class ER2Test {
 
+    /** Précision pour la comparaison */
+    private static final double PRECISION = 0.000001;
+
     private SignatureData signatureDataSourceAndTest;
 
     @Before
@@ -25,7 +28,7 @@ public class ER2Test {
         final ER2 er2 = new ER2();
         final double result = er2.calculateNumerator(this.signatureDataSourceAndTest.getX(), this.signatureDataSourceAndTest.getY(), this.signatureDataSourceAndTest.getNum(),
                 this.signatureDataSourceAndTest.getX(), this.signatureDataSourceAndTest.getY(), this.signatureDataSourceAndTest.getNum());
-        Assert.assertEquals(7640.2080133693, result);
+        Assert.assertEquals(7640.2080133693, result, ER2Test.PRECISION);
     }
 
     @Test
@@ -33,7 +36,7 @@ public class ER2Test {
         final ER2 er2 = new ER2();
         final double result = er2.calculateDenominator(this.signatureDataSourceAndTest.getX(), this.signatureDataSourceAndTest.getY(), this.signatureDataSourceAndTest.getNum(),
                 this.signatureDataSourceAndTest.getX(), this.signatureDataSourceAndTest.getY(), this.signatureDataSourceAndTest.getNum());
-        Assert.assertEquals(7640.2080133693, result);
+        Assert.assertEquals(7640.2080133693, result, ER2Test.PRECISION);
     }
 
     @Test

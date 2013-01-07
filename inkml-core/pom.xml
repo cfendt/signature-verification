@@ -6,7 +6,6 @@
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
-	<groupId>signature-verification</groupId>
 	<artifactId>inkml-core</artifactId>
 	<packaging>jar</packaging>
 	<name>Signature Verification : inkML - Core</name>

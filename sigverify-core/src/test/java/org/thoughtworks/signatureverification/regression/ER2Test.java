@@ -19,8 +19,7 @@ public class ER2Test {
 
     @Before
     public void setUp() throws IOException {
-        final String folderName = "D:\\Projects\\signature-verification\\test\\org\\thoughtworks\\signatureverification";
-        this.signatureDataSourceAndTest = DataIO.readData(folderName, "sig1NormTest");
+        this.signatureDataSourceAndTest = DataIO.readData(this.getClass().getResourceAsStream("/org/thoughtworks/signatureverification/sig1NormTest"));
     }
 
     @Test

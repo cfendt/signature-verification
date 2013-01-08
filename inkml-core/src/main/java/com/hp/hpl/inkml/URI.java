@@ -19,14 +19,15 @@ package com.hp.hpl.inkml;
  * @version 0.5.0
  */
 public class URI {
-    private String uriString;
+    private final String uriString;
 
     /**
      * Constructor that build the string value of the URI attribute
      * 
      * @param uriString
      */
-    public URI(String uriString) {
+    public URI(final String uriString) {
+        super();
         // check the existence of the given URI.
 
         // throw InkMLException when the given URI is not valid.

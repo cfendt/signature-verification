@@ -27,6 +27,7 @@ public class Timestamp implements ContextElement {
     private static Logger logger = Logger.getLogger(Timestamp.class.getName());
 
     public Timestamp() {
+        super();
     }
 
     /**
@@ -34,6 +35,7 @@ public class Timestamp implements ContextElement {
      * 
      * @return id String
      */
+    @Override
     public String getId() {
         return this.id;
     }
@@ -43,7 +45,7 @@ public class Timestamp implements ContextElement {
      * 
      * @param id
      */
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -52,12 +54,13 @@ public class Timestamp implements ContextElement {
      * 
      * @return the class name of this object as the Ink element type
      */
+    @Override
     public String getInkElementType() {
         return "Timestamp";
     }
 
     public static Timestamp getDefaultTimestamp() {
-        Timestamp timestamp = new Timestamp();
+        final Timestamp timestamp = new Timestamp();
         timestamp.setId("DefaultTimestamp");
         return timestamp;
     }
@@ -67,8 +70,9 @@ public class Timestamp implements ContextElement {
      * 
      * @return timestamp markup as string
      */
+    @Override
     public String toInkML() {
-        logger.warning("The timestamp.toInkML method not implemented.");
+        Timestamp.logger.warning("The timestamp.toInkML method not implemented.");
         return "";
     }
 
@@ -77,8 +81,9 @@ public class Timestamp implements ContextElement {
      * 
      * @param writer
      */
-    public void writeXML(InkMLWriter writer) {
-        logger.warning("The timestamp.writeXML method not implemented.");
+    @Override
+    public void writeXML(final InkMLWriter writer) {
+        Timestamp.logger.warning("The timestamp.writeXML method not implemented.");
         return;
     }
 
@@ -87,8 +92,8 @@ public class Timestamp implements ContextElement {
      * 
      * @param source
      */
-    public void override(Timestamp source) {
-        logger.warning("The timestamp.override method not implemented.");
+    public void override(final Timestamp source) {
+        Timestamp.logger.warning("The timestamp.override method not implemented.");
         return;
     }
 }

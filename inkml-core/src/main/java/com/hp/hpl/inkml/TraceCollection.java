@@ -29,5 +29,5 @@ public interface TraceCollection extends TraceDataElement {
      * @return TraceDataElement
      * @throws InkMLException
      */
-    TraceDataElement getTraceDataAt(int index) throws InkMLException;
+    TraceDataElement getTraceDataAt(final int index) throws InkMLException;
 }

@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class InkMLProcessor {
     // Create the listener list
-    private ArrayList<InkMLEventListener> listenerList = new ArrayList<InkMLEventListener>();
+    private final ArrayList<InkMLEventListener> listenerList = new ArrayList<InkMLEventListener>();
     private Ink ink;
     // private InkMLProcessorConfig config; -- will be used while implementing Factory for Parser creation etc.
     // private String defaultParser="com.hp.hpl.inkml.InkMLDOMParser"; -- will be used while implementing Factory for Parser creation etc.
@@ -38,8 +38,8 @@ public class InkMLProcessor {
     private static Logger logger = Logger.getLogger(InkMLProcessor.class.getName());
 
     /**
-     * Constrauctor of the InkMLProcessor. In future, it would load the configuration XML file, config.xml and create InkMLProcessorConfig object which would be
-     * usful for configuring the other components such as InkMLParser, InkMLWriter and etc.
+     * Constructor of the InkMLProcessor. In future, it would load the configuration XML file, config.xml and create InkMLProcessorConfig object which would be
+     * useful for configuring the other components such as InkMLParser, InkMLWriter and etc.
      */
     public InkMLProcessor() {
         // this.config = new InkMLProcessorConfig();
@@ -50,8 +50,8 @@ public class InkMLProcessor {
      * 
      * @param listener
      */
-    public void addInkMLEventListener(InkMLEventListener listener) {
-        listenerList.add(listener);
+    public void addInkMLEventListener(final InkMLEventListener listener) {
+        this.listenerList.add(listener);
     }
 
     /**
@@ -59,8 +59,8 @@ public class InkMLProcessor {
      * 
      * @param listener
      */
-    public void removeInkMLEventListener(InkMLEventListener listener) {
-        listenerList.remove(listener);
+    public void removeInkMLEventListener(final InkMLEventListener listener) {
+        this.listenerList.remove(listener);
     }
 
     // Parsing Functions
@@ -70,10 +70,10 @@ public class InkMLProcessor {
      * @param inkmlFileName
      * @throws InkMLException
      */
-    public void parseInkMLFile(String inkmlFileName) throws InkMLException {
+    public void parseInkMLFile(final String inkmlFileName) throws InkMLException {
         // since the inkml file has <ink> ... </ink> data, it is a new Ink Session, create a blank Ink data object.
         this.ink = new Ink();
-        InkMLParser parser = new InkMLDOMParser(this); // hard coded :-(, later will change to Factory implementation
+        final InkMLParser parser = new InkMLDOMParser(this); // hard coded :-(, later will change to Factory implementation
         parser.parseInkMLFile(inkmlFileName);
     }
 
@@ -86,12 +86,12 @@ public class InkMLProcessor {
      * @param inkmlString string
      * @throws InkMLException
      */
-    public void parseInkMLString(String inkmlString) throws InkMLException {
+    public void parseInkMLString(final String inkmlString) throws InkMLException {
         if (this.ink == null) {
             throw new InkMLException("ParseInk operation terminated. Reason: No active Ink session available.");
         }
         // InkMLParser parser = InkMLParserFactory.getInkMLParser(this.defaultParser); -- impln in future
-        InkMLParser parser = new InkMLDOMParser(this); // hard coded :-(, later will change to Factory implementation
+        final InkMLParser parser = new InkMLDOMParser(this); // hard coded :-(, later will change to Factory implementation
         parser.parseInkMLString(inkmlString);
     }
 
@@ -103,24 +103,26 @@ public class InkMLProcessor {
      * @see #addInkMLEventListener(InkMLEventListener)
      * @see Ink.contextChangeStatus
      */
-    public void notifyContextChanged(Context context, ArrayList<Ink.contextChangeStatus> ctxChanges) {
-        logger.finer("To notify - context changed");
-        if (0 == listenerList.size()) // nobody has registered for InkML Events
+    public void notifyContextChanged(final Context context, final ArrayList<Ink.contextChangeStatus> ctxChanges) {
+        InkMLProcessor.logger.finer("To notify - context changed");
+        if (0 == this.listenerList.size()) {
             return;
+        }
         if (0 != ctxChanges.size()) { // some context change occured
             for (int i = 0; i < ctxChanges.size(); i++) {
-                if (ctxChanges.get(i) == Ink.contextChangeStatus.isBrushChanged)
-                    notifyBrushChangedEvent(context.getBrush());
-                else if (ctxChanges.get(i) == Ink.contextChangeStatus.isCanvasChanged)
-                    notifyCanvasChangedEvent(context.getCanvas());
-                else if (ctxChanges.get(i) == Ink.contextChangeStatus.isCanvasTransformChanged)
-                    notifyCanvasTransformChangedEvent(context.getCanvasTransform());
-                else if (ctxChanges.get(i) == Ink.contextChangeStatus.isInkSourceChanged)
-                    notifyInkSourceChangedEvent(context.getInkSource());
-                else if (ctxChanges.get(i) == Ink.contextChangeStatus.isTimestampChanged)
-                    notifyTimestampChangedEvent(context.getTimestamp());
-                else if (ctxChanges.get(i) == Ink.contextChangeStatus.isTraceFormatChanged)
-                    notifyTraceFormatChangedEvent(context.getTraceFormat());
+                if (ctxChanges.get(i) == Ink.contextChangeStatus.isBrushChanged) {
+                    this.notifyBrushChangedEvent(context.getBrush());
+                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isCanvasChanged) {
+                    this.notifyCanvasChangedEvent(context.getCanvas());
+                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isCanvasTransformChanged) {
+                    this.notifyCanvasTransformChangedEvent(context.getCanvasTransform());
+                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isInkSourceChanged) {
+                    this.notifyInkSourceChangedEvent(context.getInkSource());
+                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isTimestampChanged) {
+                    this.notifyTimestampChangedEvent(context.getTimestamp());
+                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isTraceFormatChanged) {
+                    this.notifyTraceFormatChangedEvent(context.getTraceFormat());
+                }
             }
         }
     }
@@ -131,11 +133,12 @@ public class InkMLProcessor {
      * @param trace trace data object that received
      * @see #addInkMLEventListener(InkMLEventListener)
      */
-    public void notifyTraceReceived(Trace trace) {
-        logger.finer("To notify - trace received");
-        if (0 == listenerList.size()) // nobody has registered for InkML Events
+    public void notifyTraceReceived(final Trace trace) {
+        InkMLProcessor.logger.finer("To notify - trace received");
+        if (0 == this.listenerList.size()) {
             return;
-        InkMLEventListener[] listeners = (InkMLEventListener[]) listenerList.toArray(new InkMLEventListener[listenerList.size()]);
+        }
+        final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].traceReceivedEvent(trace);
         }
@@ -147,10 +150,11 @@ public class InkMLProcessor {
      * @param traceView the traceView data object that received
      * @see #addInkMLEventListener(InkMLEventListener)
      */
-    public void notifyTraceViewReceived(TraceView traceView) {
-        if (0 == listenerList.size()) // nobody has registered for InkML Events
+    public void notifyTraceViewReceived(final TraceView traceView) {
+        if (0 == this.listenerList.size()) {
             return;
-        InkMLEventListener[] listeners = (InkMLEventListener[]) listenerList.toArray(new InkMLEventListener[listenerList.size()]);
+        }
+        final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].traceViewReceivedEvent(traceView);
         }
@@ -162,10 +166,11 @@ public class InkMLProcessor {
      * @param traceGroup the TraceGroup data object that received
      * @see #addInkMLEventListener(InkMLEventListener)
      */
-    public void notifyTraceGroupReceived(TraceGroup traceGroup) {
-        if (0 == listenerList.size()) // nobody has registered for InkML Events
+    public void notifyTraceGroupReceived(final TraceGroup traceGroup) {
+        if (0 == this.listenerList.size()) {
             return;
-        InkMLEventListener[] listeners = (InkMLEventListener[]) listenerList.toArray(new InkMLEventListener[listenerList.size()]);
+        }
+        final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].traceGroupReceivedEvent(traceGroup);
         }
@@ -177,9 +182,9 @@ public class InkMLProcessor {
      * @param brush the Brush data object that received
      * @see #addInkMLEventListener(InkMLEventListener)
      */
-    public void notifyBrushChangedEvent(Brush brush) {
-        logger.finer("To notify - brush changed");
-        InkMLEventListener[] listeners = (InkMLEventListener[]) listenerList.toArray(new InkMLEventListener[listenerList.size()]);
+    public void notifyBrushChangedEvent(final Brush brush) {
+        InkMLProcessor.logger.finer("To notify - brush changed");
+        final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].brushChangedEvent(brush);
         }
@@ -191,8 +196,8 @@ public class InkMLProcessor {
      * @param inkSource the InkSource data object that received
      * @see #addInkMLEventListener(InkMLEventListener)
      */
-    public void notifyInkSourceChangedEvent(InkSource inkSource) {
-        InkMLEventListener[] listeners = (InkMLEventListener[]) listenerList.toArray(new InkMLEventListener[listenerList.size()]);
+    public void notifyInkSourceChangedEvent(final InkSource inkSource) {
+        final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].inkSourceChangedEvent(inkSource);
         }
@@ -204,8 +209,8 @@ public class InkMLProcessor {
      * @param traceFormat the TraceFormat data object that received
      * @see #addInkMLEventListener(InkMLEventListener)
      */
-    public void notifyTraceFormatChangedEvent(TraceFormat traceFormat) {
-        InkMLEventListener[] listeners = (InkMLEventListener[]) listenerList.toArray(new InkMLEventListener[listenerList.size()]);
+    public void notifyTraceFormatChangedEvent(final TraceFormat traceFormat) {
+        final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].traceFormatChangedEvent(traceFormat);
         }
@@ -217,8 +222,8 @@ public class InkMLProcessor {
      * @param canvas the Canvas data object that received
      * @see #addInkMLEventListener(InkMLEventListener)
      */
-    public void notifyCanvasChangedEvent(Canvas canvas) {
-        InkMLEventListener[] listeners = (InkMLEventListener[]) listenerList.toArray(new InkMLEventListener[listenerList.size()]);
+    public void notifyCanvasChangedEvent(final Canvas canvas) {
+        final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].canvasChangedEvent(canvas);
         }
@@ -230,8 +235,8 @@ public class InkMLProcessor {
      * @param canvasTransform the CanvasTransform data object that received
      * @see #addInkMLEventListener(InkMLEventListener)
      */
-    public void notifyCanvasTransformChangedEvent(CanvasTransform canvasTransform) {
-        InkMLEventListener[] listeners = (InkMLEventListener[]) listenerList.toArray(new InkMLEventListener[listenerList.size()]);
+    public void notifyCanvasTransformChangedEvent(final CanvasTransform canvasTransform) {
+        final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].canvasTransformChangedEvent(canvasTransform);
         }
@@ -243,9 +248,9 @@ public class InkMLProcessor {
      * @param timestamp the Timestamp data object that received
      * @see #addInkMLEventListener(InkMLEventListener)
      */
-    public void notifyTimestampChangedEvent(Timestamp timestamp) {
+    public void notifyTimestampChangedEvent(final Timestamp timestamp) {
 
-        InkMLEventListener[] listeners = (InkMLEventListener[]) listenerList.toArray(new InkMLEventListener[listenerList.size()]);
+        final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].timestampChangedEvent(timestamp);
         }
@@ -257,7 +262,7 @@ public class InkMLProcessor {
      * @return status if the Ink data object is null or not
      */
     public boolean isInkNull() {
-        return (this.ink == null) ? true : false;
+        return this.ink == null ? true : false;
     }
 
     /**
@@ -267,7 +272,7 @@ public class InkMLProcessor {
      * @return the ink object of the current ink session
      */
     public Ink getInk() {
-        return ink;
+        return this.ink;
     }
 
     /**
@@ -280,7 +285,7 @@ public class InkMLProcessor {
      * @see #endInkSession()
      * @see #saveInkSession(String)
      */
-    public void loadInkSession(Ink ink) {
+    public void loadInkSession(final Ink ink) {
         this.ink = ink;
     }
 
@@ -331,13 +336,13 @@ public class InkMLProcessor {
      * @throws IOException
      * @throws InkMLException
      */
-    public void saveInkSession(String fileName) throws FileNotFoundException, UnsupportedEncodingException, IOException, InkMLException {
+    public void saveInkSession(final String fileName) throws FileNotFoundException, UnsupportedEncodingException, IOException, InkMLException {
         if (this.ink == null) {
             throw new InkMLException("SaveInkSession operation terminated. Reason: No active Ink session available.");
         }
-        InkMLWriter writer = new InkMLWriter(fileName);
+        final InkMLWriter writer = new InkMLWriter(fileName);
         writer.writeProcessingInstruction();
-        ink.writeXML(writer);
+        this.ink.writeXML(writer);
         writer.close();
     }
 
@@ -352,13 +357,13 @@ public class InkMLProcessor {
      * @throws IOException
      * @throws InkMLException
      */
-    public void saveInkSession(String fileName, String encoding) throws FileNotFoundException, UnsupportedEncodingException, IOException, InkMLException {
+    public void saveInkSession(final String fileName, final String encoding) throws FileNotFoundException, UnsupportedEncodingException, IOException, InkMLException {
         if (this.ink == null) {
             throw new InkMLException("SaveInkSession operation terminated. Reason: No active Ink session available.");
         }
-        InkMLWriter writer = new InkMLWriter(fileName, encoding);
+        final InkMLWriter writer = new InkMLWriter(fileName, encoding);
         writer.writeProcessingInstruction();
-        ink.writeXML(writer);
+        this.ink.writeXML(writer);
         writer.close();
     }
 
@@ -369,13 +374,13 @@ public class InkMLProcessor {
      * @throws IOException
      * @throws InkMLException
      */
-    public void saveInkSession(java.io.Writer writer) throws IOException, InkMLException {
+    public void saveInkSession(final java.io.Writer writer) throws IOException, InkMLException {
         if (this.ink == null) {
             throw new InkMLException("SaveInkSession operation terminated. Reason: No active Ink session available.");
         }
-        InkMLWriter inkMLWriter = new InkMLWriter(writer);
+        final InkMLWriter inkMLWriter = new InkMLWriter(writer);
         inkMLWriter.writeProcessingInstruction();
-        ink.writeXML(inkMLWriter);
+        this.ink.writeXML(inkMLWriter);
         inkMLWriter.close();
     }
 
@@ -388,13 +393,13 @@ public class InkMLProcessor {
      * @throws InkMLException
      * @throws IOException
      */
-    public void saveInkSession(OutputStream stream, String encoding) throws UnsupportedEncodingException, InkMLException, IOException {
+    public void saveInkSession(final OutputStream stream, final String encoding) throws UnsupportedEncodingException, InkMLException, IOException {
         if (this.ink == null) {
             throw new InkMLException("SaveInkSession operation terminated. Reason: No active Ink session available.");
         }
-        InkMLWriter inkMLWriter = new InkMLWriter(stream, encoding);
+        final InkMLWriter inkMLWriter = new InkMLWriter(stream, encoding);
         inkMLWriter.writeProcessingInstruction();
-        ink.writeXML(inkMLWriter);
+        this.ink.writeXML(inkMLWriter);
         inkMLWriter.close();
     }
 
@@ -406,13 +411,13 @@ public class InkMLProcessor {
      * @throws InkMLException
      * @throws IOException
      */
-    public void saveInkSession(OutputStream stream) throws UnsupportedEncodingException, InkMLException, IOException {
+    public void saveInkSession(final OutputStream stream) throws UnsupportedEncodingException, InkMLException, IOException {
         if (this.ink == null) {
             throw new InkMLException("SaveInkSession operation terminated. Reason: No active Ink session available.");
         }
-        InkMLWriter inkMLWriter = new InkMLWriter(stream);
+        final InkMLWriter inkMLWriter = new InkMLWriter(stream);
         inkMLWriter.writeProcessingInstruction();
-        ink.writeXML(inkMLWriter);
+        this.ink.writeXML(inkMLWriter);
         inkMLWriter.close();
     }
 

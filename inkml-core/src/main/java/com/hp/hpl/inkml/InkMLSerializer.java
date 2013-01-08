@@ -33,5 +33,5 @@ public interface InkMLSerializer {
      * 
      * @param writer the writer instance to write to a file
      */
-    public void writeXML(InkMLWriter writer);
+    public void writeXML(final InkMLWriter writer);
 }

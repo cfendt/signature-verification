@@ -34,26 +34,31 @@ public class Canvas implements ContextElement {
     private static Logger logger = Logger.getLogger(Canvas.class.getName());
 
     public Canvas() {
-        traceFormat = TraceFormat.getDefaultTraceFormat();
+        super();
+        this.traceFormat = TraceFormat.getDefaultTraceFormat();
     }
 
-    public Canvas(TraceFormat traceFormat) throws InkMLException {
+    public Canvas(final TraceFormat traceFormat) throws InkMLException {
         this("", traceFormat);
     }
 
-    public Canvas(String id, TraceFormat traceFormat) throws InkMLException {
-        if (null != id)
+    public Canvas(final String id, final TraceFormat traceFormat) throws InkMLException {
+        super();
+        if (null != id) {
             this.id = id;
+        }
         if (traceFormat == null) {
             throw new InkMLException("Can not create Canvas object with null traceformat");
         }
         this.traceFormat = traceFormat;
     }
 
+    @Override
     public String getId() {
         return this.id;
     }
 
+    @Override
     public String getInkElementType() {
         return "Canvas";
     }
@@ -62,71 +67,81 @@ public class Canvas implements ContextElement {
         Canvas defaultCanvas = null;
         try {
             defaultCanvas = new Canvas("DefaultCanvas", TraceFormat.getDefaultTraceFormat());
-        } catch (InkMLException e) {
-            logger.severe("Default TraceFormat is null.");
+        } catch (final InkMLException e) {
+            Canvas.logger.severe("Default TraceFormat is null.");
         }
         return defaultCanvas;
     }
 
     public TraceFormat getTraceFormat() {
-        return traceFormat;
+        return this.traceFormat;
     }
 
-    public void setAttribute(String attrName, String attrValue) {
-        if (this.attributesMap == null)
+    public void setAttribute(final String attrName, final String attrValue) {
+        if (this.attributesMap == null) {
             this.attributesMap = new HashMap<String, String>();
+        }
         this.attributesMap.put(attrName, attrValue);
     }
 
-    public void setTraceFormat(TraceFormat traceFormat) {
+    public void setTraceFormat(final TraceFormat traceFormat) {
         this.traceFormat = traceFormat;
     }
 
-    public boolean equals(Canvas canvas) {
-        if (canvas == null)
+    public boolean equals(final Canvas canvas) {
+        if (canvas == null) {
             return false;
+        }
         return this.traceFormat.equals(canvas.traceFormat);
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
+    @Override
     public String toInkML() {
         String canvasElement = "<canvas ";
-        if (!"".equals(this.id))
+        if (!"".equals(this.id)) {
             canvasElement += "id='" + this.id + "' ";
+        }
         String traceFormatChild = null;
-        if (!"".equals(this.traceFormatRef))
+        if (!"".equals(this.traceFormatRef)) {
             canvasElement += "traceFormatRef='" + this.id + "' ";
-        else
+        } else {
             traceFormatChild = this.traceFormat.toInkML();
+        }
         canvasElement += ">";
-        if (null != traceFormatChild)
+        if (null != traceFormatChild) {
             canvasElement += traceFormatChild;
+        }
         canvasElement += "</canvas>";
         return canvasElement;
     }
 
     public String getTraceFormatRef() {
-        return traceFormatRef;
+        return this.traceFormatRef;
     }
 
-    public void setTraceFormatRef(String traceFormatRef) {
+    public void setTraceFormatRef(final String traceFormatRef) {
         this.traceFormatRef = traceFormatRef;
     }
 
-    public void writeXML(InkMLWriter writer) {
+    @Override
+    public void writeXML(final InkMLWriter writer) {
         HashMap<String, String> attrs;
         if (!"".equals(this.id) || !"".equals(this.traceFormatRef)) {
             attrs = new HashMap<String, String>();
-            if (!"".equals(this.id))
+            if (!"".equals(this.id)) {
                 attrs.put("id", this.id);
-            if (!"".equals(this.traceFormatRef))
+            }
+            if (!"".equals(this.traceFormatRef)) {
                 attrs.put("traceFormatRef", this.traceFormatRef);
+            }
 
-        } else
+        } else {
             attrs = null;
+        }
         if (null != this.traceFormat) {
             writer.writeStartTag("canvas", attrs);
             writer.incrementTagLevel();

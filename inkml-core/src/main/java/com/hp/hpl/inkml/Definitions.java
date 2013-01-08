@@ -44,6 +44,7 @@ public class Definitions {
      * No argument Constructor that creates an Definitions object with empty definitionsMap.
      */
     public Definitions() {
+        super();
         this.directChildrenMap = new HashMap<String, InkElement>();
         this.indirectChildrenMap = new HashMap<String, InkElement>();
 

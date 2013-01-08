@@ -26,7 +26,7 @@ public class InkMLParserFactory {
      * @param parserClassPath the classpath of the
      * @return instance of InkMLParser
      */
-    public static InkMLParser getInkMLParser(String parserClassPath) throws InkMLException {
+    public static InkMLParser getInkMLParser(final String parserClassPath) throws InkMLException {
         throw new InkMLException("Feature not implemented yet.");
     }
 

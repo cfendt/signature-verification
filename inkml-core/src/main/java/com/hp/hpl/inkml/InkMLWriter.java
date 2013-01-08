@@ -54,7 +54,7 @@ public class InkMLWriter {
      * @param stream
      * @throws UnsupportedEncodingException
      */
-    public InkMLWriter(OutputStream stream) throws UnsupportedEncodingException {
+    public InkMLWriter(final OutputStream stream) throws UnsupportedEncodingException {
         this(stream, "UTF8");
     }
 
@@ -64,15 +64,16 @@ public class InkMLWriter {
      * @param stream
      * @param encoding
      */
-    public InkMLWriter(OutputStream stream, String encoding) throws UnsupportedEncodingException {
+    public InkMLWriter(final OutputStream stream, final String encoding) throws UnsupportedEncodingException {
 
         if (encoding == null) {
             this.encoding = "UTF8";
-        } else
+        } else {
             this.encoding = encoding;
+        }
 
-        java.io.Writer writer = new OutputStreamWriter(stream, encoding);
-        out = new PrintWriter(writer);
+        final java.io.Writer writer = new OutputStreamWriter(stream, encoding);
+        this.out = new PrintWriter(writer);
     }
 
     /**
@@ -83,18 +84,19 @@ public class InkMLWriter {
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
      */
-    public InkMLWriter(String fileName, String encoding) throws FileNotFoundException, UnsupportedEncodingException {
+    public InkMLWriter(final String fileName, final String encoding) throws FileNotFoundException, UnsupportedEncodingException {
         FileOutputStream fos = null;
         fos = new FileOutputStream(fileName);
-        OutputStream bout = new BufferedOutputStream(fos);
+        final OutputStream bout = new BufferedOutputStream(fos);
 
         if (encoding == null) {
             this.encoding = "UTF8";
-        } else
+        } else {
             this.encoding = encoding;
+        }
 
-        java.io.Writer writer = new OutputStreamWriter(bout, encoding);
-        out = new PrintWriter(writer);
+        final java.io.Writer writer = new OutputStreamWriter(bout, encoding);
+        this.out = new PrintWriter(writer);
     }
 
     /**
@@ -104,7 +106,7 @@ public class InkMLWriter {
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
      */
-    public InkMLWriter(String filePath) throws FileNotFoundException, UnsupportedEncodingException {
+    public InkMLWriter(final String filePath) throws FileNotFoundException, UnsupportedEncodingException {
         this(filePath, "UTF8");
     }
 
@@ -113,15 +115,15 @@ public class InkMLWriter {
      * 
      * @param writer
      */
-    public InkMLWriter(java.io.Writer writer) {
-        out = writer instanceof PrintWriter ? (PrintWriter) writer : new PrintWriter(writer);
+    public InkMLWriter(final java.io.Writer writer) {
+        this.out = writer instanceof PrintWriter ? (PrintWriter) writer : new PrintWriter(writer);
     }
 
     /**
      * Method to write the XML Processing instruction. e.g.: {@code <?xml version=1.0 encoding="ISO-8859-1"?>}
      */
     public void writeProcessingInstruction() {
-        out.println("<?xml version=\"1.0\" encoding=\"" + getEncoding() + "\"?>");
+        this.out.println("<?xml version=\"1.0\" encoding=\"" + this.getEncoding() + "\"?>");
     }
 
     /**
@@ -130,14 +132,14 @@ public class InkMLWriter {
      * @param tagName name the tag
      * @param attrMap the map of attributeName ==> attributeValue
      */
-    public void writeStartTag(String tagName, HashMap<String, String> attrMap) {
+    public void writeStartTag(final String tagName, final HashMap<String, String> attrMap) {
         // print space for intentation
-        for (int i = 0; i < tagLevel; i++) {
-            out.write(tabSpace);
+        for (int i = 0; i < this.tagLevel; i++) {
+            this.out.write(this.tabSpace);
         }
-        writeBaseStartTag(tagName, attrMap, out);
-        out.print(">");
-        out.println();
+        this.writeBaseStartTag(tagName, attrMap, this.out);
+        this.out.print(">");
+        this.out.println();
     }
 
     /**
@@ -145,16 +147,16 @@ public class InkMLWriter {
      * 
      * @param tagName name the tag
      */
-    public void writeEndTag(String tagName) {
-        logger.finer("end tag for " + tagName + ". tagLevel: " + tagLevel);
+    public void writeEndTag(final String tagName) {
+        InkMLWriter.logger.finer("end tag for " + tagName + ". tagLevel: " + this.tagLevel);
 
         // print space for intentation
-        for (int i = 0; i < tagLevel; i++) {
-            out.print(tabSpace);
+        for (int i = 0; i < this.tagLevel; i++) {
+            this.out.print(this.tabSpace);
         }
-        out.print("</" + tagName + ">");
-        out.println();
-        out.flush();
+        this.out.print("</" + tagName + ">");
+        this.out.println();
+        this.out.flush();
     }
 
     /**
@@ -162,14 +164,14 @@ public class InkMLWriter {
      * 
      * @param characterData e.g: The trace data string, "10 15, '1 '5, "2 "5, 5 6, 3 4"
      */
-    public void writeCharacters(String characterData) {
+    public void writeCharacters(final String characterData) {
         // print space for intentation
-        for (int i = 0; i < tagLevel; i++) {
-            out.print(tabSpace);
+        for (int i = 0; i < this.tagLevel; i++) {
+            this.out.print(this.tabSpace);
         }
-        writeCharacters(characterData, out);
-        out.println();
-        out.flush();
+        this.writeCharacters(characterData, this.out);
+        this.out.println();
+        this.out.flush();
     }
 
     /**
@@ -177,14 +179,14 @@ public class InkMLWriter {
      * 
      * @param xmlString
      */
-    public void writeXML(String xmlString) {
+    public void writeXML(final String xmlString) {
         // print space(s) for intentation
-        for (int i = 0; i < tagLevel; i++) {
-            out.print(tabSpace);
+        for (int i = 0; i < this.tagLevel; i++) {
+            this.out.print(this.tabSpace);
         }
-        out.write(xmlString);
-        out.println();
-        out.flush();
+        this.out.write(xmlString);
+        this.out.println();
+        this.out.flush();
     }
 
     /**
@@ -193,14 +195,14 @@ public class InkMLWriter {
      * @param tagName name the tag
      * @param attributesMap the map of attributeName ==> attributeValue
      */
-    public void writeEmptyStartTag(String tagName, HashMap<String, String> attributesMap) {
+    public void writeEmptyStartTag(final String tagName, final HashMap<String, String> attributesMap) {
         // print space for intentation
-        for (int i = 0; i < tagLevel; i++) {
-            out.write(tabSpace);
+        for (int i = 0; i < this.tagLevel; i++) {
+            this.out.write(this.tabSpace);
         }
-        writeBaseStartTag(tagName, attributesMap, out);
-        out.print("/>");
-        out.println();
+        this.writeBaseStartTag(tagName, attributesMap, this.out);
+        this.out.print("/>");
+        this.out.println();
     }
 
     /**
@@ -211,14 +213,14 @@ public class InkMLWriter {
      * @param attributesMap
      * @return the EmtpyStartTag XML data
      */
-    public String getEmptyStartTagXML(String tagName, HashMap<String, String> attributesMap) {
+    public String getEmptyStartTagXML(final String tagName, final HashMap<String, String> attributesMap) {
 
-        StringWriter stringWriter = new StringWriter();
+        final StringWriter stringWriter = new StringWriter();
         // print space for intentation
-        for (int i = 0; i < tagLevel; i++) {
-            stringWriter.write(tabSpace);
+        for (int i = 0; i < this.tagLevel; i++) {
+            stringWriter.write(this.tabSpace);
         }
-        writeBaseStartTag(tagName, attributesMap, stringWriter);
+        this.writeBaseStartTag(tagName, attributesMap, stringWriter);
         stringWriter.write("/>\r\n");
         return stringWriter.toString();
     }
@@ -256,7 +258,7 @@ public class InkMLWriter {
     // private methods
 
     // change the special chracters that are not allowed in XML content to proper encoded literal strings.
-    private void writeCharacter(char c, Writer out) throws IOException {
+    private void writeCharacter(final char c, final Writer out) throws IOException {
         switch (c) {
         case '<': {
             out.write("&lt;");
@@ -284,42 +286,42 @@ public class InkMLWriter {
         }
     }
 
-    private void writeBaseStartTag(String tagName, HashMap<String, String> attrs, Writer out) {
+    private void writeBaseStartTag(final String tagName, final HashMap<String, String> attrs, final Writer out) {
         try {
             if (null == out) {
-                logger.severe("No writer assigned. Can not write InkML data");
+                InkMLWriter.logger.severe("No writer assigned. Can not write InkML data");
                 return;
             }
             out.write('<');
             out.write(tagName);
             if (attrs != null) {
                 // sort by attribute name
-                Map<String, String> sortedAttrs = new TreeMap<String, String>(attrs);
+                final Map<String, String> sortedAttrs = new TreeMap<String, String>(attrs);
 
-                java.util.Set<String> keys = sortedAttrs.keySet();
-                java.util.Iterator<String> itr = keys.iterator();
+                final java.util.Set<String> keys = sortedAttrs.keySet();
+                final java.util.Iterator<String> itr = keys.iterator();
                 while (itr.hasNext()) {
                     out.write(' ');
-                    String key = itr.next();
+                    final String key = itr.next();
                     out.write(key);
                     out.write("=\"");
-                    writeCharacters(attrs.get(key), out);
+                    this.writeCharacters(attrs.get(key), out);
                     out.write('"');
                 }
             }
-        } catch (IOException e) {
-            logger.severe("Error while writing StartTag,  " + tagName + ".\nMessage: " + e.getMessage());
+        } catch (final IOException e) {
+            InkMLWriter.logger.severe("Error while writing StartTag,  " + tagName + ".\nMessage: " + e.getMessage());
         }
     }
 
-    private void writeCharacters(String charcaterData, Writer out) {
+    private void writeCharacters(final String charcaterData, final Writer out) {
         if (null != charcaterData) {
             for (int i = 0; i < charcaterData.length(); i++) {
-                char c = charcaterData.charAt(i);
+                final char c = charcaterData.charAt(i);
                 try {
-                    writeCharacter(c, out);
-                } catch (IOException e) {
-                    logger.severe("Error while encoding character data." + e.getMessage());
+                    this.writeCharacter(c, out);
+                } catch (final IOException e) {
+                    InkMLWriter.logger.severe("Error while encoding character data." + e.getMessage());
                 }
             }
         }
@@ -329,9 +331,9 @@ public class InkMLWriter {
     // method to map Java Encoding and XML encoding string litteral values
     private String getEncoding() {
         String encodingStr = null;
-        if (encoding.equalsIgnoreCase("UTF8")) {
+        if (this.encoding.equalsIgnoreCase("UTF8")) {
             encodingStr = "UTF-8";
-        } else if (encoding.equalsIgnoreCase("8859_1")) {
+        } else if (this.encoding.equalsIgnoreCase("8859_1")) {
             encodingStr = "ISO-8859-1";
         }
         return encodingStr;
@@ -342,16 +344,18 @@ public class InkMLWriter {
     }
 
     public int getTabSize() {
-        return tabSize;
+        return this.tabSize;
     }
 
-    public void setTabSize(int tabSize) {
+    public void setTabSize(final int tabSize) {
         this.tabSize = tabSize;
-        if (tabSize == 0)
+        if (tabSize == 0) {
             this.tabSpace = "";
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < tabSize; i++)
+        }
+        final StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < tabSize; i++) {
             buffer.append(' ');
+        }
         this.tabSpace = buffer.toString();
     }
 }

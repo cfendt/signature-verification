@@ -41,18 +41,19 @@ public class TraceView implements TraceDataElement {
     private TraceDataElement selectedTree;
 
     public TraceView() {
-        childTraceViewList = new ArrayList<TraceView>();
+        super();
+        this.childTraceViewList = new ArrayList<TraceView>();
     }
 
     /*
      * This method finds out the traceDataElement object that is created - by the view selection operation
      */
-    void setSelectedTree(Definitions definitions) throws InkMLException {
+    void setSelectedTree(final Definitions definitions) throws InkMLException {
         TraceDataElement selectedTree = null;
         if (null != definitions) {
-            TraceDataElement traceDataElement = (TraceDataElement) definitions.getTraceDataRefElement(this.traceDataRef);
-            logger.fine("The reffered traceData: " + traceDataElement.getInkElementType() + " - " + traceDataElement.getId());
-            logger.fine("Select from:" + this.from + ", to:" + this.to);
+            final TraceDataElement traceDataElement = definitions.getTraceDataRefElement(this.traceDataRef);
+            TraceView.logger.fine("The reffered traceData: " + traceDataElement.getInkElementType() + " - " + traceDataElement.getId());
+            TraceView.logger.fine("Select from:" + this.from + ", to:" + this.to);
             selectedTree = traceDataElement.getSelectedTraceDataByRange(this.from, this.to);
         }
         this.selectedTree = selectedTree;
@@ -65,14 +66,16 @@ public class TraceView implements TraceDataElement {
      * @param from the starting index of the selection range
      * @param to the end index of the the selection range
      */
-    public TraceDataElement getSelectedTraceDataByRange(String from, String to) throws InkMLException {
+    @Override
+    public TraceDataElement getSelectedTraceDataByRange(final String from, final String to) throws InkMLException {
         // As per the spec,
         // "If the referenced object is a <traceView>, then the indexing is relative to -
         // the tree selected by the <traceView>, not relative to the original object."
-        if (this.selectedTree != null)
+        if (this.selectedTree != null) {
             return this.selectedTree.getSelectedTraceDataByRange(from, to);
-        else
+        } else {
             throw new InkMLException("Error: Call to getSelectedTraceDataByRange(String,String) failed." + "Reason: the traceView selection sub-tree is not available");
+        }
     }
 
     /**
@@ -90,13 +93,15 @@ public class TraceView implements TraceDataElement {
      * @return List of Trace Objects
      */
     public ArrayList<Trace> getTraceList() throws InkMLException {
-        if (this.selectedTree == null)
+        if (this.selectedTree == null) {
             throw new InkMLException("Error: Call to TraceView.getTraceList() failed." + "Reason: the traceView selection sub-tree is not available");
-        ArrayList<Trace> traceList = new ArrayList<Trace>();
-        if ("TraceGroup".equals(selectedTree.getInkElementType()))
-            traceList.addAll(((TraceGroup) selectedTree).getTraceList());
-        else
-            traceList.add((Trace) selectedTree);
+        }
+        final ArrayList<Trace> traceList = new ArrayList<Trace>();
+        if ("TraceGroup".equals(this.selectedTree.getInkElementType())) {
+            traceList.addAll(((TraceGroup) this.selectedTree).getTraceList());
+        } else {
+            traceList.add((Trace) this.selectedTree);
+        }
         return traceList;
     }
 
@@ -105,6 +110,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @return id String
      */
+    @Override
     public String getId() {
         return this.id;
     }
@@ -114,6 +120,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @return the class name of this object as the Ink element type
      */
+    @Override
     public String getInkElementType() {
         return "TraceView";
     }
@@ -133,7 +140,8 @@ public class TraceView implements TraceDataElement {
      * @param associatedContext the Context object to be associated with the TraceView object
      */
 
-    public void setAssociatedContext(Context associatedContext) {
+    @Override
+    public void setAssociatedContext(final Context associatedContext) {
         this.associatedContext = associatedContext;
 
     }
@@ -143,7 +151,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @param newTraceViewList
      */
-    public void setchildTraceViewList(ArrayList<TraceView> newTraceViewList) {
+    public void setchildTraceViewList(final ArrayList<TraceView> newTraceViewList) {
         this.childTraceViewList = newTraceViewList;
     }
 
@@ -154,11 +162,12 @@ public class TraceView implements TraceDataElement {
      * @return TraceView data object at the given index
      * @throws InkMLException
      */
-    public TraceView getTraceViewAt(int index) throws InkMLException {
-        if (index >= 0 && index < childTraceViewList.size())
+    public TraceView getTraceViewAt(final int index) throws InkMLException {
+        if (index >= 0 && index < this.childTraceViewList.size()) {
             return this.childTraceViewList.get(index);
-        else
+        } else {
             throw new InkMLException("getTraceViewAt(int) called with outofBound index = " + index);
+        }
     }
 
     /**
@@ -167,7 +176,7 @@ public class TraceView implements TraceDataElement {
      * @param traceView
      */
 
-    public void addToChildTraceViewList(TraceView traceView) {
+    public void addToChildTraceViewList(final TraceView traceView) {
         this.childTraceViewList.add(traceView);
     }
 
@@ -177,11 +186,12 @@ public class TraceView implements TraceDataElement {
      * @param index
      * @throws InkMLException
      */
-    public void removeTraceViewAt(int index) throws InkMLException {
-        if (index >= 0 && index < childTraceViewList.size())
+    public void removeTraceViewAt(final int index) throws InkMLException {
+        if (index >= 0 && index < this.childTraceViewList.size()) {
             this.childTraceViewList.remove(index);
-        else
+        } else {
             throw new InkMLException("removeTraceViewAt(int) called with outofBound index = " + index);
+        }
     }
 
     /**
@@ -190,9 +200,9 @@ public class TraceView implements TraceDataElement {
      * @param data
      * @throws InkMLException
      */
-    public void removeTraceViewAtFirst(TraceView data) throws InkMLException {
-        if (childTraceViewList.size() > 0) {
-            int firstIndex = this.childTraceViewList.indexOf(data);
+    public void removeTraceViewAtFirst(final TraceView data) throws InkMLException {
+        if (this.childTraceViewList.size() > 0) {
+            final int firstIndex = this.childTraceViewList.indexOf(data);
             this.childTraceViewList.remove(firstIndex);
         }
         throw new InkMLException("removeTraceViewAt(TraceView) called a empty childTraceViewList");
@@ -204,9 +214,9 @@ public class TraceView implements TraceDataElement {
      * @param data
      * @throws InkMLException
      */
-    public void removeTraceViewAtLast(TraceView data) throws InkMLException {
-        if (childTraceViewList.size() > 0) {
-            int firstIndex = this.childTraceViewList.lastIndexOf(data);
+    public void removeTraceViewAtLast(final TraceView data) throws InkMLException {
+        if (this.childTraceViewList.size() > 0) {
+            final int firstIndex = this.childTraceViewList.lastIndexOf(data);
             this.childTraceViewList.remove(firstIndex);
         }
         throw new InkMLException("removeTraceViewAt(TraceView) called a empty childTraceViewList");
@@ -217,11 +227,13 @@ public class TraceView implements TraceDataElement {
      * 
      * @return string of the markup of the selected tree
      */
+    @Override
     public String toInkML() {
-        if (selectedTree != null)
-            return selectedTree.toInkML();
-        else
-            logger.severe("TraceView.toInkML method: Could not complete the operation." + "Reason: The selcted tree is NULL.");
+        if (this.selectedTree != null) {
+            return this.selectedTree.toInkML();
+        } else {
+            TraceView.logger.severe("TraceView.toInkML method: Could not complete the operation." + "Reason: The selcted tree is NULL.");
+        }
         return "";
     }
 
@@ -230,11 +242,13 @@ public class TraceView implements TraceDataElement {
      * 
      * @param writer the writer used to write to the file or data stream
      */
-    public void writeXML(InkMLWriter writer) {
-        if (selectedTree != null)
-            selectedTree.writeXML(writer);
-        else
-            logger.severe("TraceView.toInkML method: Could not complete the operation." + "Reason: The selcted tree is NULL.");
+    @Override
+    public void writeXML(final InkMLWriter writer) {
+        if (this.selectedTree != null) {
+            this.selectedTree.writeXML(writer);
+        } else {
+            TraceView.logger.severe("TraceView.toInkML method: Could not complete the operation." + "Reason: The selcted tree is NULL.");
+        }
         return;
     }
 
@@ -243,7 +257,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @param id
      */
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -252,7 +266,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @param contextRef
      */
-    public void setContextRef(String contextRef) {
+    public void setContextRef(final String contextRef) {
         this.contextRef = contextRef;
     }
 
@@ -261,7 +275,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @param selectedTree
      */
-    public void setSelectedTree(TraceDataElement selectedTree) {
+    public void setSelectedTree(final TraceDataElement selectedTree) {
         this.selectedTree = selectedTree;
     }
 
@@ -270,7 +284,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @param from
      */
-    public void setFromAttribute(String from) {
+    public void setFromAttribute(final String from) {
         this.from = from;
     }
 
@@ -279,7 +293,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @param to
      */
-    public void setToAttribute(String to) {
+    public void setToAttribute(final String to) {
         this.to = to;
     }
 
@@ -288,7 +302,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @param traceDataRef
      */
-    public void setTraceDataRef(String traceDataRef) {
+    public void setTraceDataRef(final String traceDataRef) {
         this.traceDataRef = traceDataRef;
     }
 
@@ -298,19 +312,20 @@ public class TraceView implements TraceDataElement {
      * @param definitions
      * @throws InkMlException
      */
-    public void resolveContext(Definitions definitions) throws InkMLException {
-        if (null != definitions && !"".equals(contextRef)) {
+    public void resolveContext(final Definitions definitions) throws InkMLException {
+        if (null != definitions && !"".equals(this.contextRef)) {
             Context context = null;
             try {
-                context = definitions.getContextRefElement(contextRef);
-            } catch (InkMLException e) {
-                logger.severe("Error in TraceView::resolveContext." + "\nMessage: " + e.getMessage());
+                context = definitions.getContextRefElement(this.contextRef);
+            } catch (final InkMLException e) {
+                TraceView.logger.severe("Error in TraceView::resolveContext." + "\nMessage: " + e.getMessage());
             }
             if (null != context) {
-                setAssociatedContext(context);
-                if (selectedTree == null)
+                this.setAssociatedContext(context);
+                if (this.selectedTree == null) {
                     throw new InkMLException("TraceView.resolveContext() failed." + " Reason, there is no selected sub-tree exist");
-                selectedTree.setAssociatedContext(getAssociatedContext());
+                }
+                this.selectedTree.setAssociatedContext(this.getAssociatedContext());
             }
         }
     }
@@ -327,7 +342,7 @@ public class TraceView implements TraceDataElement {
      * 
      * @param definitions
      */
-    public void processChildren(Definitions definitions) {
+    public void processChildren(final Definitions definitions) {
         // setting the selectedTree of this traceView object with child <traceView> element(s)
         this.selectedTree = new TraceGroup();
         Context traceViewAssoContext = null;
@@ -335,14 +350,15 @@ public class TraceView implements TraceDataElement {
             try {
                 traceViewAssoContext = definitions.getContextRefElement(this.contextRef);
                 this.selectedTree.setAssociatedContext(traceViewAssoContext);
-            } catch (InkMLException e) {
-                logger.severe("Error in TraceView::processChildren." + "\nMessage: " + e.getMessage());
+            } catch (final InkMLException e) {
+                TraceView.logger.severe("Error in TraceView::processChildren." + "\nMessage: " + e.getMessage());
             }
         }
         for (int i = 0; i < this.childTraceViewList.size(); i++) {
-            TraceDataElement selectedSubtree = childTraceViewList.get(i).getSelectedTree();
-            if (null != traceViewAssoContext)
+            final TraceDataElement selectedSubtree = this.childTraceViewList.get(i).getSelectedTree();
+            if (null != traceViewAssoContext) {
                 selectedSubtree.setAssociatedContext(traceViewAssoContext);
+            }
             ((TraceGroup) this.selectedTree).addToTraceData(selectedSubtree);
         }
     }
@@ -352,7 +368,7 @@ public class TraceView implements TraceDataElement {
      */
     public void printSelectedTree() {
         if (null == this.selectedTree) {
-            logger.fine("SelectedTree is NULL");
+            TraceView.logger.fine("SelectedTree is NULL");
         } else {
             if ("Trace".equals(this.selectedTree.getInkElementType())) {
                 ((Trace) this.selectedTree).printTrace();

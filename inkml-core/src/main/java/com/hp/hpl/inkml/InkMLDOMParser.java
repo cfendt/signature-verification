@@ -48,6 +48,7 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
     private static Logger logger = Logger.getLogger(InkMLDOMParser.class.getName());
 
     public InkMLDOMParser(final InkMLProcessor processor) {
+        super();
         this.inkMLProcessor = processor;
     }
 

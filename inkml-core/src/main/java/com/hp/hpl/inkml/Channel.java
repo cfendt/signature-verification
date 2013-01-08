@@ -14,7 +14,6 @@
 package com.hp.hpl.inkml;
 
 import java.util.HashMap;
-
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +24,7 @@ import java.util.logging.Logger;
  */
 
 public class Channel implements InkElement {
-    private HashMap<String, String> attributesMap = new HashMap<String, String>();
+    private final HashMap<String, String> attributesMap = new HashMap<String, String>();
 
     /**
      * Different channel types to indicate the data type of the channel. Possible values are 'decimal', 'integer' and 'boolean'. The default value is 'decimal'.
@@ -78,7 +77,7 @@ public class Channel implements InkElement {
      * @param respectTo timestamp to specify the frame of reference for the traceData Sample having the channel value.
      * @throws InkMLException
      */
-    public Channel(String name, String id, ChannelType type, String min, String max, String units, OrientationType orientation, URI respectTo) {
+    public Channel(final String name, final String id, final ChannelType type, final String min, final String max, final String units, final OrientationType orientation, final URI respectTo) {
         this.attributesMap.put("name", name);
         this.attributesMap.put("id", id);
         this.attributesMap.put("type", type.toString());
@@ -86,8 +85,9 @@ public class Channel implements InkElement {
         this.attributesMap.put("max", max);
         this.attributesMap.put("units", units);
         this.attributesMap.put("orientation", orientation.toString());
-        if (null != respectTo)
+        if (null != respectTo) {
             this.attributesMap.put("respectTo", respectTo.toString());
+        }
     }
 
     /**
@@ -96,7 +96,7 @@ public class Channel implements InkElement {
      * @param name The Channel Name
      * @param type The Channel Type
      */
-    public Channel(String name, ChannelType type) {
+    public Channel(final String name, final ChannelType type) {
         this.attributesMap.put("name", name);
         this.attributesMap.put("type", type.toString());
         this.attributesMap.put("orientation", OrientationType.POSITIVE.toString());
@@ -107,7 +107,7 @@ public class Channel implements InkElement {
      * 
      * @param name name of the Channel.
      */
-    public Channel(String name) {
+    public Channel(final String name) {
         this.attributesMap.put("name", name);
     }
 
@@ -117,7 +117,7 @@ public class Channel implements InkElement {
      * @return boolean value that defines the type of the channel.
      */
     public boolean isIntermittent() {
-        return isIntermittent;
+        return this.isIntermittent;
     }
 
     /**
@@ -126,8 +126,8 @@ public class Channel implements InkElement {
      * @return the Channel Name.
      */
     public String getName() {
-        String value = this.attributesMap.get("name");
-        return (null == value) ? "" : value;
+        final String value = this.attributesMap.get("name");
+        return null == value ? "" : value;
     }
 
     /**
@@ -136,9 +136,9 @@ public class Channel implements InkElement {
      * @return the Channel Type.
      */
     public ChannelType getChannelType() {
-        String value = this.attributesMap.get("type");
+        final String value = this.attributesMap.get("type");
         if (null != value) {
-            ChannelType type = ChannelType.valueOf(value.toUpperCase());
+            final ChannelType type = ChannelType.valueOf(value.toUpperCase());
             return type;
         }
         return ChannelType.DECIMAL;
@@ -150,8 +150,8 @@ public class Channel implements InkElement {
      * @return the Channel unit.
      */
     public String getUnits() {
-        String value = this.attributesMap.get("units");
-        return (null == value) ? "" : value;
+        final String value = this.attributesMap.get("units");
+        return null == value ? "" : value;
     }
 
     /**
@@ -160,9 +160,9 @@ public class Channel implements InkElement {
      * @return the default value of the Channel.
      */
     public String getDefaultValue() {
-        String value = this.attributesMap.get("default");
+        final String value = this.attributesMap.get("default");
         if (null == value) {
-            if ((this.getChannelType() == ChannelType.DECIMAL) || (this.getChannelType() == ChannelType.INTEGER)) {
+            if (this.getChannelType() == ChannelType.DECIMAL || this.getChannelType() == ChannelType.INTEGER) {
                 return "0";
             } else {
                 // boolean channel
@@ -177,9 +177,10 @@ public class Channel implements InkElement {
      * 
      * @return the ID attribute of the channel.
      */
+    @Override
     public String getId() {
-        String value = this.attributesMap.get("id");
-        return (null == value) ? "" : value;
+        final String value = this.attributesMap.get("id");
+        return null == value ? "" : value;
     }
 
     /**
@@ -188,13 +189,13 @@ public class Channel implements InkElement {
      * @return the OrientationType attribute of the channel.
      */
     public OrientationType getOrientation() {
-        String value = this.attributesMap.get("orientation");
+        final String value = this.attributesMap.get("orientation");
         if (null != value) {
             try {
-                OrientationType type = OrientationType.valueOf(value);
+                final OrientationType type = OrientationType.valueOf(value);
                 return type;
-            } catch (Exception exp) {
-                logger.severe("The 'orientation' attribute of channel " + this.getName() + " is invalid. Given value is " + value);
+            } catch (final Exception exp) {
+                Channel.logger.severe("The 'orientation' attribute of channel " + this.getName() + " is invalid. Given value is " + value);
             }
         }
         return OrientationType.POSITIVE;
@@ -206,8 +207,8 @@ public class Channel implements InkElement {
      * @return min attribute of the channel.
      */
     public String getMin() {
-        String value = this.attributesMap.get("min");
-        return (null == value) ? "" : value;
+        final String value = this.attributesMap.get("min");
+        return null == value ? "" : value;
     }
 
     /**
@@ -216,8 +217,8 @@ public class Channel implements InkElement {
      * @return max attribute of the channel.
      */
     public String getMax() {
-        String value = this.attributesMap.get("max");
-        return (null == value) ? "" : value;
+        final String value = this.attributesMap.get("max");
+        return null == value ? "" : value;
     }
 
     /**
@@ -225,6 +226,7 @@ public class Channel implements InkElement {
      * 
      * @return the string value representing the type of the Ink element. It is nothing but the class name.
      */
+    @Override
     public String getInkElementType() {
         return "Channel";
     }
@@ -235,8 +237,8 @@ public class Channel implements InkElement {
      * @return String URI String
      */
     public String getRespectTo() {
-        String value = this.attributesMap.get("respectTo");
-        return (null == value) ? "" : value;
+        final String value = this.attributesMap.get("respectTo");
+        return null == value ? "" : value;
     }
 
     /**
@@ -244,9 +246,10 @@ public class Channel implements InkElement {
      * 
      * @param respectTo URI
      */
-    public void setRespectTo(URI respectTo) {
-        if (null != respectTo)
+    public void setRespectTo(final URI respectTo) {
+        if (null != respectTo) {
             this.attributesMap.put("respectTo", respectTo.getURIString());
+        }
     }
 
     /**
@@ -255,7 +258,7 @@ public class Channel implements InkElement {
      * @param respectTo String
      */
 
-    public void setRespectTo(String respectTo) {
+    public void setRespectTo(final String respectTo) {
         if (null != respectTo && !"".equals(respectTo)) {
             // Have to check validity of string parameter if its a valid URIString
             this.attributesMap.put("respectTo", respectTo);
@@ -267,9 +270,10 @@ public class Channel implements InkElement {
      * 
      * @param channelType Enumeration of one of the above 3 possible values.
      */
-    public void setChannelType(ChannelType channelType) {
-        if (null != channelType)
+    public void setChannelType(final ChannelType channelType) {
+        if (null != channelType) {
             this.attributesMap.put("type", channelType.toString());
+        }
     }
 
     /**
@@ -277,9 +281,10 @@ public class Channel implements InkElement {
      * 
      * @param channelType String of one of the above 3 possible values.
      */
-    public void setChannelType(String channelType) {
-        if (null != channelType && !"".equals(channelType))
+    public void setChannelType(final String channelType) {
+        if (null != channelType && !"".equals(channelType)) {
             this.attributesMap.put("type", channelType.toUpperCase());
+        }
     }
 
     /**
@@ -287,9 +292,10 @@ public class Channel implements InkElement {
      * 
      * @param defaultValue Object as per the type of the channel
      */
-    public void setDefaultValue(Object defaultValue) {
-        if (null != defaultValue)
+    public void setDefaultValue(final Object defaultValue) {
+        if (null != defaultValue) {
             this.attributesMap.put("default", defaultValue.toString());
+        }
     }
 
     /**
@@ -297,9 +303,10 @@ public class Channel implements InkElement {
      * 
      * @param defaultValue value as String for the channel
      */
-    public void setDefaultValue(String defaultValue) {
-        if (null != defaultValue && !"".equals(defaultValue))
+    public void setDefaultValue(final String defaultValue) {
+        if (null != defaultValue && !"".equals(defaultValue)) {
             this.attributesMap.put("default", defaultValue);
+        }
     }
 
     /**
@@ -307,9 +314,10 @@ public class Channel implements InkElement {
      * 
      * @param id
      */
-    public void setId(String id) {
-        if (null != id && !"".equals(id))
+    public void setId(final String id) {
+        if (null != id && !"".equals(id)) {
             this.attributesMap.put("id", id);
+        }
     }
 
     /**
@@ -317,7 +325,7 @@ public class Channel implements InkElement {
      * 
      * @param isIntermittent status of the kind of channel, false means 'regular channel' and 'true' means 'intermittentChannel'
      */
-    public void setIntermittent(boolean isIntermittent) {
+    public void setIntermittent(final boolean isIntermittent) {
         this.isIntermittent = isIntermittent;
     }
 
@@ -326,9 +334,10 @@ public class Channel implements InkElement {
      * 
      * @param max
      */
-    public void setMax(String max) {
-        if (null != max && !"".equals(max))
+    public void setMax(final String max) {
+        if (null != max && !"".equals(max)) {
             this.attributesMap.put("max", max);
+        }
     }
 
     /**
@@ -336,9 +345,10 @@ public class Channel implements InkElement {
      * 
      * @param min
      */
-    public void setMin(String min) {
-        if (null != min && !"".equals(min))
+    public void setMin(final String min) {
+        if (null != min && !"".equals(min)) {
             this.attributesMap.put("min", min);
+        }
     }
 
     /**
@@ -347,9 +357,10 @@ public class Channel implements InkElement {
      * 
      * @param name
      */
-    public void setName(String name) {
-        if (null != name && !"".equals(name))
+    public void setName(final String name) {
+        if (null != name && !"".equals(name)) {
             this.attributesMap.put("name", name);
+        }
     }
 
     /**
@@ -358,9 +369,10 @@ public class Channel implements InkElement {
      * @param orientation
      * @see OrientationType
      */
-    public void setOrientation(OrientationType orientation) {
-        if (null != orientation)
+    public void setOrientation(final OrientationType orientation) {
+        if (null != orientation) {
             this.attributesMap.put("orientation", orientation.toString());
+        }
     }
 
     /**
@@ -368,9 +380,10 @@ public class Channel implements InkElement {
      * 
      * @param units
      */
-    public void setUnits(String units) {
-        if (null != units && !"".equals(units))
+    public void setUnits(final String units) {
+        if (null != units && !"".equals(units)) {
             this.attributesMap.put("units", units);
+        }
     }
 
     /**
@@ -379,28 +392,38 @@ public class Channel implements InkElement {
      * @param channel object to be compared with this channel object
      * @return status of equality
      */
-    public boolean equals(Channel channel) {
-        if (channel == null)
+    public boolean equals(final Channel channel) {
+        if (channel == null) {
             return false;
-        boolean isEqual = true;
-        if (!getName().equalsIgnoreCase(channel.getName()))
+        }
+        final boolean isEqual = true;
+        if (!this.getName().equalsIgnoreCase(channel.getName())) {
             return false;
-        if (this.getChannelType() != channel.getChannelType())
+        }
+        if (this.getChannelType() != channel.getChannelType()) {
             return false;
-        if (this.getOrientation() != channel.getOrientation())
+        }
+        if (this.getOrientation() != channel.getOrientation()) {
             return false;
-        if (this.isIntermittent() != channel.isIntermittent())
+        }
+        if (this.isIntermittent() != channel.isIntermittent()) {
             return false;
-        if (!this.getRespectTo().equals(channel.getRespectTo()))
+        }
+        if (!this.getRespectTo().equals(channel.getRespectTo())) {
             return false;
-        if (!this.getDefaultValue().equals(channel.getDefaultValue()))
+        }
+        if (!this.getDefaultValue().equals(channel.getDefaultValue())) {
             return false;
-        if (!this.getMin().equals(channel.getMin()))
+        }
+        if (!this.getMin().equals(channel.getMin())) {
             return false;
-        if (!this.getMax().equals(channel.getMax()))
+        }
+        if (!this.getMax().equals(channel.getMax())) {
             return false;
-        if (!this.getUnits().equals(channel.getUnits()))
+        }
+        if (!this.getUnits().equals(channel.getUnits())) {
             return false;
+        }
         return isEqual;
     }
 
@@ -409,39 +432,48 @@ public class Channel implements InkElement {
      * 
      * @return String markup string
      */
+    @Override
     public String toInkML() {
         String channelElement = "<channel ";
-        String name = this.getName();
-        if (!"".equals(name))
+        final String name = this.getName();
+        if (!"".equals(name)) {
             channelElement += "name='" + name + "' ";
-        String id = getId();
-        if (!"".equals(id))
+        }
+        final String id = this.getId();
+        if (!"".equals(id)) {
             channelElement += "id='" + id + "' ";
-        String min = getMin();
-        if (!"".equals(min))
+        }
+        final String min = this.getMin();
+        if (!"".equals(min)) {
             channelElement += "min='" + min + "' ";
-        String max = this.getMax();
-        if (!"".equals(max))
+        }
+        final String max = this.getMax();
+        if (!"".equals(max)) {
             channelElement += "max='" + max + "' ";
-        String units = this.getUnits();
-        if (!"".equals(units))
+        }
+        final String units = this.getUnits();
+        if (!"".equals(units)) {
             channelElement += "units='" + units + "' ";
-        String respectTo = this.getRespectTo();
+        }
+        final String respectTo = this.getRespectTo();
         if (!"".endsWith(respectTo)) {
             channelElement += "respectTo='" + respectTo + "' ";
         }
-        String defaultValue = getDefaultValue();
-        if (!"".equals(defaultValue))
+        final String defaultValue = this.getDefaultValue();
+        if (!"".equals(defaultValue)) {
             channelElement += "defaultValue='" + defaultValue + "' ";
+        }
 
         ChannelType type;
-        type = getChannelType();
-        if (null != type)
+        type = this.getChannelType();
+        if (null != type) {
             channelElement += "type='" + type.toString() + "' ";
+        }
 
-        OrientationType orientation = getOrientation();
-        if (null != orientation)
+        final OrientationType orientation = this.getOrientation();
+        if (null != orientation) {
             channelElement += "orientation='" + orientation.toString() + "' ";
+        }
         channelElement += "/>";
         return channelElement;
     }
@@ -453,12 +485,12 @@ public class Channel implements InkElement {
      * @param attrValue vale of the attribute as string from the markup data
      * @throws InkMLException
      */
-    public void setAttribute(String attrName, String attrValue) throws InkMLException {
-        logger.info("adding Channel attribute " + attrName + " = " + attrValue);
+    public void setAttribute(final String attrName, final String attrValue) throws InkMLException {
+        Channel.logger.info("adding Channel attribute " + attrName + " = " + attrValue);
         if (attrName.equals("type")) {
             try {
                 ChannelType.valueOf(attrValue.toUpperCase());
-            } catch (Exception exp) {
+            } catch (final Exception exp) {
                 throw new InkMLException("The type attribute of channel " + this.getName() + " is invalid. Given value is " + attrValue);
             }
         }
@@ -468,7 +500,8 @@ public class Channel implements InkElement {
     /**
      * Method used by the Archiver component (InkMLWriter) to save the markup data of the channel data object to file or other data stream
      */
-    public void writeXML(InkMLWriter writer) {
+    @Override
+    public void writeXML(final InkMLWriter writer) {
         writer.writeEmptyStartTag("channel", this.attributesMap);
     }
 

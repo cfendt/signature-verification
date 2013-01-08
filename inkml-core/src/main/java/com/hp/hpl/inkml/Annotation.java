@@ -28,7 +28,7 @@ public class Annotation implements AnnotationElement {
     private String type = ""; // 'type' attribute value of {@code <annotation>} element
     private String encoding = ""; // 'encoding' attribute value of {@code <annotation>} element
     // Collection of the attributes other than 'type' and 'encoding'.
-    private HashMap<String, String> otherAttributesMap;
+    private final HashMap<String, String> otherAttributesMap;
     private String annotationTextValue = ""; // annotation text value
 
     /**
@@ -36,7 +36,7 @@ public class Annotation implements AnnotationElement {
      * appropriate setter methods.
      */
     Annotation() {
-        otherAttributesMap = new HashMap<String, String>();
+        this.otherAttributesMap = new HashMap<String, String>();
     }
 
     /**
@@ -45,16 +45,17 @@ public class Annotation implements AnnotationElement {
      * @param attributeName the name of the {@code <annotation>} element attribute
      * @return the value of the {@code <annotation>} element attribute. Returns null when the attributeName does not exist.
      */
-    public String getAttributeValue(String attributeName) {
-        if (attributeName == null)
+    public String getAttributeValue(final String attributeName) {
+        if (attributeName == null) {
             return null;
+        }
         String value = null;
         if ("type".equals(attributeName)) {
             value = this.type;
         } else if ("encoding".equals(attributeName)) {
             value = this.encoding;
         } else {
-            value = otherAttributesMap.get(attributeName);
+            value = this.otherAttributesMap.get(attributeName);
         }
         return value;
     }
@@ -65,7 +66,7 @@ public class Annotation implements AnnotationElement {
      * @return the 'encoding' attribute value of the {@code <annotation>} element.
      */
     public String getEncoding() {
-        return encoding;
+        return this.encoding;
     }
 
     /**
@@ -74,7 +75,7 @@ public class Annotation implements AnnotationElement {
      * @return the 'type' attribute value of the {@code <annotation>} element.
      */
     public String getType() {
-        return type;
+        return this.type;
     }
 
     /**
@@ -83,7 +84,7 @@ public class Annotation implements AnnotationElement {
      * @return AnnotationText String
      */
     public String getAnnotationTextValue() {
-        return annotationTextValue;
+        return this.annotationTextValue;
     }
 
     /**
@@ -100,22 +101,26 @@ public class Annotation implements AnnotationElement {
      * 
      * @return markup text String
      */
+    @Override
     public String toInkML() {
         String xml = "<annotation";
-        if (!"".equals(this.type))
+        if (!"".equals(this.type)) {
             xml += " type='" + this.type + "'";
-        if (!"".equals(this.encoding))
+        }
+        if (!"".equals(this.encoding)) {
             xml += " encoding='" + this.encoding + "'";
+        }
         if (0 != this.otherAttributesMap.size()) {
-            for (Object attr : this.otherAttributesMap.keySet()) {
-                Object value = this.otherAttributesMap.get(attr);
+            for (final Object attr : this.otherAttributesMap.keySet()) {
+                final Object value = this.otherAttributesMap.get(attr);
                 xml += " " + attr + "='" + value + "'";
             }
         }
-        if ("".equals(this.annotationTextValue))
+        if ("".equals(this.annotationTextValue)) {
             xml += "/>";
-        else
+        } else {
             xml += "> " + this.annotationTextValue + " </annotation>";
+        }
         return xml;
     }
 
@@ -124,8 +129,9 @@ public class Annotation implements AnnotationElement {
      * 
      * @param writer the InkMLWriter object
      */
-    public void writeXML(InkMLWriter writer) {
-        writer.writeXML(toInkML());
+    @Override
+    public void writeXML(final InkMLWriter writer) {
+        writer.writeXML(this.toInkML());
     }
 
     /**
@@ -133,7 +139,7 @@ public class Annotation implements AnnotationElement {
      * 
      * @param value type attribute value String
      */
-    public void setType(String value) {
+    public void setType(final String value) {
         this.type = value;
     }
 
@@ -142,7 +148,7 @@ public class Annotation implements AnnotationElement {
      * 
      * @param value encoding attribute value String
      */
-    public void setEncoding(String value) {
+    public void setEncoding(final String value) {
         this.encoding = value;
     }
 
@@ -157,7 +163,7 @@ public class Annotation implements AnnotationElement {
      * @param attributeName name of the attribute
      * @param value value of the attribute
      */
-    public void addToOtherAttributesMap(String attributeName, String value) {
+    public void addToOtherAttributesMap(final String attributeName, final String value) {
         this.otherAttributesMap.put(attributeName, value);
     }
 
@@ -166,7 +172,7 @@ public class Annotation implements AnnotationElement {
      * 
      * @param annotationText
      */
-    public void setAnnotationTextValue(String annotationText) {
+    public void setAnnotationTextValue(final String annotationText) {
         this.annotationTextValue = annotationText;
     }
 }

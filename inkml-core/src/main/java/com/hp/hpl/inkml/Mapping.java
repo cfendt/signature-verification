@@ -33,6 +33,7 @@ public class Mapping implements ContextElement {
      * Constructor creates a default mapping element with type set to 'unknown'.
      */
     public Mapping() {
+        super();
         this.id = "DefaultMapping";
         this.type = "unknown";
         this.channelFactorMap = new HashMap<String, Double>();

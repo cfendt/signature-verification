@@ -35,7 +35,8 @@ public class TraceFormat implements ContextElement {
      * This no argument constructor initializes the ChannelList to an empty list.
      */
     public TraceFormat() {
-        channelMap = new LinkedHashMap<String, Channel>();
+        super();
+        this.channelMap = new LinkedHashMap<String, Channel>();
     }
 
     /**
@@ -43,11 +44,11 @@ public class TraceFormat implements ContextElement {
      * 
      * @param channelList
      */
-    public void setChannelList(ArrayList<Channel> channelList) {
-        Iterator<Channel> itr = channelList.iterator();
+    public void setChannelList(final ArrayList<Channel> channelList) {
+        final Iterator<Channel> itr = channelList.iterator();
         while (itr.hasNext()) {
-            Channel channel = itr.next();
-            addChannel(channel);
+            final Channel channel = itr.next();
+            this.addChannel(channel);
         }
     }
 
@@ -57,10 +58,10 @@ public class TraceFormat implements ContextElement {
      * @return the default TraceFormat InkML Object
      */
     public static TraceFormat getDefaultTraceFormat() {
-        TraceFormat defaultTF = new TraceFormat();
+        final TraceFormat defaultTF = new TraceFormat();
         defaultTF.setId("DefaultTraceFormat");
-        Channel xChannel = new Channel("X", Channel.ChannelType.DECIMAL);
-        Channel yChannel = new Channel("Y", Channel.ChannelType.DECIMAL);
+        final Channel xChannel = new Channel("X", Channel.ChannelType.DECIMAL);
+        final Channel yChannel = new Channel("Y", Channel.ChannelType.DECIMAL);
         defaultTF.addChannel(xChannel);
         defaultTF.addChannel(yChannel);
         return defaultTF;
@@ -72,13 +73,14 @@ public class TraceFormat implements ContextElement {
      * @param channelName the Name of the Channel
      * @return the Channel InkML object identified by the 'channalName' parameter
      */
-    public Channel getChannel(String channelName) {
+    public Channel getChannel(final String channelName) {
         Channel resultChannel = null;
-        ArrayList<Channel> channelList = new ArrayList<Channel>();
-        channelList.addAll(channelMap.values());
-        for (Channel channel : channelList) {
-            if (channel.getName().equals(channelName))
+        final ArrayList<Channel> channelList = new ArrayList<Channel>();
+        channelList.addAll(this.channelMap.values());
+        for (final Channel channel : channelList) {
+            if (channel.getName().equals(channelName)) {
                 resultChannel = channel;
+            }
         }
         return resultChannel;
     }
@@ -89,8 +91,8 @@ public class TraceFormat implements ContextElement {
      * @return the Channels object List
      */
     public ArrayList<Channel> getChannelList() {
-        ArrayList<Channel> channelList = new ArrayList<Channel>();
-        channelList.addAll(channelMap.values());
+        final ArrayList<Channel> channelList = new ArrayList<Channel>();
+        channelList.addAll(this.channelMap.values());
         return channelList;
     }
 
@@ -100,9 +102,9 @@ public class TraceFormat implements ContextElement {
      * @return the list of name of Channels
      */
     public ArrayList<String> getChannelsName() {
-        ArrayList<Channel> channelList = (ArrayList<Channel>) channelMap.values();
-        ArrayList<String> channelsName = new ArrayList<String>();
-        for (Channel channel : channelList) {
+        final ArrayList<Channel> channelList = (ArrayList<Channel>) this.channelMap.values();
+        final ArrayList<String> channelsName = new ArrayList<String>();
+        for (final Channel channel : channelList) {
             channelsName.add(channel.getName());
         }
         return channelsName;
@@ -113,6 +115,7 @@ public class TraceFormat implements ContextElement {
      * 
      * @return ID string of the TraceFormat object
      */
+    @Override
     public String getId() {
         return this.id;
     }
@@ -122,6 +125,7 @@ public class TraceFormat implements ContextElement {
      * 
      * @return Class Name String
      */
+    @Override
     public String getInkElementType() {
         return "TraceFormat";
     }
@@ -132,14 +136,16 @@ public class TraceFormat implements ContextElement {
      * @param traceFormat
      * @return status of equality comparision of the traceFormat objects
      */
-    public boolean equals(TraceFormat traceFormat) {
-        boolean isEqual = true;
-        java.util.Collection<Channel> channelList1 = channelMap.values();
-        java.util.Collection<Channel> channelList2 = traceFormat.getChannelList();
-        if (channelList1.size() != channelList2.size())
+    public boolean equals(final TraceFormat traceFormat) {
+        final boolean isEqual = true;
+        final java.util.Collection<Channel> channelList1 = this.channelMap.values();
+        final java.util.Collection<Channel> channelList2 = traceFormat.getChannelList();
+        if (channelList1.size() != channelList2.size()) {
             return false;
-        if (!channelList1.containsAll(channelList2))
+        }
+        if (!channelList1.containsAll(channelList2)) {
             return false;
+        }
         return isEqual;
     }
 
@@ -148,7 +154,7 @@ public class TraceFormat implements ContextElement {
      * 
      * @param id
      */
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -157,27 +163,30 @@ public class TraceFormat implements ContextElement {
      * 
      * @param chn
      */
-    public void addChannel(Channel chn) {
-        String channelName = chn.getName();
-        channelMap.put(channelName, chn);
+    public void addChannel(final Channel chn) {
+        final String channelName = chn.getName();
+        this.channelMap.put(channelName, chn);
     }
 
     /**
      * method to get the InkML markup of the traceFormat as String
      */
+    @Override
     public String toInkML() {
         String traceFormatElement = "<traceFormat ";
         String intermittentChannelsElement = null;
-        if (!"".equals(this.id))
+        if (!"".equals(this.id)) {
             traceFormatElement += "id='" + this.id + "'>";
-        ArrayList<Channel> channelList = (ArrayList<Channel>) channelMap.values();
-        int nChannel = channelList.size();
+        }
+        final ArrayList<Channel> channelList = (ArrayList<Channel>) this.channelMap.values();
+        final int nChannel = channelList.size();
         if (0 != nChannel) {
             for (int i = 0; i < nChannel; i++) {
-                Channel channel = channelList.get(i);
+                final Channel channel = channelList.get(i);
                 if (channel.isIntermittent()) {
-                    if (null == intermittentChannelsElement)
+                    if (null == intermittentChannelsElement) {
                         intermittentChannelsElement = "<intermittentChannels>";
+                    }
                     intermittentChannelsElement += channel.toInkML();
                 } else {
                     traceFormatElement += channel.toInkML();
@@ -196,7 +205,8 @@ public class TraceFormat implements ContextElement {
     /**
      * method to write InkML markup of the traceFormat in to a file or other output stream
      */
-    public void writeXML(InkMLWriter writer) {
+    @Override
+    public void writeXML(final InkMLWriter writer) {
         HashMap<String, String> attr = null;
         if (!"".equals(this.id)) {
             attr = new HashMap<String, String>();
@@ -207,18 +217,19 @@ public class TraceFormat implements ContextElement {
             attr.put("href", this.href);
             writer.writeEmptyStartTag("traceFormat", attr);
         } else {
-            ArrayList<Channel> channelList = new ArrayList<Channel>();
-            channelList.addAll(channelMap.values());
-            int nChannel = channelList.size();
+            final ArrayList<Channel> channelList = new ArrayList<Channel>();
+            channelList.addAll(this.channelMap.values());
+            final int nChannel = channelList.size();
             boolean isEqualToDefault = false;
             if (2 == nChannel) {
-                TraceFormat defaultTF = getDefaultTraceFormat();
-                Channel chnVal1_1 = channelList.get(0);
-                Channel chnVal2_1 = defaultTF.getChannel(chnVal1_1.getName());
-                Channel chnVal1_2 = channelList.get(1);
-                Channel chnVal2_2 = defaultTF.getChannel(chnVal1_2.getName());
-                if ((chnVal1_1.equals(chnVal2_1)) && (chnVal1_2.equals(chnVal2_2)))
+                final TraceFormat defaultTF = TraceFormat.getDefaultTraceFormat();
+                final Channel chnVal1_1 = channelList.get(0);
+                final Channel chnVal2_1 = defaultTF.getChannel(chnVal1_1.getName());
+                final Channel chnVal1_2 = channelList.get(1);
+                final Channel chnVal2_2 = defaultTF.getChannel(chnVal1_2.getName());
+                if (chnVal1_1.equals(chnVal2_1) && chnVal1_2.equals(chnVal2_2)) {
                     isEqualToDefault = true;
+                }
             }
             if (!isEqualToDefault) {
                 if (0 != nChannel) {
@@ -226,10 +237,11 @@ public class TraceFormat implements ContextElement {
                     writer.writeStartTag("traceFormat", attr);
                     writer.incrementTagLevel();
                     for (int i = 0; i < nChannel; i++) {
-                        Channel channel = channelList.get(i);
+                        final Channel channel = channelList.get(i);
                         if (channel.isIntermittent()) {
-                            if (null == intermittentChannelsElement)
+                            if (null == intermittentChannelsElement) {
                                 intermittentChannelsElement = new StringBuffer("<intermittentChannels>\r\n");
+                            }
                             writer.incrementTagLevel();
                             intermittentChannelsElement.append(writer.getEmptyStartTagXML("channel", channel.getAttributesMap()));
                             writer.decrementTagLevel();
@@ -257,9 +269,9 @@ public class TraceFormat implements ContextElement {
      * 
      * @param format
      */
-    public void override(TraceFormat format) {
-        ArrayList<Channel> channelList = format.getChannelList();
-        for (Channel ch : channelList) {
+    public void override(final TraceFormat format) {
+        final ArrayList<Channel> channelList = format.getChannelList();
+        for (final Channel ch : channelList) {
             this.channelMap.put(ch.getName(), ch);
         }
     }
@@ -270,7 +282,7 @@ public class TraceFormat implements ContextElement {
      * @return the href
      */
     public String getHref() {
-        return href;
+        return this.href;
     }
 
     /**
@@ -278,7 +290,7 @@ public class TraceFormat implements ContextElement {
      * 
      * @param href the href to set
      */
-    public void setHref(String href) {
+    public void setHref(final String href) {
 
         this.href = href;
     }

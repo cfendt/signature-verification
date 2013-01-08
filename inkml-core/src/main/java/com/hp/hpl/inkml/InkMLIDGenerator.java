@@ -35,8 +35,8 @@ public class InkMLIDGenerator {
      * @return string value for 'id' attribute
      */
     public static String getNextIDForContext() {
-        String id = "Ctx" + idForContext;
-        idForContext++;
+        final String id = "Ctx" + InkMLIDGenerator.idForContext;
+        InkMLIDGenerator.idForContext++;
         return id;
     }
 
@@ -46,8 +46,8 @@ public class InkMLIDGenerator {
      * @return string value for 'id' attribute
      */
     public static String getNextIDForBrush() {
-        String id = "Brush" + idForBrush;
-        idForBrush++;
+        final String id = "Brush" + InkMLIDGenerator.idForBrush;
+        InkMLIDGenerator.idForBrush++;
         return id;
     }
 
@@ -57,8 +57,8 @@ public class InkMLIDGenerator {
      * @return string value for 'id' attribute
      */
     public static String getNextIDForTF() {
-        String id = "TF" + idForTF;
-        idForTF++;
+        final String id = "TF" + InkMLIDGenerator.idForTF;
+        InkMLIDGenerator.idForTF++;
         return id;
     }
 
@@ -68,8 +68,8 @@ public class InkMLIDGenerator {
      * @return string value for 'id' attribute
      */
     public static String getNextIDForInkSource() {
-        String id = "IS" + idForInkSrc;
-        idForInkSrc++;
+        final String id = "IS" + InkMLIDGenerator.idForInkSrc;
+        InkMLIDGenerator.idForInkSrc++;
         return id;
     }
 
@@ -79,8 +79,8 @@ public class InkMLIDGenerator {
      * @return string value for 'id' attribute
      */
     public static String getNextIDForCanvas() {
-        String id = "CAnvas" + idForCanvas;
-        idForCanvas++;
+        final String id = "CAnvas" + InkMLIDGenerator.idForCanvas;
+        InkMLIDGenerator.idForCanvas++;
         return id;
     }
 
@@ -90,8 +90,8 @@ public class InkMLIDGenerator {
      * @return string value for 'id' attribute
      */
     public static String getNextIDForCanvasTransform() {
-        String id = "CT" + idForCT;
-        idForCT++;
+        final String id = "CT" + InkMLIDGenerator.idForCT;
+        InkMLIDGenerator.idForCT++;
         return id;
     }
 
@@ -101,8 +101,8 @@ public class InkMLIDGenerator {
      * @return string value for 'id' attribute
      */
     public static String getNextIDForTimeStamp() {
-        String id = "TS" + idForTS;
-        idForTS++;
+        final String id = "TS" + InkMLIDGenerator.idForTS;
+        InkMLIDGenerator.idForTS++;
         return id;
     }
 }

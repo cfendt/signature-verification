@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-
 import java.util.logging.Logger;
 
 /**
@@ -46,6 +45,7 @@ public class Context implements InkElement, Cloneable {
      * No argument Constructor used to create an empty Context data object.
      */
     public Context() {
+        super();
         this.attributesMap = new HashMap<String, String>();
         this.contextElementList = new ArrayList<ContextElement>();
     }
@@ -56,7 +56,7 @@ public class Context implements InkElement, Cloneable {
      * @param attrName name of the attribute
      * @param attrValue vale of the attribute as string
      */
-    public void setAttribute(String attrName, String attrValue) {
+    public void setAttribute(final String attrName, final String attrValue) {
         this.attributesMap.put(attrName, attrValue);
     }
 
@@ -66,14 +66,14 @@ public class Context implements InkElement, Cloneable {
      * @return the 'brushRef' attribute value
      */
     public String getBrushRef() {
-        String reference = this.attributesMap.get("brushRef");
-        return (null == reference) ? "" : reference;
+        final String reference = this.attributesMap.get("brushRef");
+        return null == reference ? "" : reference;
     }
 
     /**
      * Method to set the 'brushRef' attribute
      */
-    public void setBrushRef(String brushRef) {
+    public void setBrushRef(final String brushRef) {
         this.attributesMap.put("brushRef", brushRef);
     }
 
@@ -84,8 +84,8 @@ public class Context implements InkElement, Cloneable {
      */
 
     public String getCanvasRef() {
-        String reference = this.attributesMap.get("canvasRef");
-        return (null == reference) ? "" : reference;
+        final String reference = this.attributesMap.get("canvasRef");
+        return null == reference ? "" : reference;
     }
 
     /**
@@ -94,7 +94,7 @@ public class Context implements InkElement, Cloneable {
      * @param canvasRef 'canvasRef' attribute value
      */
 
-    public void setCanvasRef(String canvasRef) {
+    public void setCanvasRef(final String canvasRef) {
         this.attributesMap.put("canvasRef", canvasRef);
     }
 
@@ -105,8 +105,8 @@ public class Context implements InkElement, Cloneable {
      */
 
     public String getCanvasTransformRef() {
-        String reference = this.attributesMap.get("canvasTransformRef");
-        return (null == reference) ? "" : reference;
+        final String reference = this.attributesMap.get("canvasTransformRef");
+        return null == reference ? "" : reference;
     }
 
     /**
@@ -114,7 +114,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param canvasTransformRef
      */
-    public void setCanvasTransformRef(String canvasTransformRef) {
+    public void setCanvasTransformRef(final String canvasTransformRef) {
         this.attributesMap.put("canvasTransformRef", canvasTransformRef);
     }
 
@@ -124,8 +124,8 @@ public class Context implements InkElement, Cloneable {
      * @return String
      */
     public String getInkSourceRef() {
-        String reference = this.attributesMap.get("inkSourceRef");
-        return (null == reference) ? "" : reference;
+        final String reference = this.attributesMap.get("inkSourceRef");
+        return null == reference ? "" : reference;
     }
 
     /**
@@ -133,7 +133,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param inkSourceRef
      */
-    public void setInkSourceRef(String inkSourceRef) {
+    public void setInkSourceRef(final String inkSourceRef) {
         this.attributesMap.put("inkSourceRef", inkSourceRef);
     }
 
@@ -144,8 +144,8 @@ public class Context implements InkElement, Cloneable {
      */
 
     public String getTimestampRef() {
-        String reference = this.attributesMap.get("timestampRef");
-        return (null == reference) ? "" : reference;
+        final String reference = this.attributesMap.get("timestampRef");
+        return null == reference ? "" : reference;
     }
 
     /**
@@ -153,7 +153,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param timestampRef
      */
-    public void setTimestampRef(String timestampRef) {
+    public void setTimestampRef(final String timestampRef) {
         this.attributesMap.put("timestampRef", timestampRef);
     }
 
@@ -164,8 +164,8 @@ public class Context implements InkElement, Cloneable {
      */
 
     public String getTraceFormatRef() {
-        String reference = this.attributesMap.get("traceFormatRef");
-        return (null == reference) ? "" : reference;
+        final String reference = this.attributesMap.get("traceFormatRef");
+        return null == reference ? "" : reference;
     }
 
     /**
@@ -173,7 +173,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param traceFormatRef
      */
-    public void setTraceFormatRef(String traceFormatRef) {
+    public void setTraceFormatRef(final String traceFormatRef) {
         this.attributesMap.put("traceFormatRef", traceFormatRef);
     }
 
@@ -182,7 +182,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param canvasTransform
      */
-    public void setCanvasTransform(CanvasTransform canvasTransform) {
+    public void setCanvasTransform(final CanvasTransform canvasTransform) {
         this.canvasTransform = canvasTransform;
     }
 
@@ -191,7 +191,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param contextRef
      */
-    public void setContextRef(String contextRef) {
+    public void setContextRef(final String contextRef) {
         this.attributesMap.put("contextRef", contextRef);
     }
 
@@ -200,7 +200,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param timestamp
      */
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(final Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -209,7 +209,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param context
      */
-    public Context(Context context) {
+    public Context(final Context context) {
         this.brush = context.getBrush();
         this.traceFormat = context.getTraceFormat();
         this.inkSource = context.getInkSource();
@@ -225,7 +225,7 @@ public class Context implements InkElement, Cloneable {
      * @throws InkMLException
      */
     public static Context getDefaultContext() {
-        Context defaultCtx = new Context();
+        final Context defaultCtx = new Context();
         defaultCtx.setId("DefaultContext");
         defaultCtx.setCanvasRef("#DefaultCanvas");
         defaultCtx.setCanvas(Canvas.getDefaultCanvas());
@@ -248,7 +248,7 @@ public class Context implements InkElement, Cloneable {
      * @return the Canvas InkML object
      */
     public Canvas getCanvas() {
-        return canvas;
+        return this.canvas;
     }
 
     /**
@@ -257,7 +257,7 @@ public class Context implements InkElement, Cloneable {
      * @return the InkSource InkML object
      */
     public InkSource getInkSource() {
-        return inkSource;
+        return this.inkSource;
     }
 
     /**
@@ -290,9 +290,10 @@ public class Context implements InkElement, Cloneable {
     /**
      * This method gives the value of the "id" attribute of the {@code <Context>} InkML object
      */
+    @Override
     public String getId() {
-        String reference = this.attributesMap.get("id");
-        return (reference == null) ? "" : reference;
+        final String reference = this.attributesMap.get("id");
+        return reference == null ? "" : reference;
     }
 
     /**
@@ -310,6 +311,7 @@ public class Context implements InkElement, Cloneable {
      * @return the class name String
      */
 
+    @Override
     public String getInkElementType() {
         return "Context";
     }
@@ -320,8 +322,8 @@ public class Context implements InkElement, Cloneable {
      * @return the contextRef attribute value String
      */
     public String getContextRef() {
-        String value = this.attributesMap.get("contextRef");
-        return (null == value) ? "" : value;
+        final String value = this.attributesMap.get("contextRef");
+        return null == value ? "" : value;
     }
 
     /**
@@ -329,7 +331,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param brush
      */
-    public void setBrush(Brush brush) {
+    public void setBrush(final Brush brush) {
         this.brush = brush;
     }
 
@@ -338,7 +340,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param traceFormat
      */
-    public void setTraceFormat(TraceFormat traceFormat) {
+    public void setTraceFormat(final TraceFormat traceFormat) {
         this.traceFormat = traceFormat;
     }
 
@@ -347,7 +349,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param canvas
      */
-    public void setCanvas(Canvas canvas) {
+    public void setCanvas(final Canvas canvas) {
         this.canvas = canvas;
 
     }
@@ -357,7 +359,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param inkSource
      */
-    public void setInkSource(InkSource inkSource) {
+    public void setInkSource(final InkSource inkSource) {
         this.inkSource = inkSource;
     }
 
@@ -367,21 +369,28 @@ public class Context implements InkElement, Cloneable {
      * @param context object to be compared with.
      * @return boolean status of equality
      */
-    public boolean equals(Context context) {
-        if (context == null)
+    public boolean equals(final Context context) {
+        if (context == null) {
             return false;
-        if (!this.brush.equals(context.brush))
+        }
+        if (!this.brush.equals(context.brush)) {
             return false;
-        if (!this.traceFormat.equals(context.traceFormat))
+        }
+        if (!this.traceFormat.equals(context.traceFormat)) {
             return false;
-        if (!this.inkSource.equals(context.inkSource))
+        }
+        if (!this.inkSource.equals(context.inkSource)) {
             return false;
-        if (!this.canvas.equals(context.canvas))
+        }
+        if (!this.canvas.equals(context.canvas)) {
             return false;
-        if (!this.canvasTransform.equals(context.canvasTransform))
+        }
+        if (!this.canvasTransform.equals(context.canvasTransform)) {
             return false;
-        if (!this.timestamp.equals(context.timestamp))
+        }
+        if (!this.timestamp.equals(context.timestamp)) {
             return false;
+        }
         return true;
     }
 
@@ -390,7 +399,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param id
      */
-    public void setId(String id) {
+    public void setId(final String id) {
         this.attributesMap.put("id", id);
     }
 
@@ -399,7 +408,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param ctxChild
      */
-    public void addToContextElementList(ContextElement ctxChild) {
+    public void addToContextElementList(final ContextElement ctxChild) {
         this.contextElementList.add(ctxChild);
     }
 
@@ -410,60 +419,63 @@ public class Context implements InkElement, Cloneable {
      * @param currentCtx
      * @throws InkMLException
      */
-    public void deriveContextualChildrenData(Definitions defs, Context currentCtx) throws InkMLException {
+    public void deriveContextualChildrenData(final Definitions defs, final Context currentCtx) throws InkMLException {
         // TODO Auto-generated method stub
         // copyFromCurrentContext(currentCtx);
-        String ctxRef = getContextRef();
-        if (!"".equals(ctxRef))
-            copyFromContextReference(defs, ctxRef);
-        String brushRef = getBrushRef();
+        final String ctxRef = this.getContextRef();
+        if (!"".equals(ctxRef)) {
+            this.copyFromContextReference(defs, ctxRef);
+        }
+        final String brushRef = this.getBrushRef();
         if (!"".equals(brushRef)) {
             // copyFromBrushReference
             this.brush.override(defs.getBrushRefElement(brushRef));
             if (this.brush.getId().equals("")) {
                 // assign a new ID
                 String brushID = InkMLIDGenerator.getNextIDForBrush();
-                while (defs.contains(brushID))
+                while (defs.contains(brushID)) {
                     brushID = InkMLIDGenerator.getNextIDForBrush();
+                }
                 this.brush.setId(brushID);
             }
         } else {
             if (this.brush.getAnnotationXML() == null) {
                 // empty brush element
-                String id = this.brush.getId();
+                final String id = this.brush.getId();
                 this.brush = currentCtx.getBrush();
                 // reassign id if any
-                if (!"".equals(id))
+                if (!"".equals(id)) {
                     this.brush.setId(id);
+                }
             }
         }
-        String inkSourceRef = getInkSourceRef();
+        final String inkSourceRef = this.getInkSourceRef();
         if (!"".equals(inkSourceRef)) {
             this.inkSource = defs.getInkSourceRefElement(inkSourceRef);
             this.traceFormat = this.inkSource.getTraceFormat();
         }
-        String traceFormatRef = getTraceFormatRef();
+        final String traceFormatRef = this.getTraceFormatRef();
         if (!"".equals(traceFormatRef)) {
             this.traceFormat = defs.getTraceFormatRefElement(traceFormatRef);
         }
         // To Do: add for other ref elements
 
-        int nChildren = this.contextElementList.size();
-        logger.finer("CTX child List size: " + nChildren);
+        final int nChildren = this.contextElementList.size();
+        Context.logger.finer("CTX child List size: " + nChildren);
         if (0 != nChildren) {
             String type;
             ContextElement child;
-            Iterator<ContextElement> iterator = this.contextElementList.iterator();
+            final Iterator<ContextElement> iterator = this.contextElementList.iterator();
             while (iterator.hasNext()) {
                 child = iterator.next();
                 type = child.getInkElementType();
                 if ("Brush".equals(type)) {
-                    logger.finer("CTX Brush child");
-                    Brush currBrush = currentCtx.getBrush();
+                    Context.logger.finer("CTX Brush child");
+                    final Brush currBrush = currentCtx.getBrush();
                     this.brush.override((Brush) child);
-                    String id = this.brush.getId();
+                    final String id = this.brush.getId();
                     if (!"".equals(id)) {
-                        String currentBrushId = currBrush.getId();
+                        final String currentBrushId = currBrush.getId();
                         if (!"".equals(currentBrushId)) {
                             ((Brush) child).setBrushRef("#" + currentBrushId);
                             defs.addToDirectChildrenMap(child);
@@ -487,7 +499,7 @@ public class Context implements InkElement, Cloneable {
                             this.traceFormat.override(currentCtx.getTraceFormat());
                         }
                     } else {
-                        logger.fine("overriding TF");
+                        Context.logger.fine("overriding TF");
                         this.traceFormat.override((TraceFormat) child);
                         this.traceFormat = (TraceFormat) child;
                     }
@@ -503,7 +515,7 @@ public class Context implements InkElement, Cloneable {
     }
 
     // copy data From the given context object in the parameter
-    private void copyFromContext(Context context) {
+    private void copyFromContext(final Context context) {
         this.brush = context.getBrush().clone();
         // To do: implement the clone method to other context child objects
         this.canvas = context.getCanvas();
@@ -514,9 +526,9 @@ public class Context implements InkElement, Cloneable {
     }
 
     // copy data From the given context reference object in the parameter
-    private void copyFromContextReference(Definitions defs, String ctxRef) throws InkMLException {
-        Context refferedContext = defs.getContextRefElement(ctxRef);
-        copyFromContext(refferedContext);
+    private void copyFromContextReference(final Definitions defs, final String ctxRef) throws InkMLException {
+        final Context refferedContext = defs.getContextRefElement(ctxRef);
+        this.copyFromContext(refferedContext);
     }
 
     /**
@@ -524,29 +536,30 @@ public class Context implements InkElement, Cloneable {
      * 
      * @return String markup string
      */
+    @Override
     public String toInkML() {
-        StringBuffer elementStrBuff = new StringBuffer("<context");
-        if (attributesMap != null) {
+        final StringBuffer elementStrBuff = new StringBuffer("<context");
+        if (this.attributesMap != null) {
             // sort by attribute name
-            Map<String, String> sortedAttrs = new TreeMap<String, String>(attributesMap);
+            final Map<String, String> sortedAttrs = new TreeMap<String, String>(this.attributesMap);
 
-            java.util.Set<String> keys = sortedAttrs.keySet();
-            java.util.Iterator<String> itr = keys.iterator();
+            final java.util.Set<String> keys = sortedAttrs.keySet();
+            final java.util.Iterator<String> itr = keys.iterator();
             while (itr.hasNext()) {
                 elementStrBuff.append(' ');
-                String key = itr.next();
+                final String key = itr.next();
                 elementStrBuff.append(key);
                 elementStrBuff.append("=\"");
-                elementStrBuff.append(attributesMap.get(key));
+                elementStrBuff.append(this.attributesMap.get(key));
                 elementStrBuff.append('"');
             }
         }
-        int size = this.contextElementList.size();
+        final int size = this.contextElementList.size();
         if (size != 0) {
             elementStrBuff.append(">");
-            Iterator<ContextElement> iterator = contextElementList.iterator();
+            final Iterator<ContextElement> iterator = this.contextElementList.iterator();
             while (iterator.hasNext()) {
-                ContextElement child = iterator.next();
+                final ContextElement child = iterator.next();
                 elementStrBuff.append(child.toInkML());
             }
             elementStrBuff.append("</context>");
@@ -559,20 +572,21 @@ public class Context implements InkElement, Cloneable {
     /**
      * Method used by the Archiver component (InkMLWriter) to save the markup data of the Context data object to file or other data stream
      */
-    public void writeXML(InkMLWriter writer) {
-        int size = this.contextElementList.size();
+    @Override
+    public void writeXML(final InkMLWriter writer) {
+        final int size = this.contextElementList.size();
         if (size != 0) {
-            writer.writeStartTag("context", attributesMap);
+            writer.writeStartTag("context", this.attributesMap);
             writer.incrementTagLevel();
-            Iterator<ContextElement> iterator = contextElementList.iterator();
+            final Iterator<ContextElement> iterator = this.contextElementList.iterator();
             while (iterator.hasNext()) {
-                ContextElement child = iterator.next();
+                final ContextElement child = iterator.next();
                 child.writeXML(writer);
             }
             writer.decrementTagLevel();
             writer.writeEndTag("context");
         } else {
-            writer.writeEmptyStartTag("context", attributesMap);
+            writer.writeEmptyStartTag("context", this.attributesMap);
         }
     }
 
@@ -580,18 +594,24 @@ public class Context implements InkElement, Cloneable {
      * Method to resolve the impplicitg references to attributes from the Default Context
      */
     public void resolveImplicitReferenceWithDefaultContext() {
-        Context defaultCtx = Context.getDefaultContext();
-        if (null == this.brush)
+        final Context defaultCtx = Context.getDefaultContext();
+        if (null == this.brush) {
             this.brush = defaultCtx.getBrush();
-        if (null == this.traceFormat)
+        }
+        if (null == this.traceFormat) {
             this.traceFormat = defaultCtx.getTraceFormat();
-        if (null == this.inkSource)
+        }
+        if (null == this.inkSource) {
             this.inkSource = defaultCtx.getInkSource();
-        if (null == this.canvas)
+        }
+        if (null == this.canvas) {
             this.canvas = defaultCtx.getCanvas();
-        if (null == this.canvasTransform)
+        }
+        if (null == this.canvasTransform) {
             this.canvasTransform = defaultCtx.getCanvasTransform();
-        if (null == this.timestamp)
+        }
+        if (null == this.timestamp) {
             this.timestamp = defaultCtx.getTimestamp();
+        }
     }
 }

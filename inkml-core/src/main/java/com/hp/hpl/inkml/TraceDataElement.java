@@ -23,29 +23,31 @@ package com.hp.hpl.inkml;
 public interface TraceDataElement extends InkElement {
 
     /**
-     * The method selectes the traceData identified by the range parameters 'from' and 'to'.
+     * The method selects the traceData identified by the range parameters 'from' and 'to'.
      * 
      * @param from the starting index of the range for selection
      * @param to the end index of the range for selection
      * @return the selected traceData
      * @throws InkMLException
      */
-    public TraceDataElement getSelectedTraceDataByRange(String from, String to) throws InkMLException;
+    public TraceDataElement getSelectedTraceDataByRange(final String from, final String to) throws InkMLException;
 
     /**
      * This method assigns the Context associated with the traceData.
      * 
      * @param associatedContext the Context object to be associated with the traceData
      */
-    public void setAssociatedContext(Context associatedContext);
+    public void setAssociatedContext(final Context associatedContext);
 
     /**
      * Method to generate the InkML markup of the traceData element as string
      */
+    @Override
     public String toInkML();
 
     /**
      * Method to write the InkML markup of the traceData element in to file or other output streams
      */
-    public void writeXML(InkMLWriter writer);
+    @Override
+    public void writeXML(final InkMLWriter writer);
 }

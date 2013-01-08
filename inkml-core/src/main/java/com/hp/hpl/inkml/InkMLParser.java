@@ -26,7 +26,7 @@ interface InkMLParser {
      * @param inkmlFileName
      * @throws InkMLException
      */
-    public void parseInkMLFile(String inkmlFileName) throws InkMLException;
+    public void parseInkMLFile(final String inkmlFileName) throws InkMLException;
 
     /**
      * Method to parse the InkML string markup data identified by the inkmlStr given
@@ -34,5 +34,5 @@ interface InkMLParser {
      * @param inkmlStr String markup data
      * @throws InkMLException
      */
-    public void parseInkMLString(String inkmlStr) throws InkMLException;
+    public void parseInkMLString(final String inkmlStr) throws InkMLException;
 }

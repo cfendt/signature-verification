@@ -30,7 +30,7 @@ public class InkMLException extends Exception {
      * 
      * @param message the exception message
      */
-    public InkMLException(String message) {
+    public InkMLException(final String message) {
         super(message);
     }
 
@@ -41,7 +41,7 @@ public class InkMLException extends Exception {
      * @param message the exception message
      * @param exception the base exception object
      */
-    public InkMLException(String message, Exception exception) {
+    public InkMLException(final String message, final Exception exception) {
         super(message + "\n" + exception.getMessage());
     }
 
@@ -50,7 +50,7 @@ public class InkMLException extends Exception {
      * 
      * @param exception the base exception object
      */
-    public InkMLException(Exception exception) {
+    public InkMLException(final Exception exception) {
         super(exception.getMessage());
     }
 }

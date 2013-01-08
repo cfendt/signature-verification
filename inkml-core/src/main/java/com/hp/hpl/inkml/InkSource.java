@@ -40,6 +40,7 @@ public class InkSource implements ContextElement {
      * Constructor to create an InkSource with traceFormat initiliazed with default traceformat.
      */
     public InkSource() {
+        super();
         this.attributesMap = new HashMap<String, String>();
         this.traceFormat = TraceFormat.getDefaultTraceFormat();
     }
@@ -47,7 +48,8 @@ public class InkSource implements ContextElement {
     /**
      * Constructor to create an InkSource with traceFormat initiliazed with given traceformat in the parameter.
      */
-    public InkSource(TraceFormat tf) {
+    public InkSource(final TraceFormat tf) {
+        super();
         this.traceFormat = tf;
     }
 
@@ -57,7 +59,7 @@ public class InkSource implements ContextElement {
      * @return default InkSource data object
      */
     public static InkSource getDefaultInkSource() {
-        InkSource defaultInkSource = new InkSource();
+        final InkSource defaultInkSource = new InkSource();
         defaultInkSource.setId("DefaultInkSource");
         return defaultInkSource;
     }
@@ -68,7 +70,7 @@ public class InkSource implements ContextElement {
      * @param attrName attribute name
      * @param attrValue attribute value
      */
-    public void setAttribute(String attrName, String attrValue) {
+    public void setAttribute(final String attrName, final String attrValue) {
         this.attributesMap.put(attrName, attrValue);
     }
 
@@ -77,13 +79,14 @@ public class InkSource implements ContextElement {
      * 
      * @param id
      */
-    public void setId(String id) {
+    public void setId(final String id) {
         this.attributesMap.put("id", id);
     }
 
     /**
      * Method to get 'id' attribute
      */
+    @Override
     public String getId() {
         return this.attributesMap.get("id");
     }
@@ -91,6 +94,7 @@ public class InkSource implements ContextElement {
     /**
      * Method that returns the type of the InkML element which is "InkSource"
      */
+    @Override
     public String getInkElementType() {
         return "InkSource";
     }
@@ -100,12 +104,12 @@ public class InkSource implements ContextElement {
      * 
      * @param propertyName
      */
-    void removeSourceProperty(String propertyName) {
-        if (null != sourcePropertyList) {
-            sourcePropertyList = new ArrayList<SourceProperty>();
-            Iterator<SourceProperty> itr = sourcePropertyList.iterator();
+    void removeSourceProperty(final String propertyName) {
+        if (null != this.sourcePropertyList) {
+            this.sourcePropertyList = new ArrayList<SourceProperty>();
+            final Iterator<SourceProperty> itr = this.sourcePropertyList.iterator();
             while (itr.hasNext()) {
-                SourceProperty sp = itr.next();
+                final SourceProperty sp = itr.next();
                 if (propertyName.equalsIgnoreCase(sp.getName())) {
                     itr.remove();
                 }
@@ -119,20 +123,21 @@ public class InkSource implements ContextElement {
      * @param propertyName
      * @param propertyValue
      */
-    void setSourceProperty(String propertyName, double propertyValue) {
-        if (null != sourcePropertyList) {
-            sourcePropertyList = new ArrayList<SourceProperty>();
-            Iterator<SourceProperty> itr = sourcePropertyList.iterator();
+    void setSourceProperty(final String propertyName, final double propertyValue) {
+        if (null != this.sourcePropertyList) {
+            this.sourcePropertyList = new ArrayList<SourceProperty>();
+            final Iterator<SourceProperty> itr = this.sourcePropertyList.iterator();
             boolean done = false;
             while (itr.hasNext()) {
-                SourceProperty sp = itr.next();
+                final SourceProperty sp = itr.next();
                 if (propertyName.equalsIgnoreCase(sp.getName())) {
                     sp.setValue(propertyValue);
                     done = true;
                 }
             }
-            if (!done)
-                sourcePropertyList.add(new SourceProperty(propertyName, propertyValue));
+            if (!done) {
+                this.sourcePropertyList.add(new SourceProperty(propertyName, propertyValue));
+            }
         }
     }
 
@@ -142,10 +147,11 @@ public class InkSource implements ContextElement {
      * @param inkSource
      * @return status of if compared objects are equal or not
      */
-    public boolean equals(InkSource inkSource) {
-        if (inkSource == null)
+    public boolean equals(final InkSource inkSource) {
+        if (inkSource == null) {
             return false;
-        logger.warning("The equals method implementtaion is not provided.\n" + "It returns 'true' for any two not null objects.");
+        }
+        InkSource.logger.warning("The equals method implementtaion is not provided.\n" + "It returns 'true' for any two not null objects.");
         return true;
         // if(inkSource == null)
         // return false;
@@ -167,11 +173,11 @@ public class InkSource implements ContextElement {
          * 
          * @param value
          */
-        public SampleRate(double value) {
+        public SampleRate(final double value) {
             this.value = value;
         }
 
-        public SampleRate(double value, boolean isUniform) {
+        public SampleRate(final double value, final boolean isUniform) {
             this.value = value;
             this.isUniform = isUniform;
         }
@@ -182,7 +188,7 @@ public class InkSource implements ContextElement {
          * @return the isUniform
          */
         public boolean isUniform() {
-            return isUniform;
+            return this.isUniform;
         }
 
         /**
@@ -190,7 +196,7 @@ public class InkSource implements ContextElement {
          * 
          * @param isUniform the isUniform to set
          */
-        public void setUniform(boolean isUniform) {
+        public void setUniform(final boolean isUniform) {
             this.isUniform = isUniform;
         }
 
@@ -200,7 +206,7 @@ public class InkSource implements ContextElement {
          * @return the value
          */
         public double getValue() {
-            return value;
+            return this.value;
         }
 
         /**
@@ -208,7 +214,7 @@ public class InkSource implements ContextElement {
          * 
          * @param value the value to set
          */
-        public void setValue(double value) {
+        public void setValue(final double value) {
             this.value = value;
         }
 
@@ -217,8 +223,8 @@ public class InkSource implements ContextElement {
          * 
          * @param writer
          */
-        public void writeXML(InkMLWriter writer) {
-            HashMap<String, String> attr = new HashMap<String, String>();
+        public void writeXML(final InkMLWriter writer) {
+            final HashMap<String, String> attr = new HashMap<String, String>();
             attr.put("uniform", String.valueOf(this.isUniform));
             attr.put("value", String.valueOf(this.value));
             writer.writeEmptyStartTag("sampleRate", attr);
@@ -238,7 +244,7 @@ public class InkSource implements ContextElement {
          * 
          * @param value
          */
-        public Latency(double value) {
+        public Latency(final double value) {
             this.value = value;
         }
 
@@ -248,7 +254,7 @@ public class InkSource implements ContextElement {
          * @return the value
          */
         public double getValue() {
-            return value;
+            return this.value;
         }
 
         /**
@@ -256,7 +262,7 @@ public class InkSource implements ContextElement {
          * 
          * @param value
          */
-        public void setValue(double value) {
+        public void setValue(final double value) {
             this.value = value;
         }
 
@@ -265,8 +271,8 @@ public class InkSource implements ContextElement {
          * 
          * @param writer
          */
-        public void writeXML(InkMLWriter writer) {
-            HashMap<String, String> attr = new HashMap<String, String>();
+        public void writeXML(final InkMLWriter writer) {
+            final HashMap<String, String> attr = new HashMap<String, String>();
             attr.put("value", String.valueOf(this.value));
             writer.writeEmptyStartTag("latency", attr);
         }
@@ -289,7 +295,7 @@ public class InkSource implements ContextElement {
          * @return the hegiht
          */
         public double getHegiht() {
-            return hegiht;
+            return this.hegiht;
         }
 
         /**
@@ -297,7 +303,7 @@ public class InkSource implements ContextElement {
          * 
          * @param hegiht the hegiht to set
          */
-        public void setHegiht(double hegiht) {
+        public void setHegiht(final double hegiht) {
             this.hegiht = hegiht;
         }
 
@@ -307,7 +313,7 @@ public class InkSource implements ContextElement {
          * @return the size
          */
         public String getSize() {
-            return size;
+            return this.size;
         }
 
         /**
@@ -315,7 +321,7 @@ public class InkSource implements ContextElement {
          * 
          * @param size the size to set
          */
-        public void setSize(String size) {
+        public void setSize(final String size) {
             this.size = size;
         }
 
@@ -325,7 +331,7 @@ public class InkSource implements ContextElement {
          * @return the units
          */
         public String getUnits() {
-            return units;
+            return this.units;
         }
 
         /**
@@ -333,7 +339,7 @@ public class InkSource implements ContextElement {
          * 
          * @param units the units to set
          */
-        public void setUnits(String units) {
+        public void setUnits(final String units) {
             this.units = units;
         }
 
@@ -343,7 +349,7 @@ public class InkSource implements ContextElement {
          * @return the width
          */
         public double getWidth() {
-            return width;
+            return this.width;
         }
 
         /**
@@ -351,7 +357,7 @@ public class InkSource implements ContextElement {
          * 
          * @param width the width to set
          */
-        public void setWidth(double width) {
+        public void setWidth(final double width) {
             this.width = width;
         }
 
@@ -360,16 +366,20 @@ public class InkSource implements ContextElement {
          * 
          * @param writer
          */
-        public void writeXML(InkMLWriter writer) {
-            HashMap<String, String> attributes = new HashMap<String, String>();
-            if (!size.equals("unknown"))
+        public void writeXML(final InkMLWriter writer) {
+            final HashMap<String, String> attributes = new HashMap<String, String>();
+            if (!this.size.equals("unknown")) {
                 attributes.put("size", this.size);
-            if (-1 != hegiht)
-                attributes.put("hegiht", String.valueOf(hegiht));
-            if (-1 != width)
-                attributes.put("width", String.valueOf(width));
-            if (!units.equals("unknown"))
+            }
+            if (-1 != this.hegiht) {
+                attributes.put("hegiht", String.valueOf(this.hegiht));
+            }
+            if (-1 != this.width) {
+                attributes.put("width", String.valueOf(this.width));
+            }
+            if (!this.units.equals("unknown")) {
                 attributes.put("units", this.units);
+            }
             writer.writeEmptyStartTag("activeArea", attributes);
         }
     }
@@ -392,7 +402,7 @@ public class InkSource implements ContextElement {
          * @param value
          * @param units
          */
-        public SourceProperty(String name, double value, String units) {
+        public SourceProperty(final String name, final double value, final String units) {
             this.name = name;
             this.value = value;
             this.units = units;
@@ -404,7 +414,7 @@ public class InkSource implements ContextElement {
          * @param name
          * @param value
          */
-        public SourceProperty(String name, double value) {
+        public SourceProperty(final String name, final double value) {
             this(name, value, "unknown");
         }
 
@@ -414,7 +424,7 @@ public class InkSource implements ContextElement {
          * @return the name
          */
         public String getName() {
-            return name;
+            return this.name;
         }
 
         /**
@@ -422,7 +432,7 @@ public class InkSource implements ContextElement {
          * 
          * @param name the name to set
          */
-        public void setName(String name) {
+        public void setName(final String name) {
             this.name = name;
         }
 
@@ -432,7 +442,7 @@ public class InkSource implements ContextElement {
          * @return the units
          */
         public String getUnits() {
-            return units;
+            return this.units;
         }
 
         /**
@@ -440,7 +450,7 @@ public class InkSource implements ContextElement {
          * 
          * @param units the units to set
          */
-        public void setUnits(String units) {
+        public void setUnits(final String units) {
             this.units = units;
         }
 
@@ -450,7 +460,7 @@ public class InkSource implements ContextElement {
          * @return the value
          */
         public double getValue() {
-            return value;
+            return this.value;
         }
 
         /**
@@ -458,7 +468,7 @@ public class InkSource implements ContextElement {
          * 
          * @param value the value to set
          */
-        public void setValue(double value) {
+        public void setValue(final double value) {
             this.value = value;
         }
 
@@ -467,12 +477,13 @@ public class InkSource implements ContextElement {
          * 
          * @param writer
          */
-        public void writeXML(InkMLWriter writer) {
-            HashMap<String, String> attr = new HashMap<String, String>();
+        public void writeXML(final InkMLWriter writer) {
+            final HashMap<String, String> attr = new HashMap<String, String>();
             attr.put("name", this.name);
             attr.put("value", String.valueOf(this.value));
-            if (!"".equals(units))
+            if (!"".equals(this.units)) {
                 attr.put("units", this.units);
+            }
             writer.writeEmptyStartTag("sourceProperty", attr);
         }
     }
@@ -489,7 +500,7 @@ public class InkSource implements ContextElement {
          * Constructor for ChannelProperties child element of inkSource
          */
         public ChannelProperties() {
-            ChannelPropertyList = new ArrayList<ChannelProperty>();
+            this.ChannelPropertyList = new ArrayList<ChannelProperty>();
         }
 
         /**
@@ -497,10 +508,11 @@ public class InkSource implements ContextElement {
          * 
          * @param property
          */
-        public void addChannelProperty(ChannelProperty property) {
-            if (null == ChannelPropertyList)
-                ChannelPropertyList = new ArrayList<ChannelProperty>();
-            ChannelPropertyList.add(property);
+        public void addChannelProperty(final ChannelProperty property) {
+            if (null == this.ChannelPropertyList) {
+                this.ChannelPropertyList = new ArrayList<ChannelProperty>();
+            }
+            this.ChannelPropertyList.add(property);
         }
 
         /**
@@ -509,13 +521,13 @@ public class InkSource implements ContextElement {
          * @param channelName
          * @param propertyName
          */
-        public void removeChannelProperty(String channelName, String propertyName) {
-            if (null != ChannelPropertyList) {
-                ChannelPropertyList = new ArrayList<ChannelProperty>();
-                Iterator<ChannelProperty> itr = ChannelPropertyList.iterator();
+        public void removeChannelProperty(final String channelName, final String propertyName) {
+            if (null != this.ChannelPropertyList) {
+                this.ChannelPropertyList = new ArrayList<ChannelProperty>();
+                final Iterator<ChannelProperty> itr = this.ChannelPropertyList.iterator();
                 while (itr.hasNext()) {
-                    ChannelProperty cp = itr.next();
-                    if ((channelName.equalsIgnoreCase(cp.getChannel())) && (propertyName.equalsIgnoreCase(cp.getName()))) {
+                    final ChannelProperty cp = itr.next();
+                    if (channelName.equalsIgnoreCase(cp.getChannel()) && propertyName.equalsIgnoreCase(cp.getName())) {
                         itr.remove();
                     }
                 }
@@ -529,13 +541,13 @@ public class InkSource implements ContextElement {
          * @param propertyName
          * @param propertyValue
          */
-        public void setChannelProperty(String channelName, String propertyName, double propertyValue) {
-            if (null != ChannelPropertyList) {
-                ChannelPropertyList = new ArrayList<ChannelProperty>();
-                Iterator<ChannelProperty> itr = ChannelPropertyList.iterator();
+        public void setChannelProperty(final String channelName, final String propertyName, final double propertyValue) {
+            if (null != this.ChannelPropertyList) {
+                this.ChannelPropertyList = new ArrayList<ChannelProperty>();
+                final Iterator<ChannelProperty> itr = this.ChannelPropertyList.iterator();
                 while (itr.hasNext()) {
-                    ChannelProperty cp = itr.next();
-                    if ((channelName.equalsIgnoreCase(cp.getChannel())) && (propertyName.equalsIgnoreCase(cp.getName()))) {
+                    final ChannelProperty cp = itr.next();
+                    if (channelName.equalsIgnoreCase(cp.getChannel()) && propertyName.equalsIgnoreCase(cp.getName())) {
                         cp.setValue(propertyValue);
                     }
                 }
@@ -560,7 +572,7 @@ public class InkSource implements ContextElement {
              * @param propertyName
              * @param value
              */
-            public ChannelProperty(String channelName, String propertyName, double value) {
+            public ChannelProperty(final String channelName, final String propertyName, final double value) {
                 this(channelName, propertyName, value, "unknown");
             }
 
@@ -572,7 +584,7 @@ public class InkSource implements ContextElement {
              * @param value
              * @param units
              */
-            public ChannelProperty(String channelName, String propertyName, double value, String units) {
+            public ChannelProperty(final String channelName, final String propertyName, final double value, final String units) {
                 this.channel = channelName;
                 this.name = propertyName;
                 this.value = value;
@@ -585,7 +597,7 @@ public class InkSource implements ContextElement {
              * @return the channel
              */
             public String getChannel() {
-                return channel;
+                return this.channel;
             }
 
             /**
@@ -593,7 +605,7 @@ public class InkSource implements ContextElement {
              * 
              * @param channel the channel to set
              */
-            public void setChannel(String channel) {
+            public void setChannel(final String channel) {
                 this.channel = channel;
             }
 
@@ -603,7 +615,7 @@ public class InkSource implements ContextElement {
              * @return the name
              */
             public String getName() {
-                return name;
+                return this.name;
             }
 
             /**
@@ -611,7 +623,7 @@ public class InkSource implements ContextElement {
              * 
              * @param name the name to set
              */
-            public void setName(String name) {
+            public void setName(final String name) {
                 this.name = name;
             }
 
@@ -621,7 +633,7 @@ public class InkSource implements ContextElement {
              * @return the units
              */
             public String getUnits() {
-                return units;
+                return this.units;
             }
 
             /**
@@ -629,7 +641,7 @@ public class InkSource implements ContextElement {
              * 
              * @param units the units to set
              */
-            public void setUnits(String units) {
+            public void setUnits(final String units) {
                 this.units = units;
             }
 
@@ -639,7 +651,7 @@ public class InkSource implements ContextElement {
              * @return the value
              */
             public double getValue() {
-                return value;
+                return this.value;
             }
 
             /**
@@ -647,7 +659,7 @@ public class InkSource implements ContextElement {
              * 
              * @param value the value to set
              */
-            public void setValue(double value) {
+            public void setValue(final double value) {
                 this.value = value;
             }
 
@@ -656,13 +668,14 @@ public class InkSource implements ContextElement {
              * 
              * @param writer
              */
-            public void writeXML(InkMLWriter writer) {
-                HashMap<String, String> attr = new HashMap<String, String>();
+            public void writeXML(final InkMLWriter writer) {
+                final HashMap<String, String> attr = new HashMap<String, String>();
                 attr.put("channel", this.channel);
                 attr.put("name", this.name);
                 attr.put("value", String.valueOf(this.value));
-                if (!"".equals(units))
+                if (!"".equals(this.units)) {
                     attr.put("units", this.units);
+                }
                 writer.writeEmptyStartTag("channelProperty", attr);
             }
         }
@@ -672,13 +685,13 @@ public class InkSource implements ContextElement {
          * 
          * @param writer
          */
-        public void writeXML(InkMLWriter writer) {
-            if (0 != ChannelPropertyList.size()) {
+        public void writeXML(final InkMLWriter writer) {
+            if (0 != this.ChannelPropertyList.size()) {
                 writer.writeStartTag("channelProperties", null);
                 writer.incrementTagLevel();
-                Iterator<ChannelProperty> itr = ChannelPropertyList.iterator();
+                final Iterator<ChannelProperty> itr = this.ChannelPropertyList.iterator();
                 while (itr.hasNext()) {
-                    ChannelProperty cp = itr.next();
+                    final ChannelProperty cp = itr.next();
                     cp.writeXML(writer);
                 }
                 writer.decrementTagLevel();
@@ -690,54 +703,55 @@ public class InkSource implements ContextElement {
     /**
      * method to get markup string of the inkSource data object
      */
+    @Override
     public String toInkML() {
 
         String inkSourceResult = "<inkSource ";
-        String id = getId();
+        final String id = this.getId();
         if (!id.equals("")) {
             inkSourceResult += "id='" + id + "' ";
         }
-        String manufacturer = getManufacturer();
+        final String manufacturer = this.getManufacturer();
         if (!manufacturer.equals("")) {
             inkSourceResult += "manufacturer='" + manufacturer + "' ";
         }
-        String model = getModel();
+        final String model = this.getModel();
         if (!model.equals("")) {
             inkSourceResult += "model='" + model + "' ";
         }
-        String serialNo = getSerialNo();
+        final String serialNo = this.getSerialNo();
         if (!serialNo.equals("")) {
             inkSourceResult += "serialNo='" + serialNo + "' ";
         }
-        String specificationRef = getSpecificationRef().getURIString();
+        final String specificationRef = this.getSpecificationRef().getURIString();
         if (!specificationRef.equals("")) {
             inkSourceResult += "specificationRef='" + specificationRef + "' ";
         }
-        String description = getDescription();
+        final String description = this.getDescription();
         if (!description.equals("")) {
             inkSourceResult += "description='" + description + "' ";
         }
         inkSourceResult += ">";
-        if (traceFormat != null) {
-            inkSourceResult += traceFormat.toInkML();
+        if (this.traceFormat != null) {
+            inkSourceResult += this.traceFormat.toInkML();
         }
         inkSourceResult += "</inkSource>";
         return inkSourceResult;
     }
 
     public TraceFormat getTraceFormat() {
-        return traceFormat;
+        return this.traceFormat;
     }
 
-    public void setTraceFormat(TraceFormat traceFormat) {
+    public void setTraceFormat(final TraceFormat traceFormat) {
         this.traceFormat = traceFormat;
     }
 
     public ActiveArea getActiveArea() {
-        return activeArea;
+        return this.activeArea;
     }
 
-    public void setActiveArea(ActiveArea activeArea) {
+    public void setActiveArea(final ActiveArea activeArea) {
         this.activeArea = activeArea;
     }
 
@@ -745,7 +759,7 @@ public class InkSource implements ContextElement {
         return this.attributesMap.get("description");
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.attributesMap.put("description", description);
     }
 
@@ -753,7 +767,7 @@ public class InkSource implements ContextElement {
         return this.attributesMap.get("manufacturer");
     }
 
-    public void setManufacturer(String manufacturer) {
+    public void setManufacturer(final String manufacturer) {
         this.attributesMap.put("manufacturer", manufacturer);
     }
 
@@ -771,7 +785,7 @@ public class InkSource implements ContextElement {
      * 
      * @param model number
      */
-    public void setModel(String model) {
+    public void setModel(final String model) {
         this.attributesMap.put("model", model);
     }
 
@@ -781,7 +795,7 @@ public class InkSource implements ContextElement {
      * @return sampleRate
      */
     public SampleRate getSampleRate() {
-        return sampleRate;
+        return this.sampleRate;
     }
 
     /**
@@ -789,7 +803,7 @@ public class InkSource implements ContextElement {
      * 
      * @param sampleRate
      */
-    public void setSampleRate(SampleRate sampleRate) {
+    public void setSampleRate(final SampleRate sampleRate) {
         this.sampleRate = sampleRate;
     }
 
@@ -807,7 +821,7 @@ public class InkSource implements ContextElement {
      * 
      * @param serialNo
      */
-    public void setSerialNo(String serialNo) {
+    public void setSerialNo(final String serialNo) {
         this.attributesMap.put("serialNo", serialNo);
     }
 
@@ -825,7 +839,7 @@ public class InkSource implements ContextElement {
      * 
      * @param specificationRef
      */
-    public void setSpecificationRef(URI specificationRef) {
+    public void setSpecificationRef(final URI specificationRef) {
         this.attributesMap.put("specificationRef", specificationRef.toString());
     }
 
@@ -834,7 +848,7 @@ public class InkSource implements ContextElement {
      * 
      * @param chnProbs
      */
-    void setChannelProperties(ChannelProperties chnProbs) {
+    void setChannelProperties(final ChannelProperties chnProbs) {
         this.channelProperties = chnProbs;
     }
 
@@ -843,30 +857,35 @@ public class InkSource implements ContextElement {
      * 
      * @param chnProperty
      */
-    void addToChannelProperties(ChannelProperties.ChannelProperty chnProperty) {
+    void addToChannelProperties(final ChannelProperties.ChannelProperty chnProperty) {
         this.channelProperties.addChannelProperty(chnProperty);
     }
 
     /**
      * Method to archive the inkSource data object
      */
-    public void writeXML(InkMLWriter writer) {
-        writer.writeStartTag("inkSource", attributesMap);
+    @Override
+    public void writeXML(final InkMLWriter writer) {
+        writer.writeStartTag("inkSource", this.attributesMap);
         writer.incrementTagLevel();
-        if (null != this.traceFormat)
+        if (null != this.traceFormat) {
             this.traceFormat.writeXML(writer);
-        if (null != this.sampleRate)
+        }
+        if (null != this.sampleRate) {
             this.sampleRate.writeXML(writer);
-        if (null != this.activeArea)
+        }
+        if (null != this.activeArea) {
             this.activeArea.writeXML(writer);
+        }
         if (null != this.sourcePropertyList) {
-            for (SourceProperty sp : sourcePropertyList) {
-                if (null != sp)
+            for (final SourceProperty sp : this.sourcePropertyList) {
+                if (null != sp) {
                     sp.writeXML(writer);
+                }
             }
         }
         if (null != this.channelProperties) {
-            channelProperties.writeXML(writer);
+            this.channelProperties.writeXML(writer);
         }
         writer.decrementTagLevel();
         writer.writeEndTag("inkSource");
@@ -877,10 +896,11 @@ public class InkSource implements ContextElement {
      * 
      * @param sourceProperty
      */
-    public void addSourceProperty(SourceProperty sourceProperty) {
-        if (null == sourcePropertyList)
-            sourcePropertyList = new ArrayList<SourceProperty>();
-        sourcePropertyList.add(sourceProperty);
+    public void addSourceProperty(final SourceProperty sourceProperty) {
+        if (null == this.sourcePropertyList) {
+            this.sourcePropertyList = new ArrayList<SourceProperty>();
+        }
+        this.sourcePropertyList.add(sourceProperty);
     }
 
     /**
@@ -888,7 +908,7 @@ public class InkSource implements ContextElement {
      * 
      * @param latency
      */
-    public void setLatency(Latency latency) {
+    public void setLatency(final Latency latency) {
         this.latency = latency;
     }
 
@@ -898,6 +918,6 @@ public class InkSource implements ContextElement {
      * @return latency data object
      */
     public Latency getLatency() {
-        return latency;
+        return this.latency;
     }
 }

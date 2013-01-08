@@ -45,7 +45,8 @@ public class TraceGroup implements TraceDataElement {
      * No agrument constructor to create an emty TraceGroup object.
      */
     public TraceGroup() {
-        traceDataList = new ArrayList<TraceDataElement>();
+        super();
+        this.traceDataList = new ArrayList<TraceDataElement>();
     }
 
     /**
@@ -57,15 +58,17 @@ public class TraceGroup implements TraceDataElement {
      * @throws InkMLException
      */
 
-    Context resolveAssociatedContext(Context currentContext) {
+    Context resolveAssociatedContext(final Context currentContext) {
         Context associatedContext;
         if (null != this.parentTraceGroup) {
             associatedContext = this.parentTraceGroup.getAssociatedContext();
-            if (null != associatedContext)
+            if (null != associatedContext) {
                 return associatedContext;
+            }
         }
-        if (null != currentContext)
+        if (null != currentContext) {
             return currentContext;
+        }
         return Context.getDefaultContext();
     }
 
@@ -75,12 +78,13 @@ public class TraceGroup implements TraceDataElement {
      * @return List of Trace Objects
      */
     public ArrayList<Trace> getTraceList() {
-        ArrayList<Trace> ret = new ArrayList<Trace>();
-        for (TraceDataElement traceData : traceDataList) {
-            if ("TraceGroup".equals(traceData.getInkElementType()))
+        final ArrayList<Trace> ret = new ArrayList<Trace>();
+        for (final TraceDataElement traceData : this.traceDataList) {
+            if ("TraceGroup".equals(traceData.getInkElementType())) {
                 ret.addAll(((TraceGroup) traceData).getTraceList());
-            else
+            } else {
                 ret.add((Trace) traceData);
+            }
         }
         return ret;
     }
@@ -90,7 +94,8 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @param associatedContext the Context object to be associated with the TraceGroup object
      */
-    public void setAssociatedContext(Context associatedContext) {
+    @Override
+    public void setAssociatedContext(final Context associatedContext) {
         this.associatedContext = associatedContext;
 
     }
@@ -109,8 +114,9 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @return id String
      */
+    @Override
     public String getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -118,6 +124,7 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @return the class name of this object as the Ink element type
      */
+    @Override
     public String getInkElementType() {
         return "TraceGroup";
     }
@@ -138,14 +145,15 @@ public class TraceGroup implements TraceDataElement {
      * @param from the starting index of the selection range
      * @param to the end index of the the selection range
      */
-    public TraceDataElement getSelectedTraceDataByRange(String from, String to) throws InkMLException {
+    @Override
+    public TraceDataElement getSelectedTraceDataByRange(final String from, final String to) throws InkMLException {
         if (from == null) {
             throw new InkMLException("NULL value for the parameter 'from'");
         }
         if (to == null) {
             throw new InkMLException("NULL value for the parameter 'to'");
         }
-        logger.fine("In TG from: " + from + "; to: " + to);
+        TraceGroup.logger.fine("In TG from: " + from + "; to: " + to);
         TraceGroup traceDataElement = null;
         // boolean selectWithinTG=false;
         int[] fromArr, toArr;
@@ -158,14 +166,14 @@ public class TraceGroup implements TraceDataElement {
             traceDataElement.setAssociatedContext(this.associatedContext);
 
             if ("".equals(to)) {
-                fromArr = parseRange(from);
-                if (!isRangeDataValid(fromArr)) {
+                fromArr = this.parseRange(from);
+                if (!this.isRangeDataValid(fromArr)) {
                     throw new InkMLException("The given 'from' RangeString, " + from + " is not valid");
                 }
                 TraceDataElement subtree = this;
                 TraceGroup parentTG = this;
                 if (1 == fromArr.length) {
-                    subtree = ((TraceGroup) parentTG).getTraceDataAt(fromArr[0]);
+                    subtree = parentTG.getTraceDataAt(fromArr[0]);
                     if ("Trace".equals(subtree.getInkElementType())) {
                         ((Trace) subtree).setParentTraceGroup(parentTG);
                     } else {
@@ -178,7 +186,7 @@ public class TraceGroup implements TraceDataElement {
                     subtree = ((TraceGroup) subtree).getTraceDataAt(fromArr[0]);
                     if ("Trace".equals(subtree.getInkElementType())) {
                         // traceData at index '0' is a Trace element.
-                        Trace data = (Trace) ((Trace) subtree).getSelectedTraceDataByRange(String.valueOf(fromArr[1]), "");
+                        final Trace data = (Trace) ((Trace) subtree).getSelectedTraceDataByRange(String.valueOf(fromArr[1]), "");
                         data.setParentTraceGroup(parentTG);
                         traceDataElement.addToTraceData(data);
 
@@ -187,9 +195,9 @@ public class TraceGroup implements TraceDataElement {
                         // with the remaining index string.
                         // construct the from attribute value excuding the first index
                         // example 4:2:1 --> 2:1 (remove first 2 chracters)
-                        String subFrom = from.substring(2);
+                        final String subFrom = from.substring(2);
 
-                        TraceGroup data = (TraceGroup) ((TraceGroup) subtree).getSelectedTraceDataByRange(subFrom, "");
+                        final TraceGroup data = (TraceGroup) ((TraceGroup) subtree).getSelectedTraceDataByRange(subFrom, "");
                         data.setParentTraceGroup(parentTG);
                         traceDataElement.addToTraceData(data);
                     }
@@ -203,12 +211,13 @@ public class TraceGroup implements TraceDataElement {
                 // rest of elements. Since the traceDataList ArrayList stores elements from -
                 // starting index of 0, we are getting elements starting from fromArr[0],
                 // instead of fromArr[0] + 1.
-                for (int j = fromArr[0]; j < this.traceDataList.size(); j++)
+                for (int j = fromArr[0]; j < this.traceDataList.size(); j++) {
                     traceDataElement.addToTraceData(this.traceDataList.get(j));
+                }
 
             } else if ("".equals(from)) {
-                toArr = parseRange(to);
-                if (!isRangeDataValid(toArr)) {
+                toArr = this.parseRange(to);
+                if (!this.isRangeDataValid(toArr)) {
                     throw new InkMLException("The given 'to' RangeString, " + to + " is not valid");
                 }
 
@@ -218,13 +227,14 @@ public class TraceGroup implements TraceDataElement {
                 // Example if 'to' equal to "4:1"
                 // and 'from' is not specified, so we have to get all elements before 4 which are -
                 // from index 0 to toArr[0] - 1.
-                for (int j = 0; j < toArr[0] - 1; j++)
+                for (int j = 0; j < toArr[0] - 1; j++) {
                     traceDataElement.addToTraceData(this.traceDataList.get(j));
+                }
 
                 TraceDataElement subtree = this;
                 TraceGroup parentTG = this;
                 if (1 == toArr.length) {
-                    subtree = ((TraceGroup) parentTG).getTraceDataAt(toArr[0]);
+                    subtree = parentTG.getTraceDataAt(toArr[0]);
                     if ("Trace".equals(subtree.getInkElementType())) {
                         ((Trace) subtree).setParentTraceGroup(parentTG);
                     } else {
@@ -237,7 +247,7 @@ public class TraceGroup implements TraceDataElement {
                     subtree = ((TraceGroup) subtree).getTraceDataAt(toArr[0]);
                     if ("Trace".equals(subtree.getInkElementType())) {
                         // traceData at index '0' is a Trace element.
-                        Trace data = (Trace) ((Trace) subtree).getSelectedTraceDataByRange("", String.valueOf(toArr[1]));
+                        final Trace data = (Trace) ((Trace) subtree).getSelectedTraceDataByRange("", String.valueOf(toArr[1]));
                         data.setParentTraceGroup(parentTG);
                         traceDataElement.addToTraceData(data);
 
@@ -246,9 +256,9 @@ public class TraceGroup implements TraceDataElement {
                         // with the remaining index string.
                         // construct the from attribute value excuding the first index
                         // example 4:2:1 --> 2:1 (remove first 2 chracters)
-                        String subTo = to.substring(2);
+                        final String subTo = to.substring(2);
 
-                        TraceGroup data = (TraceGroup) ((TraceGroup) subtree).getSelectedTraceDataByRange("", subTo);
+                        final TraceGroup data = (TraceGroup) ((TraceGroup) subtree).getSelectedTraceDataByRange("", subTo);
                         data.setParentTraceGroup(parentTG);
                         traceDataElement.addToTraceData(data);
                     }
@@ -256,12 +266,12 @@ public class TraceGroup implements TraceDataElement {
             } else { // both 'from' and 'to' rangeString are having non empty values.
                 // get elements and add them in order to the subtree under selection
                 // check range value validity
-                fromArr = parseRange(from);
-                if (!isRangeDataValid(fromArr)) {
+                fromArr = this.parseRange(from);
+                if (!this.isRangeDataValid(fromArr)) {
                     throw new InkMLException("The given 'from' RangeString, " + from + " is not valid");
                 }
-                toArr = parseRange(to);
-                if (!isRangeDataValid(toArr)) {
+                toArr = this.parseRange(to);
+                if (!this.isRangeDataValid(toArr)) {
                     throw new InkMLException("The given 'to' RangeString, " + to + " is not valid");
                 }
 
@@ -269,7 +279,7 @@ public class TraceGroup implements TraceDataElement {
                 TraceDataElement subtree = this;
                 TraceGroup parentTG = this;
                 if (1 == fromArr.length) {
-                    subtree = ((TraceGroup) parentTG).getTraceDataAt(fromArr[0]);
+                    subtree = parentTG.getTraceDataAt(fromArr[0]);
                     if ("Trace".equals(subtree.getInkElementType())) {
                         ((Trace) subtree).setParentTraceGroup(parentTG);
                     } else {
@@ -282,7 +292,7 @@ public class TraceGroup implements TraceDataElement {
                     subtree = ((TraceGroup) subtree).getTraceDataAt(fromArr[0]);
                     if ("Trace".equals(subtree.getInkElementType())) {
                         // traceData at index '0' is a Trace element.
-                        Trace data = (Trace) ((Trace) subtree).getSelectedTraceDataByRange(String.valueOf(fromArr[1]), "");
+                        final Trace data = (Trace) ((Trace) subtree).getSelectedTraceDataByRange(String.valueOf(fromArr[1]), "");
                         data.setParentTraceGroup(parentTG);
                         traceDataElement.addToTraceData(data);
 
@@ -291,25 +301,26 @@ public class TraceGroup implements TraceDataElement {
                         // with the remaining index string.
                         // construct the from attribute value excuding the first index
                         // example 4:2:1 --> 2:1 (remove first 2 chracters)
-                        String subFrom = from.substring(2);
+                        final String subFrom = from.substring(2);
 
-                        TraceGroup data = (TraceGroup) ((TraceGroup) subtree).getSelectedTraceDataByRange(subFrom, "");
+                        final TraceGroup data = (TraceGroup) ((TraceGroup) subtree).getSelectedTraceDataByRange(subFrom, "");
                         data.setParentTraceGroup(parentTG);
                         traceDataElement.addToTraceData(data);
                     }
                 }
 
                 // intermediate element(s)
-                int difference = toArr[0] - fromArr[0];
-                int nIntermitElmnts = difference - 1;
-                for (int k = fromArr[0], j = 0; j < nIntermitElmnts; j++)
+                final int difference = toArr[0] - fromArr[0];
+                final int nIntermitElmnts = difference - 1;
+                for (int k = fromArr[0], j = 0; j < nIntermitElmnts; j++) {
                     traceDataElement.addToTraceData(this.traceDataList.get(k + j));
+                }
 
                 // 'to' element
                 subtree = parentTG = this;
                 // selectWithinTG=false;
                 if (1 == toArr.length) {
-                    subtree = ((TraceGroup) parentTG).getTraceDataAt(toArr[0]);
+                    subtree = parentTG.getTraceDataAt(toArr[0]);
                     if ("Trace".equals(subtree.getInkElementType())) {
                         ((Trace) subtree).setParentTraceGroup(parentTG);
                     } else {
@@ -322,7 +333,7 @@ public class TraceGroup implements TraceDataElement {
                     subtree = ((TraceGroup) subtree).getTraceDataAt(toArr[0]);
                     if ("Trace".equals(subtree.getInkElementType())) {
                         // traceData at index '0' is a Trace element.
-                        Trace data = (Trace) ((Trace) subtree).getSelectedTraceDataByRange("", String.valueOf(toArr[1]));
+                        final Trace data = (Trace) ((Trace) subtree).getSelectedTraceDataByRange("", String.valueOf(toArr[1]));
                         data.setParentTraceGroup(parentTG);
                         traceDataElement.addToTraceData(data);
 
@@ -331,9 +342,9 @@ public class TraceGroup implements TraceDataElement {
                         // with the remaining index string.
                         // construct the from attribute value excuding the first index
                         // example 4:2:1 --> 2:1 (remove first 2 chracters)
-                        String subTo = to.substring(2);
+                        final String subTo = to.substring(2);
 
-                        TraceGroup data = (TraceGroup) ((TraceGroup) subtree).getSelectedTraceDataByRange("", subTo);
+                        final TraceGroup data = (TraceGroup) ((TraceGroup) subtree).getSelectedTraceDataByRange("", subTo);
                         data.setParentTraceGroup(parentTG);
                         traceDataElement.addToTraceData(data);
                     }
@@ -348,37 +359,39 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @param subtree The TraceData object to be added to the traceDataList of this TraceGroup object
      */
-    public void addToTraceData(TraceDataElement subtree) {
-        if (null == this.traceDataList)
+    public void addToTraceData(final TraceDataElement subtree) {
+        if (null == this.traceDataList) {
             this.traceDataList = new ArrayList<TraceDataElement>();
-        if ("Trace".equals(subtree.getInkElementType()))
+        }
+        if ("Trace".equals(subtree.getInkElementType())) {
             ((Trace) subtree).setParentTraceGroup(this);
-        else if ("TraceGroup".equals(subtree.getInkElementType()))
+        } else if ("TraceGroup".equals(subtree.getInkElementType())) {
             ((TraceGroup) subtree).setParentTraceGroup(this);
+        }
         this.traceDataList.add(subtree);
     }
 
-    public void removeTraceDataAt(int index) {
+    public void removeTraceDataAt(final int index) {
         this.traceDataList.remove(index);
     }
 
-    public void removeTraceDataAtFirst(TraceDataElement data) {
-        int firstIndex = this.traceDataList.indexOf(data);
+    public void removeTraceDataAtFirst(final TraceDataElement data) {
+        final int firstIndex = this.traceDataList.indexOf(data);
         this.traceDataList.remove(firstIndex);
     }
 
-    public void removeTraceDataAtLast(TraceDataElement data) {
-        int lastIndex = this.traceDataList.lastIndexOf(data);
+    public void removeTraceDataAtLast(final TraceDataElement data) {
+        final int lastIndex = this.traceDataList.lastIndexOf(data);
         this.traceDataList.remove(lastIndex);
     }
 
     /*
      * This method gives an integer array of index number by parsing - the rangeString of the format "n1:n2:n3..."
      */
-    private int[] parseRange(String rangeStr) {
+    private int[] parseRange(final String rangeStr) {
         int rangeArr[] = null;
-        StringTokenizer tokens = new StringTokenizer(rangeStr, ":");
-        int length = tokens.countTokens();
+        final StringTokenizer tokens = new StringTokenizer(rangeStr, ":");
+        final int length = tokens.countTokens();
         rangeArr = new int[length];
         for (int i = 0; tokens.hasMoreTokens(); i++) {
             rangeArr[i] = Integer.parseInt(tokens.nextToken());
@@ -389,21 +402,21 @@ public class TraceGroup implements TraceDataElement {
     /*
      * This method is used to validate the value given in from/to range parameters in a TraceView object selecting data from the TraceData object
      */
-    private boolean isRangeDataValid(int[] rangeArr) throws InkMLException {
+    private boolean isRangeDataValid(final int[] rangeArr) throws InkMLException {
 
         // Check if the first index value of rangeArr value is a valid value.
-        if ((rangeArr[0] < 1 || rangeArr[0] > traceDataList.size())) {
+        if (rangeArr[0] < 1 || rangeArr[0] > this.traceDataList.size()) {
             return false;
         }
 
         // Check the range data if it try to select within a single point (traceSample data)
         boolean isValid = true;
-        int length = rangeArr.length;
+        final int length = rangeArr.length;
         TraceDataElement temp = this;
         for (int i = 0; i < length; i++) {
             temp = ((TraceGroup) temp).getTraceDataAt(rangeArr[i]);
             if ("Trace".equals(temp.getInkElementType())) {
-                if ((length - i) > 2) {
+                if (length - i > 2) {
                     // if the element is Trace then there could be only one more -
                     // level to select. So if the difference between currend index(i)
                     // and the length should not be greater than 2 (it is '2', -
@@ -427,13 +440,13 @@ public class TraceGroup implements TraceDataElement {
     public TraceDataElement getTraceDataAt(int index) throws InkMLException {
         index--; // Note: The starting value of the parameter index is designed to 1 whereas
                  // the starting value of the ArrayList is 0.
-        if ((index < 0 || index > traceDataList.size())) {
+        if (index < 0 || index > this.traceDataList.size()) {
             throw new InkMLException("The indexOutofBound exception in getting TraceData");
         }
-        return traceDataList.get(index);
+        return this.traceDataList.get(index);
     }
 
-    public void setTraceData(ArrayList<TraceDataElement> newTraceData) {
+    public void setTraceData(final ArrayList<TraceDataElement> newTraceData) {
         this.traceDataList = newTraceData;
     }
 
@@ -446,7 +459,7 @@ public class TraceGroup implements TraceDataElement {
         return this.associatedContext.getTraceFormat();
     }
 
-    void setAssociatedBrush(Brush brush) {
+    void setAssociatedBrush(final Brush brush) {
         this.associatedContext.setBrush(brush);
     }
 
@@ -456,7 +469,7 @@ public class TraceGroup implements TraceDataElement {
      * @return TraceGroup object
      */
     public TraceGroup getParentTraceGroup() {
-        return parentTraceGroup;
+        return this.parentTraceGroup;
     }
 
     /**
@@ -464,7 +477,7 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @param parentTraceGroup the object of the Parent TraceGroup of this Trace object
      */
-    public void setParentTraceGroup(TraceGroup parentTraceGroup) {
+    public void setParentTraceGroup(final TraceGroup parentTraceGroup) {
         this.parentTraceGroup = parentTraceGroup;
     }
 
@@ -473,20 +486,24 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @return string of the markup data
      */
+    @Override
     public String toInkML() {
-        StringBuffer traceGroupStrBuff = new StringBuffer("<traceGroup");
-        if (!"".equals(id))
-            traceGroupStrBuff.append(" id=\"" + id + "\"");
-        if (!"".equals(contextRef))
-            traceGroupStrBuff.append(" contextRef=\"" + contextRef + "\"");
-        if (!"".equals(brushRef))
-            traceGroupStrBuff.append(" brushRef=\"" + brushRef + "\"");
-        int size = this.traceDataList.size();
+        final StringBuffer traceGroupStrBuff = new StringBuffer("<traceGroup");
+        if (!"".equals(this.id)) {
+            traceGroupStrBuff.append(" id=\"" + this.id + "\"");
+        }
+        if (!"".equals(this.contextRef)) {
+            traceGroupStrBuff.append(" contextRef=\"" + this.contextRef + "\"");
+        }
+        if (!"".equals(this.brushRef)) {
+            traceGroupStrBuff.append(" brushRef=\"" + this.brushRef + "\"");
+        }
+        final int size = this.traceDataList.size();
         if (size != 0) {
             traceGroupStrBuff.append(">");
-            Iterator<TraceDataElement> iterator = traceDataList.iterator();
+            final Iterator<TraceDataElement> iterator = this.traceDataList.iterator();
             while (iterator.hasNext()) {
-                TraceDataElement child = iterator.next();
+                final TraceDataElement child = iterator.next();
                 traceGroupStrBuff.append(child.toInkML());
             }
             traceGroupStrBuff.append("</traceGroup>");
@@ -510,23 +527,28 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @param writer
      */
-    public void writeXML(InkMLWriter writer) {
+    @Override
+    public void writeXML(final InkMLWriter writer) {
         java.util.HashMap<String, String> attrs = new java.util.HashMap<String, String>();
-        if (!"".equals(id))
-            attrs.put("id", id);
-        if (!"".equals(contextRef))
-            attrs.put("contextRef", contextRef);
-        if (!"".equals(brushRef))
-            attrs.put("brushRef", brushRef);
-        if (0 == attrs.size())
+        if (!"".equals(this.id)) {
+            attrs.put("id", this.id);
+        }
+        if (!"".equals(this.contextRef)) {
+            attrs.put("contextRef", this.contextRef);
+        }
+        if (!"".equals(this.brushRef)) {
+            attrs.put("brushRef", this.brushRef);
+        }
+        if (0 == attrs.size()) {
             attrs = null;
-        int size = this.traceDataList.size();
+        }
+        final int size = this.traceDataList.size();
         if (size != 0) {
             writer.writeStartTag("traceGroup", attrs);
             writer.incrementTagLevel();
-            Iterator<TraceDataElement> iterator = traceDataList.iterator();
+            final Iterator<TraceDataElement> iterator = this.traceDataList.iterator();
             while (iterator.hasNext()) {
-                TraceDataElement child = iterator.next();
+                final TraceDataElement child = iterator.next();
                 child.writeXML(writer);
             }
             writer.decrementTagLevel();
@@ -542,7 +564,7 @@ public class TraceGroup implements TraceDataElement {
      * @return the brushRef
      */
     public String getBrushRef() {
-        return brushRef;
+        return this.brushRef;
     }
 
     /**
@@ -550,7 +572,7 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @param brushRef the brushRef to set
      */
-    public void setBrushRef(String brushRef) {
+    public void setBrushRef(final String brushRef) {
         this.brushRef = brushRef;
     }
 
@@ -559,7 +581,7 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @param contextRef the contextRef to set
      */
-    public void setContextRef(String contextRef) {
+    public void setContextRef(final String contextRef) {
         this.contextRef = contextRef;
     }
 
@@ -568,7 +590,7 @@ public class TraceGroup implements TraceDataElement {
      * 
      * @param id the id to set
      */
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -585,20 +607,20 @@ public class TraceGroup implements TraceDataElement {
      * Method to log the traceGroup trace data
      */
     public void printTraceGroup() {
-        ArrayList<TraceDataElement> list = getTraceDataList();
+        final ArrayList<TraceDataElement> list = this.getTraceDataList();
         if (null != list) {
-            logger.fine("<traceGroup>");
-            Iterator<TraceDataElement> itr = list.iterator();
+            TraceGroup.logger.fine("<traceGroup>");
+            final Iterator<TraceDataElement> itr = list.iterator();
 
             while (itr.hasNext()) {
-                TraceDataElement td = itr.next();
+                final TraceDataElement td = itr.next();
                 if ("Trace".equals(td.getInkElementType())) {
                     ((Trace) td).printTrace();
                 } else {
                     ((TraceGroup) td).printTraceGroup();
                 }
             }
-            logger.fine("</traceGroup>");
+            TraceGroup.logger.fine("</traceGroup>");
         }
     }
 }

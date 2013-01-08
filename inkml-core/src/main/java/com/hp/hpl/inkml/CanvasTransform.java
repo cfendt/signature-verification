@@ -31,78 +31,89 @@ public class CanvasTransform implements ContextElement {
     private static Logger logger = Logger.getLogger(CanvasTransform.class.getName());
 
     public CanvasTransform() {
-        attributesMap = new HashMap<String, String>();
+        super();
+        this.attributesMap = new HashMap<String, String>();
         this.forwardMapping = Mapping.getDefaultMapping();
         this.reverseMapping = Mapping.getDefaultMapping();
     }
 
-    public void setAttribute(String attrName, String attrValue) {
-        if (this.attributesMap == null)
+    public void setAttribute(final String attrName, final String attrValue) {
+        if (this.attributesMap == null) {
             this.attributesMap = new HashMap<String, String>();
+        }
         this.attributesMap.put(attrName, attrValue);
     }
 
-    public void setForwardMapping(Mapping mapping) {
+    public void setForwardMapping(final Mapping mapping) {
         this.forwardMapping = mapping;
     }
 
-    public void setReverseMapping(Mapping mapping) {
+    public void setReverseMapping(final Mapping mapping) {
         this.reverseMapping = mapping;
     }
 
-    public void resetForwardMappingToDefault(Mapping mapping) {
+    public void resetForwardMappingToDefault(final Mapping mapping) {
         this.forwardMapping = Mapping.getDefaultMapping();
     }
 
-    public void resetReverseMappingToDefault(Mapping mapping) {
+    public void resetReverseMappingToDefault(final Mapping mapping) {
         this.reverseMapping = Mapping.getDefaultMapping();
     }
 
+    @Override
     public String getId() {
-        String idAttr = this.attributesMap.get("id");
-        if (idAttr != null)
+        final String idAttr = this.attributesMap.get("id");
+        if (idAttr != null) {
             return idAttr;
-        else
+        } else {
             return "";
+        }
     }
 
+    @Override
     public String getInkElementType() {
         return "CanvasTransform";
     }
 
     public static CanvasTransform getDefaultCanvasTransform() {
-        CanvasTransform canvasTransform = new CanvasTransform();
+        final CanvasTransform canvasTransform = new CanvasTransform();
         canvasTransform.setId("DefaultCanvasTransform");
         return canvasTransform;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.attributesMap.put("id", id);
     }
 
-    public boolean equals(CanvasTransform transform) {
-        if (transform == null)
+    public boolean equals(final CanvasTransform transform) {
+        if (transform == null) {
             return false;
-        boolean isEqual = true;
-        if (isInvertible() != transform.isInvertible())
+        }
+        final boolean isEqual = true;
+        if (this.isInvertible() != transform.isInvertible()) {
             return false;
-        if ((this.forwardMapping == null && this.reverseMapping != null) || (this.forwardMapping != null && this.reverseMapping == null)) {
+        }
+        if (this.forwardMapping == null && this.reverseMapping != null || this.forwardMapping != null && this.reverseMapping == null) {
             return false;
         } else {
-            if (!this.forwardMapping.equals(transform.forwardMapping))
+            if (!this.forwardMapping.equals(transform.forwardMapping)) {
                 return false;
-            if (!this.reverseMapping.equals(transform.reverseMapping))
+            }
+            if (!this.reverseMapping.equals(transform.reverseMapping)) {
                 return false;
+            }
         }
         return isEqual;
     }
 
+    @Override
     public String toInkML() {
         String canvasTransform = "<canvasTransform ";
-        String id = getId();
-        if (!"".equals(id))
+        final String id = this.getId();
+        if (!"".equals(id)) {
             canvasTransform += "id='" + id + "' ";
-        boolean isInvertible = isInvertible();
+        }
+        final boolean isInvertible = this.isInvertible();
         if (isInvertible) {
             canvasTransform += "invertible='" + String.valueOf(isInvertible) + "' ";
         }
@@ -125,14 +136,15 @@ public class CanvasTransform implements ContextElement {
      * @return boolean
      */
     public boolean isInvertible() {
-        String invertibleAttr = this.attributesMap.get("invertible");
-        if (invertibleAttr != null)
+        final String invertibleAttr = this.attributesMap.get("invertible");
+        if (invertibleAttr != null) {
             try {
-                boolean status = new Boolean(invertibleAttr).booleanValue();
+                final boolean status = new Boolean(invertibleAttr).booleanValue();
                 return status;
-            } catch (Exception e) {
-                logger.severe("Improper value to 'invertible' attribute, value = " + invertibleAttr + ". Returning the default value of false.");
+            } catch (final Exception e) {
+                CanvasTransform.logger.severe("Improper value to 'invertible' attribute, value = " + invertibleAttr + ". Returning the default value of false.");
             }
+        }
         return false; // the default value of 'invertible' attribute
     }
 
@@ -142,20 +154,21 @@ public class CanvasTransform implements ContextElement {
      * @param isInvertible
      */
 
-    public void setInvertible(boolean isInvertible) {
+    public void setInvertible(final boolean isInvertible) {
         this.attributesMap.put("invertible", String.valueOf(isInvertible));
     }
 
     public Mapping getForwardMapping() {
-        return forwardMapping;
+        return this.forwardMapping;
     }
 
     public Mapping getReverseMapping() {
-        return reverseMapping;
+        return this.reverseMapping;
     }
 
-    public void writeXML(InkMLWriter writer) {
-        writer.writeStartTag("canvasTransform", attributesMap);
+    @Override
+    public void writeXML(final InkMLWriter writer) {
+        writer.writeStartTag("canvasTransform", this.attributesMap);
         writer.incrementTagLevel();
         if (null != this.forwardMapping) {
             this.forwardMapping.writeXML(writer);

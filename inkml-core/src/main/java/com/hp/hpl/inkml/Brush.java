@@ -41,6 +41,7 @@ public class Brush implements ContextElement, Cloneable {
      * @see #setBrushRef(String) methods to set property.
      */
     public Brush() {
+        super();
     }
 
     /**
@@ -50,11 +51,12 @@ public class Brush implements ContextElement, Cloneable {
      * @see #setBrushProperty(String, String) and
      * @see #setBrushRef(String) methods to set property.
      */
-    public Brush(String id) {
-        if (null != id)
+    public Brush(final String id) {
+        if (null != id) {
             this.id = id;
-        else
+        } else {
             this.id = InkMLIDGenerator.getNextIDForBrush();
+        }
     }
 
     /**
@@ -62,8 +64,8 @@ public class Brush implements ContextElement, Cloneable {
      * 
      * @param brush
      */
-    public Brush(Brush brush) {
-        AnnotationXML aXML = brush.getAnnotationXML();
+    public Brush(final Brush brush) {
+        final AnnotationXML aXML = brush.getAnnotationXML();
         if (aXML != null) {
             this.annotationXML = new AnnotationXML();
             // copy the property data
@@ -77,9 +79,9 @@ public class Brush implements ContextElement, Cloneable {
      * @return 'default' Brush object.
      */
     public static Brush getDefaultBrush() {
-        Brush defaultBrush = new Brush();
+        final Brush defaultBrush = new Brush();
         defaultBrush.setId("DefaultBrush");
-        AnnotationXML annotationXML = new AnnotationXML();
+        final AnnotationXML annotationXML = new AnnotationXML();
         annotationXML.setProperty("color", "blue");
         annotationXML.setProperty("width", "1");
         defaultBrush.setAnnotationXML(annotationXML);
@@ -91,8 +93,9 @@ public class Brush implements ContextElement, Cloneable {
      * 
      * @return 'id' attribute of the Brush object.
      */
+    @Override
     public String getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -100,7 +103,7 @@ public class Brush implements ContextElement, Cloneable {
      * 
      * @param id String value for 'id'
      */
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -111,15 +114,15 @@ public class Brush implements ContextElement, Cloneable {
      * @return the value of the property if there is an xml element with parameter 'property' value as the tag name. Otherwise returns a null value.
      * @throws InkMLException when there is no {@code <annotationXML>} child element defined under the <brush> element.
      */
-    public String getBrushProperty(String property) throws InkMLException {
+    public String getBrushProperty(final String property) throws InkMLException {
         String value = null;
         if (null == this.annotationXML) {
-            String brushId = this.getId();
+            final String brushId = this.getId();
             if (!brushId.equals("")) {
-                logger.severe("The <brush> with id='" + brushId + "', do not have <annotationXML> child element");
+                Brush.logger.severe("The <brush> with id='" + brushId + "', do not have <annotationXML> child element");
                 throw new InkMLException("The <brush> with id='" + brushId + "', do not have <annotationXML> child element");
             } else {
-                logger.severe("The <brush> do not have <annotationXML> child element");
+                Brush.logger.severe("The <brush> do not have <annotationXML> child element");
                 throw new InkMLException("The <brush> do not have <annotationXML> child element");
             }
         } else {
@@ -134,9 +137,10 @@ public class Brush implements ContextElement, Cloneable {
      * @param name String property name
      * @param value String property value
      */
-    public void setBrushProperty(String name, String value) {
-        if (this.annotationXML == null)
+    public void setBrushProperty(final String name, final String value) {
+        if (this.annotationXML == null) {
             this.annotationXML = new AnnotationXML();
+        }
         this.annotationXML.setProperty(name, value);
     }
 
@@ -145,6 +149,7 @@ public class Brush implements ContextElement, Cloneable {
      * 
      * @return the string value representing the type of the iNk element. It is nothing but the class name.
      */
+    @Override
     public String getInkElementType() {
         return "Brush";
     }
@@ -155,7 +160,7 @@ public class Brush implements ContextElement, Cloneable {
      * @return the 'Annotation' object that associated with the Brush object.
      */
     Annotation getAnnotation() {
-        return annotation;
+        return this.annotation;
     }
 
     /**
@@ -163,7 +168,7 @@ public class Brush implements ContextElement, Cloneable {
      * 
      * @param annotation
      */
-    void setAnnotation(Annotation annotation) {
+    void setAnnotation(final Annotation annotation) {
         this.annotation = annotation;
     }
 
@@ -173,13 +178,13 @@ public class Brush implements ContextElement, Cloneable {
      * @return the 'AnnotatioXML' object that associated with the Brush object.
      */
     AnnotationXML getAnnotationXML() {
-        return annotationXML;
+        return this.annotationXML;
     }
 
     /**
      * Method to set the child {@code <annotationXML>} element object.
      */
-    void setAnnotationXML(AnnotationXML annotationXML) {
+    void setAnnotationXML(final AnnotationXML annotationXML) {
         this.annotationXML = annotationXML;
     }
 
@@ -189,34 +194,40 @@ public class Brush implements ContextElement, Cloneable {
      * @param brush object to compared with this brush object.
      * @return boolean value indicating if the brush object are equal or not.
      */
-    public boolean equals(Brush brush) {
+    public boolean equals(final Brush brush) {
         boolean isEqual = true;
-        if ((null == this.annotation && null != brush.annotation) || (null != this.annotation && null == brush.annotation)) {
+        if (null == this.annotation && null != brush.annotation || null != this.annotation && null == brush.annotation) {
             return false;
         } else if (!(null == this.annotation && null == brush.annotation)) {
             isEqual = this.annotation.equals(brush.annotation);
         }
-        if (false == isEqual)
+        if (false == isEqual) {
             return false;
-        if ((null == this.annotationXML && null != brush.annotationXML) || (null != this.annotationXML && null == brush.annotationXML)) {
+        }
+        if (null == this.annotationXML && null != brush.annotationXML || null != this.annotationXML && null == brush.annotationXML) {
             return false;
-        } else if (!(null == this.annotationXML && null == brush.annotationXML))
+        } else if (!(null == this.annotationXML && null == brush.annotationXML)) {
             isEqual = this.annotationXML.equals(brush.annotationXML);
+        }
         return isEqual;
     }
 
     /**
      * Method to serialize the markup data of this brush object as a String
      */
+    @Override
     public String toInkML() {
         String brushElement = new String("<brush ");
-        if (!"".equals(this.id))
+        if (!"".equals(this.id)) {
             brushElement += "id='" + this.id + "' ";
+        }
         brushElement += "> ";
-        if (null != this.annotation)
+        if (null != this.annotation) {
             brushElement += this.annotation.toInkML();
-        if (null != this.annotationXML)
+        }
+        if (null != this.annotationXML) {
             brushElement += this.annotationXML.toInkML();
+        }
         brushElement += " </brush> ";
         return brushElement;
     }
@@ -227,12 +238,13 @@ public class Brush implements ContextElement, Cloneable {
      * @param context Context object
      * @throws InkMLException
      */
-    public void override(Context context) throws InkMLException {
+    public void override(final Context context) throws InkMLException {
         if (null == context) {
-            logger.warning("Can not override brush property from a NULL context");
+            Brush.logger.warning("Can not override brush property from a NULL context");
         }
-        if (null != this.annotationXML)
+        if (null != this.annotationXML) {
             this.annotationXML.override(context.getBrush().getAnnotationXML());
+        }
     }
 
     /**
@@ -241,10 +253,11 @@ public class Brush implements ContextElement, Cloneable {
      * @param brush object from which properties to be derived from.
      * @throws InkMLException
      */
-    public void override(Brush brush) throws InkMLException {
+    public void override(final Brush brush) throws InkMLException {
         this.id = brush.getId();
-        if (null != this.annotationXML)
+        if (null != this.annotationXML) {
             this.annotationXML.override(brush.getAnnotationXML());
+        }
     }
 
     /**
@@ -252,6 +265,7 @@ public class Brush implements ContextElement, Cloneable {
      * 
      * @return cloned copy of the brush object
      */
+    @Override
     public Brush clone() {
         Brush clone = null;
         AnnotationXML propertyCollection;
@@ -265,8 +279,8 @@ public class Brush implements ContextElement, Cloneable {
                 propertyCollection = null;
             }
             clone.setAnnotationXML(propertyCollection);
-        } catch (CloneNotSupportedException ex) {
-            logger.info("System Error: Cloning Brush is not supported");
+        } catch (final CloneNotSupportedException ex) {
+            Brush.logger.info("System Error: Cloning Brush is not supported");
             throw new InternalError(ex.toString());
         }
         return clone;
@@ -277,7 +291,7 @@ public class Brush implements ContextElement, Cloneable {
      * 
      * @param brushRef String value
      */
-    public void setBrushRef(String brushRef) {
+    public void setBrushRef(final String brushRef) {
         this.brushRef = brushRef;
     }
 
@@ -287,24 +301,29 @@ public class Brush implements ContextElement, Cloneable {
      * 
      * @param writer InkMLWriter object
      */
-    public void writeXML(InkMLWriter writer) {
+    @Override
+    public void writeXML(final InkMLWriter writer) {
         HashMap<String, String> attrs;
         if (!"".equals(this.id) || !"".equals(this.brushRef)) {
             attrs = new HashMap<String, String>();
-            if (!"".equals(this.id))
+            if (!"".equals(this.id)) {
                 attrs.put("id", this.id);
-            if (!"".equals(this.brushRef))
+            }
+            if (!"".equals(this.brushRef)) {
                 attrs.put("brushRef", this.brushRef);
+            }
         } else {
             attrs = null;
         }
         if (null != this.annotation || null != this.annotationXML) {
             writer.writeStartTag("brush", attrs);
             writer.incrementTagLevel();
-            if (null != this.annotation)
+            if (null != this.annotation) {
                 this.annotation.writeXML(writer);
-            if (null != this.annotationXML)
+            }
+            if (null != this.annotationXML) {
                 this.annotationXML.writeXML(writer);
+            }
             writer.decrementTagLevel();
             writer.writeEndTag("brush");
         } else {

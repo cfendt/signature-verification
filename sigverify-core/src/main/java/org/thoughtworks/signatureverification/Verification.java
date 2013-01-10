@@ -10,11 +10,10 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 
+import org.apache.commons.codec.binary.Base64;
 import org.thoughtworks.signatureverification.bean.SignatureData;
 import org.thoughtworks.signatureverification.dtw.DynamicTimeWarping;
 import org.thoughtworks.signatureverification.regression.ER2;
-
-import sun.misc.BASE64Encoder;
 
 public class Verification {
 
@@ -58,9 +57,8 @@ public class Verification {
         final MessageDigestCalculator messageDigestCalculator = new MessageDigestCalculator();
         final String storedDigest1 = messageDigestCalculator.fetchDigest(folderName, SignatureVerificationConstants.FIRST_TEMPLATE_SIGNATURE_NORM_DIGEST);
         final String storedDigest2 = messageDigestCalculator.fetchDigest(folderName, SignatureVerificationConstants.SECOND_TEMPLATE_SIGNATURE_NORM_DIGEST);
-        final BASE64Encoder base64Encoder = new BASE64Encoder();
-        final String computedDigest1 = base64Encoder.encode(messageDigestCalculator.computeDigest(folderName, SignatureVerificationConstants.FIRST_TEMPLATE_SIGNATURE_NORM));
-        final String computedDigest2 = base64Encoder.encode(messageDigestCalculator.computeDigest(folderName, SignatureVerificationConstants.SECOND_TEMPLATE_SIGNATURE_NORM));
+        final String computedDigest1 = Base64.encodeBase64String(messageDigestCalculator.computeDigest(folderName, SignatureVerificationConstants.FIRST_TEMPLATE_SIGNATURE_NORM));
+        final String computedDigest2 = Base64.encodeBase64String(messageDigestCalculator.computeDigest(folderName, SignatureVerificationConstants.SECOND_TEMPLATE_SIGNATURE_NORM));
         return storedDigest1.equals(computedDigest1) && storedDigest2.equals(computedDigest2);
     }
 }

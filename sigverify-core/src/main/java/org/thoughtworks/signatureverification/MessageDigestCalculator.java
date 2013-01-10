@@ -17,18 +17,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 public class MessageDigestCalculator {
-
-    private final BASE64Encoder base64Encoder;
 
     /**
      * Constructor
      */
     public MessageDigestCalculator() {
         super();
-        this.base64Encoder = new BASE64Encoder();
     }
 
     public byte[] computeDigest(final String folderName, final String fileName) throws NoSuchAlgorithmException, IOException {
@@ -64,7 +61,7 @@ public class MessageDigestCalculator {
         try {
             op = new FileOutputStream(folderName + File.separatorChar + firstTemplateSignatureNormDigest);
             final PrintWriter printWriter = new PrintWriter(op);
-            printWriter.print(this.base64Encoder.encode(dig));
+            printWriter.print(Base64.encodeBase64String(dig));
             printWriter.close();
             op.close();
         } catch (final IOException e) {

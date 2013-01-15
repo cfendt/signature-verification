@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0 Creation date : 13-May-2007
  */
-public class TraceView implements TraceDataElement {
+public final class TraceView implements TraceDataElement {
 
     // member variable to hold the value of the attributes of <traceView> element
     private String id = "";

@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
-public class DynamicTimeWarping {
+public final class DynamicTimeWarping {
 
     private double[][] DTWMatrix;
     private int[][] wrapPath;

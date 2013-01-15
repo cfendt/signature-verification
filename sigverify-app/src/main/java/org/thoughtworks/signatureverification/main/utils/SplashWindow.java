@@ -27,12 +27,18 @@ import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
-public class SplashWindow extends JFrame {
+public final class SplashWindow extends JFrame {
 
     /** Class serial number */
     private static final long serialVersionUID = -1922228253846716827L;
 
+    /**
+     * Constructor
+     * 
+     * @throws Exception
+     */
     public SplashWindow() throws Exception {
+        super();
         this.checkSettingsFile();
         this.setLNF();
     }

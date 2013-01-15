@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
-public class AboutWindow extends JFrame {
+public final class AboutWindow extends JFrame {
 
     /** Class serial number */
     private static final long serialVersionUID = -1814312783024292676L;
@@ -35,7 +35,11 @@ public class AboutWindow extends JFrame {
     private JLabel byLogoLabel;
     private ImageIcon aboutIcon;
 
+    /**
+     * Constructor
+     */
     public AboutWindow() {
+        super();
         this.initComponents();
     }
 

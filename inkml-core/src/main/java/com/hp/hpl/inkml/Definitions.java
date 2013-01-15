@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  * @version 0.5.0 Creation date : 8 May 2007
  */
 
-public class Definitions {
+public final class Definitions {
     private static Logger logger = Logger.getLogger(Definitions.class.getName());
 
     // A map with Element "ID" as the Key and the InkML Element object as the value.

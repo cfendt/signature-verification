@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
  * @version 0.5.0 Creation date : 7th May, 2007
  */
 
-public class Ink {
+public final class Ink {
 
     public static final String INKML_NAMESPACE = "http://www.w3.org/2003/InkML";
 
@@ -78,9 +79,7 @@ public class Ink {
     // Create logger instance for logging
     private static Logger logger = Logger.getLogger(Ink.class.getName());
 
-    /**
-	 *
-	 */
+    /** ID du document */
     private String docID = "";
 
     /**
@@ -98,7 +97,7 @@ public class Ink {
      * @param context Context object to be compared with.
      * @throws InkMLException
      */
-    public ArrayList<contextChangeStatus> getContextChanges(final Context context) throws InkMLException {
+    public List<contextChangeStatus> getContextChanges(final Context context) throws InkMLException {
         final ArrayList<contextChangeStatus> ctxStatus = new ArrayList<contextChangeStatus>();
         if (null == context) {
             return ctxStatus;

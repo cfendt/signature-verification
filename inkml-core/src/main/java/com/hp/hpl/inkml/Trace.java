@@ -31,8 +31,8 @@ import java.util.regex.Pattern;
  * @version 0.5.0 Creation date : 6-May-2007
  */
 
-public class Trace implements TraceDataElement {
-    private final HashMap<String, String> attributesMap;
+public final class Trace implements TraceDataElement {
+    private final Map<String, String> attributesMap;
     private LinkedHashMap<String, List<Object>> traceData;
 
     /**
@@ -105,10 +105,7 @@ public class Trace implements TraceDataElement {
         explicit
     }
 
-    private HashMap<String, TracePrefix> lastPrefixMap;
-
-    // used to specify the trace to which the current trace is a continution
-    private final Trace priorReferredTrace = null;
+    private Map<String, TracePrefix> lastPrefixMap;
 
     // private String contextRef="";
     private Context associatedContext;
@@ -149,7 +146,7 @@ public class Trace implements TraceDataElement {
      */
     public Trace getTraceTemplate() {
         final TraceFormat traceFormat = this.getAssociatedContext().getTraceFormat();
-        final ArrayList<Channel> channelList = traceFormat.getChannelList();
+        final List<Channel> channelList = traceFormat.getChannelList();
         final int nChannel = channelList.size();
         final LinkedHashMap<String, List<Object>> newTraceData = new LinkedHashMap<String, List<Object>>();
         for (int i = 0; i < nChannel; i++) {
@@ -198,19 +195,13 @@ public class Trace implements TraceDataElement {
         if (!"".equals(contextRef)) {
             this.attributesMap.put("contextRef", contextRef);
         }
-        ;
-    }
-
-    // used in processing the single, double difference trace prefix notations
-    private TracePrefix getLastPrefixOf(final String channelName) {
-        return this.lastPrefixMap.get(channelName);
     }
 
     /*
      * This method process the Trace Sample data to compute the absolute value after processing any prefix if uesd.
      */
     private void processAndStoreChannelValue(final String channelName, final String channelValue, final Channel.ChannelType channelType, final int traceIndex,
-            final HashMap<String, Object> variableValueMap, Object previousDoubleDiffVal) throws InkMLException {
+            final Map<String, Object> variableValueMap, Object previousDoubleDiffVal) throws InkMLException {
         int mCharPos;
         Object chnVal;
         if ((mCharPos = channelValue.indexOf('!')) >= 0) {
@@ -1279,7 +1270,7 @@ public class Trace implements TraceDataElement {
         }
 
         final TraceFormat tf = this.associatedContext.getTraceFormat();
-        final ArrayList<Channel> channelList = tf.getChannelList();
+        final List<Channel> channelList = tf.getChannelList();
         final int nChannel = channelList.size();
         final String[] channelNames = new String[nChannel];
         final Channel.ChannelType[] channelTypes = new Channel.ChannelType[nChannel];
@@ -1289,11 +1280,7 @@ public class Trace implements TraceDataElement {
             final String channelName = chn.getName();
             channelNames[i] = channelName;
             channelTypes[i] = chn.getChannelType();
-            if (null != this.priorReferredTrace) {
-                this.lastPrefixMap.put(channelName, this.priorReferredTrace.getLastPrefixOf(channelName));
-            } else {
-                this.lastPrefixMap.put(channelName, TracePrefix.NONE);
-            }
+            this.lastPrefixMap.put(channelName, TracePrefix.NONE);
 
             // set the intial 'Vchn' (eg. vx and vy) values to 0 by checking the Channel list
             // 'Vchn' value is the value used in computing the effective diference value -
@@ -1397,7 +1384,7 @@ public class Trace implements TraceDataElement {
      * 
      * @return attributes map
      */
-    public HashMap<String, String> getAttributesMap() {
+    public Map<String, String> getAttributesMap() {
         return this.attributesMap;
     }
 

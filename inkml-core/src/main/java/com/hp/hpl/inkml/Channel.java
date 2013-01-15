@@ -25,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
  * @version 0.5.0 Creation date : 7-May-2007
  */
 
-public class Channel implements InkElement {
+public final class Channel implements InkElement {
     private final HashMap<String, String> attributesMap = new HashMap<String, String>();
 
     /**
@@ -80,6 +80,7 @@ public class Channel implements InkElement {
      * @throws InkMLException
      */
     public Channel(final String name, final String id, final ChannelType type, final String min, final String max, final String units, final OrientationType orientation, final String respectToUri) {
+        super();
         this.attributesMap.put("name", name);
         this.attributesMap.put("id", id);
         this.attributesMap.put("type", type.toString());
@@ -99,6 +100,7 @@ public class Channel implements InkElement {
      * @param type The Channel Type
      */
     public Channel(final String name, final ChannelType type) {
+        super();
         this.attributesMap.put("name", name);
         this.attributesMap.put("type", type.toString());
         this.attributesMap.put("orientation", OrientationType.POSITIVE.toString());
@@ -110,6 +112,7 @@ public class Channel implements InkElement {
      * @param name name of the Channel.
      */
     public Channel(final String name) {
+        super();
         this.attributesMap.put("name", name);
     }
 

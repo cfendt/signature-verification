@@ -8,7 +8,7 @@ package org.thoughtworks.signatureverification.main.utils;
 
 import org.thoughtworks.signatureverification.main.ui.MainWindow;
 
-public class Main {
+public final class Main {
 
     public void startApp() throws Exception {
         if (new SplashWindow().start() == 0) {

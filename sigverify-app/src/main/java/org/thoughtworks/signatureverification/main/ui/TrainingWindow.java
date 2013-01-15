@@ -41,7 +41,7 @@ import org.thoughtworks.signatureverification.MessageDigestCalculator;
 import org.thoughtworks.signatureverification.SignatureVerificationConstants;
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
-public class TrainingWindow extends JFrame {
+public final class TrainingWindow extends JFrame {
 
     /** Class serial number */
     private static final long serialVersionUID = 2304013309153514467L;
@@ -79,7 +79,11 @@ public class TrainingWindow extends JFrame {
     private final MessageDigestCalculator messageDigestCalculator;
     private final Enroll enroll;
 
+    /**
+     * Constructor
+     */
     public TrainingWindow() {
+        super();
         this.curPoint = new Point();
         this.prevPoint = new Point();
         this.enroll = new Enroll();

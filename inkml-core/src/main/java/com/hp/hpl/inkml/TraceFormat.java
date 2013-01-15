@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
  * @version 0.5.0 Creation date : 6-May-2007
  */
 
-public class TraceFormat implements ContextElement {
+public final class TraceFormat implements InkElement {
     private String id = "";
     private String href = "";
     // Arrylist to hold the all child elements (both regular and intermittend chennales together)

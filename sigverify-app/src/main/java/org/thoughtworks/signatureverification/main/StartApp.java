@@ -10,7 +10,7 @@ package org.thoughtworks.signatureverification.main;
 
 import org.thoughtworks.signatureverification.main.utils.Main;
 
-public class StartApp {
+public final class StartApp {
     public static void main(final String[] args) {
         final Main myMain = new Main();
         try {

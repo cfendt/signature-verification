@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
-public class DataIO {
+public final class DataIO {
 
     public static SignatureData readData(final String folderName, final String fileName) throws IOException {
         final FileInputStream ip = new FileInputStream(folderName + File.separatorChar + fileName);

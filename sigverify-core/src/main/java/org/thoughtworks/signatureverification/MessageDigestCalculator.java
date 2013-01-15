@@ -19,7 +19,7 @@ import java.util.Scanner;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class MessageDigestCalculator {
+public final class MessageDigestCalculator {
 
     /**
      * Constructor

@@ -37,7 +37,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class SettingsWindow extends JFrame {
+public final class SettingsWindow extends JFrame {
 
     /** Class serial number */
     private static final long serialVersionUID = 4132624048953737305L;
@@ -71,7 +71,11 @@ public class SettingsWindow extends JFrame {
     private double threshold = 0.90;
     private double lNF = 1.0;
 
+    /**
+     * Constructor
+     */
     public SettingsWindow() {
+        super();
         this.initComponents();
     }
 

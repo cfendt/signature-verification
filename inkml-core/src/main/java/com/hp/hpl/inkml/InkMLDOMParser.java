@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.xml.XMLConstants;
@@ -44,11 +45,11 @@ import org.xml.sax.SAXParseException;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0
  */
-public class InkMLDOMParser implements ErrorHandler {
+public final class InkMLDOMParser implements ErrorHandler {
     private Document inkmlDOMDocument;
     private final InkMLProcessor inkMLProcessor;
 
-    private static Logger LOG = Logger.getLogger(InkMLDOMParser.class.getName());
+    private static final Logger LOG = Logger.getLogger(InkMLDOMParser.class.getName());
 
     /**
      * Constructor
@@ -126,8 +127,8 @@ public class InkMLDOMParser implements ErrorHandler {
 
             context.deriveContextualChildrenData(ink.getDefinitions(), ink.getCurrentContext());
 
-            final ArrayList<Ink.contextChangeStatus> ctxChanges = ink.getContextChanges(context);
-            if (0 == ctxChanges.size()) {
+            final List<Ink.contextChangeStatus> ctxChanges = ink.getContextChanges(context);
+            if (ctxChanges.isEmpty()) {
                 // no context change occured. Ignore this context element
                 return;
             }

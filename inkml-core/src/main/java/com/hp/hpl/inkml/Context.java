@@ -16,6 +16,7 @@ package com.hp.hpl.inkml;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -27,10 +28,10 @@ import java.util.logging.Logger;
  * @version 0.5.0 Creation date : 8-May-2007
  */
 
-public class Context implements InkElement, Cloneable {
+public final class Context implements InkElement, Cloneable {
 
-    private HashMap<String, String> attributesMap;
-    private ArrayList<ContextElement> contextElementList;
+    private Map<String, String> attributesMap;
+    private List<InkElement> contextElementList;
     private Brush brush;
     private TraceFormat traceFormat;
     private InkSource inkSource;
@@ -47,7 +48,7 @@ public class Context implements InkElement, Cloneable {
     public Context() {
         super();
         this.attributesMap = new HashMap<String, String>();
-        this.contextElementList = new ArrayList<ContextElement>();
+        this.contextElementList = new ArrayList<InkElement>();
     }
 
     /**
@@ -408,7 +409,7 @@ public class Context implements InkElement, Cloneable {
      * 
      * @param ctxChild
      */
-    public void addToContextElementList(final ContextElement ctxChild) {
+    public void addToContextElementList(final InkElement ctxChild) {
         this.contextElementList.add(ctxChild);
     }
 
@@ -464,10 +465,9 @@ public class Context implements InkElement, Cloneable {
         Context.logger.finer("CTX child List size: " + nChildren);
         if (0 != nChildren) {
             String type;
-            ContextElement child;
-            final Iterator<ContextElement> iterator = this.contextElementList.iterator();
+            final Iterator<InkElement> iterator = this.contextElementList.iterator();
             while (iterator.hasNext()) {
-                child = iterator.next();
+                final InkElement child = iterator.next();
                 type = child.getInkElementType();
                 if ("Brush".equals(type)) {
                     Context.logger.finer("CTX Brush child");
@@ -556,10 +556,10 @@ public class Context implements InkElement, Cloneable {
         }
         final int size = this.contextElementList.size();
         if (size != 0) {
-            elementStrBuff.append(">");
-            final Iterator<ContextElement> iterator = this.contextElementList.iterator();
+            elementStrBuff.append('>');
+            final Iterator<InkElement> iterator = this.contextElementList.iterator();
             while (iterator.hasNext()) {
-                final ContextElement child = iterator.next();
+                final InkElement child = iterator.next();
                 elementStrBuff.append(child.toInkML());
             }
             elementStrBuff.append("</context>");
@@ -578,9 +578,9 @@ public class Context implements InkElement, Cloneable {
         if (size != 0) {
             writer.writeStartTag("context", this.attributesMap);
             writer.incrementTagLevel();
-            final Iterator<ContextElement> iterator = this.contextElementList.iterator();
+            final Iterator<InkElement> iterator = this.contextElementList.iterator();
             while (iterator.hasNext()) {
-                final ContextElement child = iterator.next();
+                final InkElement child = iterator.next();
                 child.writeXML(writer);
             }
             writer.decrementTagLevel();

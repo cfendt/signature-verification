@@ -30,24 +30,24 @@ public interface TraceDataElement extends InkElement {
      * @return the selected traceData
      * @throws InkMLException
      */
-    public TraceDataElement getSelectedTraceDataByRange(final String from, final String to) throws InkMLException;
+    TraceDataElement getSelectedTraceDataByRange(final String from, final String to) throws InkMLException;
 
     /**
      * This method assigns the Context associated with the traceData.
      * 
      * @param associatedContext the Context object to be associated with the traceData
      */
-    public void setAssociatedContext(final Context associatedContext);
+    void setAssociatedContext(final Context associatedContext);
 
     /**
      * Method to generate the InkML markup of the traceData element as string
      */
     @Override
-    public String toInkML();
+    String toInkML();
 
     /**
      * Method to write the InkML markup of the traceData element in to file or other output streams
      */
     @Override
-    public void writeXML(final InkMLWriter writer);
+    void writeXML(final InkMLWriter writer);
 }

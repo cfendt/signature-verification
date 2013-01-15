@@ -14,6 +14,7 @@ package com.hp.hpl.inkml;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -22,11 +23,11 @@ import java.util.Set;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0
  */
-public class Mapping implements ContextElement {
+public final class Mapping implements InkElement {
     private String id = "";
     private String type = "";
-    private final HashMap<String, Double> channelFactorMap;
-    private final HashMap<String, String> bindVarsMap;
+    private final Map<String, Double> channelFactorMap;
+    private final Map<String, String> bindVarsMap;
     private String mappingRef;
 
     /**
@@ -104,7 +105,7 @@ public class Mapping implements ContextElement {
             return false;
         }
         final boolean isEqual = true;
-        if (this.channelFactorMap.size() == 0 && 0 == mapping.channelFactorMap.size()) {
+        if (this.channelFactorMap.isEmpty() && mapping.channelFactorMap.isEmpty()) {
             return true;
         }
         if (this.channelFactorMap.size() != mapping.channelFactorMap.size()) {

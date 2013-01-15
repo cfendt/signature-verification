@@ -21,10 +21,10 @@ import java.util.logging.Logger;
  * @version 0.5.0 Creation date : 19-May-2007
  */
 
-public class Timestamp implements ContextElement {
+public final class Timestamp implements InkElement {
     // @@@ Note: Implementation of this class will be provided later @@@
     private String id = "";
-    private static Logger logger = Logger.getLogger(Timestamp.class.getName());
+    private static final Logger LOG = Logger.getLogger(Timestamp.class.getName());
 
     /**
      * This method gives the "id" attribute value of <timestamp> element.
@@ -68,7 +68,7 @@ public class Timestamp implements ContextElement {
      */
     @Override
     public String toInkML() {
-        Timestamp.logger.warning("The timestamp.toInkML method not implemented.");
+        Timestamp.LOG.warning("The timestamp.toInkML method not implemented.");
         return "";
     }
 
@@ -79,7 +79,7 @@ public class Timestamp implements ContextElement {
      */
     @Override
     public void writeXML(final InkMLWriter writer) {
-        Timestamp.logger.warning("The timestamp.writeXML method not implemented.");
+        Timestamp.LOG.warning("The timestamp.writeXML method not implemented.");
         return;
     }
 
@@ -89,7 +89,7 @@ public class Timestamp implements ContextElement {
      * @param source
      */
     public void override(final Timestamp source) {
-        Timestamp.logger.warning("The timestamp.override method not implemented.");
+        Timestamp.LOG.warning("The timestamp.override method not implemented.");
         return;
     }
 }

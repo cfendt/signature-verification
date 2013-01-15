@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -28,9 +29,9 @@ import java.util.logging.Logger;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0 Create Date: 27-July-2007
  */
-public class InkMLProcessor {
+public final class InkMLProcessor {
     // Create the listener list
-    private final ArrayList<InkMLEventListener> listenerList = new ArrayList<InkMLEventListener>();
+    private final List<InkMLEventListener> listenerList = new ArrayList<InkMLEventListener>();
     private Ink ink;
     // private InkMLProcessorConfig config; -- will be used while implementing Factory for Parser creation etc.
     // private String defaultParser="com.hp.hpl.inkml.InkMLDOMParser"; -- will be used while implementing Factory for Parser creation etc.
@@ -106,9 +107,9 @@ public class InkMLProcessor {
      * @see #addInkMLEventListener(InkMLEventListener)
      * @see Ink.contextChangeStatus
      */
-    public void notifyContextChanged(final Context context, final ArrayList<Ink.contextChangeStatus> ctxChanges) {
+    public void notifyContextChanged(final Context context, final List<Ink.contextChangeStatus> ctxChanges) {
         InkMLProcessor.LOG.finer("To notify - context changed");
-        if (0 == this.listenerList.size()) {
+        if (this.listenerList.isEmpty()) {
             return;
         }
         if (0 != ctxChanges.size()) { // some context change occured

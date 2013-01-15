@@ -26,12 +26,12 @@ public interface InkElement extends InkMLSerializer {
      * 
      * @return class-name string of the implementing class
      */
-    public String getInkElementType();
+    String getInkElementType();
 
     /**
      * This method provides 'id' attribute value of the InkML element.
      * 
      * @return 'id' attribute value String
      */
-    public String getId();
+    String getId();
 }

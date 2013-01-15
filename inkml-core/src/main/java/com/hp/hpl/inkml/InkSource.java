@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
  * @version 0.5.0 Creation date : 4 May 2007
  */
 
-public class InkSource implements ContextElement {
+public final class InkSource implements InkElement {
     private HashMap<String, String> attributesMap;
     private TraceFormat traceFormat;
     private SampleRate sampleRate;
@@ -36,7 +36,7 @@ public class InkSource implements ContextElement {
     private Latency latency;
 
     // logger
-    private static Logger logger = Logger.getLogger(InkSource.class.getName());
+    private static final Logger LOG = Logger.getLogger(InkSource.class.getName());
 
     /**
      * Constructor to create an InkSource with traceFormat initiliazed with default traceformat.
@@ -153,7 +153,7 @@ public class InkSource implements ContextElement {
         if (inkSource == null) {
             return false;
         }
-        InkSource.logger.warning("The equals method implementtaion is not provided.\n" + "It returns 'true' for any two not null objects.");
+        InkSource.LOG.warning("The equals method implementtaion is not provided.\n" + "It returns 'true' for any two not null objects.");
         return true;
         // if(inkSource == null)
         // return false;

@@ -21,7 +21,7 @@ import java.util.HashMap;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0 Creation date : 23-May-2007
  */
-public class Annotation implements InkMLSerializer {
+public final class Annotation implements InkMLSerializer {
     /**
      * @Attribute
      */
@@ -36,6 +36,7 @@ public class Annotation implements InkMLSerializer {
      * appropriate setter methods.
      */
     Annotation() {
+        super();
         this.otherAttributesMap = new HashMap<String, String>();
     }
 

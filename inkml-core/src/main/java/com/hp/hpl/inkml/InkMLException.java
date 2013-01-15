@@ -18,7 +18,7 @@ package com.hp.hpl.inkml;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0 Creation date : 7-May-2007
  */
-public class InkMLException extends Exception {
+public final class InkMLException extends Exception {
 
     /**
      * Randomly generated static SerialVerison ID. It is recommanded to define this as the Exception class is serializable.

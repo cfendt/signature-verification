@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0 Creation date : 11-May-2007
  */
-public class Brush implements ContextElement, Cloneable {
+public final class Brush implements InkElement, Cloneable {
     private String id = "";
     private String brushRef = "";
     // reference to the associated annotationXML object if defined in the InkML data.
@@ -52,6 +52,7 @@ public class Brush implements ContextElement, Cloneable {
      * @see #setBrushRef(String) methods to set property.
      */
     public Brush(final String id) {
+        super();
         if (null != id) {
             this.id = id;
         } else {
@@ -65,6 +66,7 @@ public class Brush implements ContextElement, Cloneable {
      * @param brush
      */
     public Brush(final Brush brush) {
+        super();
         final AnnotationXML aXML = brush.getAnnotationXML();
         if (aXML != null) {
             this.annotationXML = new AnnotationXML();

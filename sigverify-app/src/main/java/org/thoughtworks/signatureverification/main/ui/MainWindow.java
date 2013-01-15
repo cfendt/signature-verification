@@ -30,7 +30,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
-public class MainWindow extends JFrame {
+public final class MainWindow extends JFrame {
 
     /** Serial number of the class */
     private static final long serialVersionUID = 661331453151094674L;
@@ -51,7 +51,13 @@ public class MainWindow extends JFrame {
     private ImageIcon titleImage;
     private JLabel titleImageLabel;
 
+    /**
+     * Constructor
+     * 
+     * @throws Exception
+     */
     public MainWindow() throws Exception {
+        super();
         this.setLNF();
         this.initComponents();
     }

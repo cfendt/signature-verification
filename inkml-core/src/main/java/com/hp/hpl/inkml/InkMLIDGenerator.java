@@ -20,7 +20,7 @@ package com.hp.hpl.inkml;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0
  */
-public class InkMLIDGenerator {
+public final class InkMLIDGenerator {
     static long idForContext = 0;
     static long idForBrush = 0;
     static long idForTF = 0;

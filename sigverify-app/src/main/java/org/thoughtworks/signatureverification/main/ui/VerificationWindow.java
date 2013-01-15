@@ -42,7 +42,7 @@ import org.thoughtworks.signatureverification.SignatureVerificationConstants;
 import org.thoughtworks.signatureverification.Verification;
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
-public class VerificationWindow extends JFrame {
+public final class VerificationWindow extends JFrame {
 
     /** Class serial number */
     private static final long serialVersionUID = -7060299436760778101L;
@@ -79,7 +79,13 @@ public class VerificationWindow extends JFrame {
     private boolean canCapture = false;
     private Enroll enroll;
 
+    /**
+     * Constructor
+     * 
+     * @throws FileNotFoundException
+     */
     public VerificationWindow() throws FileNotFoundException {
+        super();
         this.curPoint = new Point();
         this.prevPoint = new Point();
         this.initComponents();

@@ -22,7 +22,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -33,7 +32,7 @@ import java.util.logging.Logger;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0
  */
-public class InkMLWriter {
+public final class InkMLWriter {
 
     // setting tab space size to 4 spaces
     private String tabSpace = "    ";
@@ -132,7 +131,7 @@ public class InkMLWriter {
      * @param tagName name the tag
      * @param attrMap the map of attributeName ==> attributeValue
      */
-    public void writeStartTag(final String tagName, final HashMap<String, String> attrMap) {
+    public void writeStartTag(final String tagName, final Map<String, String> attrMap) {
         // print space for intentation
         for (int i = 0; i < this.tagLevel; i++) {
             this.out.write(this.tabSpace);
@@ -195,7 +194,7 @@ public class InkMLWriter {
      * @param tagName name the tag
      * @param attributesMap the map of attributeName ==> attributeValue
      */
-    public void writeEmptyStartTag(final String tagName, final HashMap<String, String> attributesMap) {
+    public void writeEmptyStartTag(final String tagName, final Map<String, String> attributesMap) {
         // print space for intentation
         for (int i = 0; i < this.tagLevel; i++) {
             this.out.write(this.tabSpace);
@@ -213,7 +212,7 @@ public class InkMLWriter {
      * @param attributesMap
      * @return the EmtpyStartTag XML data
      */
-    public String getEmptyStartTagXML(final String tagName, final HashMap<String, String> attributesMap) {
+    public String getEmptyStartTagXML(final String tagName, final Map<String, String> attributesMap) {
 
         final StringWriter stringWriter = new StringWriter();
         // print space for intentation
@@ -286,7 +285,7 @@ public class InkMLWriter {
         }
     }
 
-    private void writeBaseStartTag(final String tagName, final HashMap<String, String> attrs, final Writer out) {
+    private void writeBaseStartTag(final String tagName, final Map<String, String> attrs, final Writer out) {
         try {
             if (null == out) {
                 InkMLWriter.logger.severe("No writer assigned. Can not write InkML data");

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @version 0.5.0 Creation date : 12th May 2007
  */
 
-public class TraceGroup implements TraceDataElement {
+public final class TraceGroup implements TraceDataElement {
 
     // meber data for the corresponding attributes of the <traceGroup> InkML Element
     private String id = "";
@@ -97,7 +97,6 @@ public class TraceGroup implements TraceDataElement {
     @Override
     public void setAssociatedContext(final Context associatedContext) {
         this.associatedContext = associatedContext;
-
     }
 
     /**
@@ -312,7 +311,8 @@ public class TraceGroup implements TraceDataElement {
                 // intermediate element(s)
                 final int difference = toArr[0] - fromArr[0];
                 final int nIntermitElmnts = difference - 1;
-                for (int k = fromArr[0], j = 0; j < nIntermitElmnts; j++) {
+                final int k = fromArr[0];
+                for (int j = 0; j < nIntermitElmnts; ++j) {
                     traceDataElement.addToTraceData(this.traceDataList.get(k + j));
                 }
 
@@ -500,7 +500,7 @@ public class TraceGroup implements TraceDataElement {
         }
         final int size = this.traceDataList.size();
         if (size != 0) {
-            traceGroupStrBuff.append(">");
+            traceGroupStrBuff.append('>');
             final Iterator<TraceDataElement> iterator = this.traceDataList.iterator();
             while (iterator.hasNext()) {
                 final TraceDataElement child = iterator.next();
@@ -542,8 +542,7 @@ public class TraceGroup implements TraceDataElement {
         if (0 == attrs.size()) {
             attrs = null;
         }
-        final int size = this.traceDataList.size();
-        if (size != 0) {
+        if (!this.traceDataList.isEmpty()) {
             writer.writeStartTag("traceGroup", attrs);
             writer.incrementTagLevel();
             final Iterator<TraceDataElement> iterator = this.traceDataList.iterator();

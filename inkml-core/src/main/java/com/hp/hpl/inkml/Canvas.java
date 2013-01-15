@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0 Creation date : 11-May-2007
  */
-public class Canvas implements ContextElement {
+public final class Canvas implements InkElement {
     private HashMap<String, String> attributesMap;
     private String id = "";
     private String traceFormatRef = "";

@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
-public class ER2 {
+public final class ER2 {
 
     private double xrBarSourceData;
     private double yrBarSourceData;

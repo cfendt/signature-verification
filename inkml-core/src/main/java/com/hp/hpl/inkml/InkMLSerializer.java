@@ -26,12 +26,12 @@ public interface InkMLSerializer {
      * 
      * @return InkML markup string of the InkML data object
      */
-    public String toInkML();
+    String toInkML();
 
     /**
      * This method uses the given writer in the parameter and writes the markup - of this InkML element in to a file.
      * 
      * @param writer the writer instance to write to a file
      */
-    public void writeXML(final InkMLWriter writer);
+    void writeXML(final InkMLWriter writer);
 }

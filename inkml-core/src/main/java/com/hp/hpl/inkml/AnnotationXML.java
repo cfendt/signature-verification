@@ -39,6 +39,7 @@ public class AnnotationXML implements InkMLSerializer {
      * Constructor to give an Empty annotation Object. Then the attributes and content XML element would be created using using appropriate setter methods.
      */
     AnnotationXML() {
+        super();
         this.otherAttributesMap = new HashMap<String, String>();
         this.propertyElementsMap = new HashMap<String, String>();
     }

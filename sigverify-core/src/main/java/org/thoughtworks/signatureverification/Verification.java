@@ -15,7 +15,7 @@ import org.thoughtworks.signatureverification.bean.SignatureData;
 import org.thoughtworks.signatureverification.dtw.DynamicTimeWarping;
 import org.thoughtworks.signatureverification.regression.ER2;
 
-public class Verification {
+public final class Verification {
 
     /**
      * Verifies 2 signatures

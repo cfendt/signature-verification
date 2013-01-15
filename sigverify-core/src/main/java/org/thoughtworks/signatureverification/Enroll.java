@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
-public class Enroll {
+public final class Enroll {
     public SignatureData enrollSignature(final SignatureData signatureData) {
         final LinkedList<Double> yList = signatureData.getY();
         final LinkedList<Double> xList = signatureData.getX();

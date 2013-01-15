@@ -8,18 +8,20 @@ package org.thoughtworks.signatureverification.bean;
 
 import java.util.LinkedList;
 
-public class SignatureData {
+public final class SignatureData {
     LinkedList<Double> x;
     LinkedList<Double> y;
     int num;
     int penUp;
 
     public SignatureData() {
+        super();
         this.x = new LinkedList<Double>();
         this.y = new LinkedList<Double>();
     }
 
     public SignatureData(final LinkedList<Double> xArg, final LinkedList<Double> yArg, final int penUp) {
+        super();
         this.x = xArg;
         this.y = yArg;
         this.num = xArg.size();

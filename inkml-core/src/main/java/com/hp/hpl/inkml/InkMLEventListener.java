@@ -24,68 +24,68 @@ public interface InkMLEventListener {
      * 
      * @param brush
      */
-    public void brushChangedEvent(final Brush brush);
+    void brushChangedEvent(final Brush brush);
 
     /**
      * This method is invoked when a traceFormat change occurs.
      * 
      * @param traceFormat
      */
-    public void traceFormatChangedEvent(final TraceFormat traceFormat);
+    void traceFormatChangedEvent(final TraceFormat traceFormat);
 
     /**
      * This method is invoked when an canvas change occurs.
      * 
      * @param canvas
      */
-    public void canvasChangedEvent(final Canvas canvas);
+    void canvasChangedEvent(final Canvas canvas);
 
     /**
      * This method is invoked when a canvasTransform change occurs.
      * 
      * @param canvasTransform
      */
-    public void canvasTransformChangedEvent(final CanvasTransform canvasTransform);
+    void canvasTransformChangedEvent(final CanvasTransform canvasTransform);
 
     /**
      * This method is invoked when an inkSource change occurs.
      * 
      * @param inkSource
      */
-    public void inkSourceChangedEvent(final InkSource inkSource);
+    void inkSourceChangedEvent(final InkSource inkSource);
 
     /**
      * This method is invoked when a timestamp change occurs.
      * 
      * @param timestamp
      */
-    public void timestampChangedEvent(final Timestamp timestamp);
+    void timestampChangedEvent(final Timestamp timestamp);
 
     /**
      * This method is invoked when a context change occurs.
      * 
      * @param context
      */
-    public void contextChangedEvent(final Context context);
+    void contextChangedEvent(final Context context);
 
     /**
      * This method is invoked when a trace received.
      * 
      * @param trace
      */
-    public void traceReceivedEvent(final Trace trace);
+    void traceReceivedEvent(final Trace trace);
 
     /**
      * This method is invoked when a traceView received.
      * 
      * @param traceView
      */
-    public void traceViewReceivedEvent(final TraceView traceView);
+    void traceViewReceivedEvent(final TraceView traceView);
 
     /**
      * This method is invoked when a traceGroup received.
      * 
      * @param traceGroup
      */
-    public void traceGroupReceivedEvent(final TraceGroup traceGroup);
+    void traceGroupReceivedEvent(final TraceGroup traceGroup);
 }

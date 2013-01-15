@@ -26,10 +26,6 @@ public class Timestamp implements ContextElement {
     private String id = "";
     private static Logger logger = Logger.getLogger(Timestamp.class.getName());
 
-    public Timestamp() {
-        super();
-    }
-
     /**
      * This method gives the "id" attribute value of <timestamp> element.
      * 

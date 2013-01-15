@@ -20,6 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * This class models the <ink> element (root element) of InkML document.
  * 
@@ -403,7 +405,7 @@ public class Ink {
             throw new InkMLException("Ink:writeXML, InkMLWriter object not available (null)!!!");
         }
         final LinkedHashMap<String, String> attrMap = new LinkedHashMap<String, String>();
-        if (!"".equals(this.docID)) {
+        if (StringUtils.isNotEmpty(this.docID)) {
             attrMap.put("documentID", this.docID);
         }
         attrMap.put("xmlns", Ink.INKML_NAMESPACE);
@@ -430,7 +432,7 @@ public class Ink {
     public String toInkML() {
         final StringBuffer xml = new StringBuffer();
         final LinkedHashMap<String, String> attrMap = new LinkedHashMap<String, String>();
-        if (!"".equals(this.docID)) {
+        if (StringUtils.isNotEmpty(this.docID)) {
             attrMap.put("documentID", this.docID);
         }
         xml.append("<ink xmlns=\"" + Ink.INKML_NAMESPACE + "\">");

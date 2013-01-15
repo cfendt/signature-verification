@@ -21,7 +21,7 @@ import java.util.HashMap;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0 Creation date : 23-May-2007
  */
-public class Annotation implements AnnotationElement {
+public class Annotation implements InkMLSerializer {
     /**
      * @Attribute
      */

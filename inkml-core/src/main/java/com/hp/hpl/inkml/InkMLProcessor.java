@@ -39,14 +39,6 @@ public class InkMLProcessor {
     private static final Logger LOG = Logger.getLogger(InkMLProcessor.class.getName());
 
     /**
-     * Constructor of the InkMLProcessor. In future, it would load the configuration XML file, config.xml and create InkMLProcessorConfig object which would be
-     * useful for configuring the other components such as InkMLParser, InkMLWriter and etc.
-     */
-    public InkMLProcessor() {
-        super();
-    }
-
-    /**
      * This methods allows observer classes to register to listen for InkML events.
      * 
      * @param listener
@@ -72,9 +64,8 @@ public class InkMLProcessor {
      * @throws InkMLException
      */
     public void parseInkMLFile(final String inkmlFileName) throws InkMLException {
-        // since the inkml file has <ink> ... </ink> data, it is a new Ink Session, create a blank Ink data object.
         this.ink = new Ink();
-        final InkMLParser parser = new InkMLDOMParser(this); // hard coded :-(, later will change to Factory implementation
+        final InkMLDOMParser parser = new InkMLDOMParser(this);
         parser.parseInkMLFile(inkmlFileName);
     }
 
@@ -85,9 +76,8 @@ public class InkMLProcessor {
      * @throws InkMLException
      */
     public void parseInkMLFile(final InputStream inkmlFile) throws InkMLException {
-        // since the inkml file has <ink> ... </ink> data, it is a new Ink Session, create a blank Ink data object.
         this.ink = new Ink();
-        final InkMLParser parser = new InkMLDOMParser(this); // hard coded :-(, later will change to Factory implementation
+        final InkMLDOMParser parser = new InkMLDOMParser(this);
         parser.parseInkMLFile(inkmlFile);
     }
 
@@ -104,8 +94,7 @@ public class InkMLProcessor {
         if (this.ink == null) {
             throw new InkMLException("ParseInk operation terminated. Reason: No active Ink session available.");
         }
-        // InkMLParser parser = InkMLParserFactory.getInkMLParser(this.defaultParser); -- impln in future
-        final InkMLParser parser = new InkMLDOMParser(this); // hard coded :-(, later will change to Factory implementation
+        final InkMLDOMParser parser = new InkMLDOMParser(this);
         parser.parseInkMLString(inkmlString);
     }
 

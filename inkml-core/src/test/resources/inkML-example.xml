@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE ink>
-<ink xmlns="http://www.w3.org/2003/InkML" schemaLocation="http://www.w3.org/2003/InkML inkml.xsd">
+<ink xmlns="http://www.w3.org/2003/InkML">
     
     <trace>
       10 0, 9 14, 8 28, 7 42, 6 56, 6 70, 8 84, 8 98, 8 112, 9 126, 10 140,

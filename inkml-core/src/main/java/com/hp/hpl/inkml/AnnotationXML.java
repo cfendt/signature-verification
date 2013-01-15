@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * @version 0.5.0 Creation date : 4 May 2007
  */
 
-public class AnnotationXML implements AnnotationElement {
+public class AnnotationXML implements InkMLSerializer {
     private String type = "";
     private String encoding = "";
     private final HashMap<String, String> otherAttributesMap;

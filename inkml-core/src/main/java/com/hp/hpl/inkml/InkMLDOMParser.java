@@ -22,6 +22,7 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.io.IOUtils;
@@ -43,7 +44,7 @@ import org.xml.sax.SAXParseException;
  * @author Muthuselvam Selvaraj
  * @version 0.5.0
  */
-public class InkMLDOMParser implements InkMLParser, ErrorHandler {
+public class InkMLDOMParser implements ErrorHandler {
     private Document inkmlDOMDocument;
     private final InkMLProcessor inkMLProcessor;
 
@@ -873,7 +874,7 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
     }
 
     /** Factory pour les schemas */
-    private final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI); // NOPMD - not transient
+    private final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI); // NOPMD - not transient
 
     /**
      * Method to parse the InkML file identified by the inkmlFilename given in the parameter and creates data objects. It performs validation with schema. It
@@ -885,7 +886,6 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
      * @param inkmlFileName
      * @throws InkMLException
      */
-    @Override
     public void parseInkMLFile(final String inkmlFileName) throws InkMLException {
 
         // Get the DOM document object by parsing the InkML input file
@@ -910,7 +910,6 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
      * @param inkmlFileName
      * @throws InkMLException
      */
-    @Override
     public void parseInkMLFile(final InputStream inputStream) throws InkMLException {
 
         // Get the DOM document object by parsing the InkML input file
@@ -922,13 +921,12 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
             dbFactory.setIgnoringComments(true);
             dbFactory.setNamespaceAware(true);
             dbFactory.setIgnoringElementContentWhitespace(true);
+            dbFactory.setValidating(false);
             if (this.isSchemaValidationEnabled()) {
                 InkMLDOMParser.LOG.info("Validation using schema is enabled.");
-                dbFactory.setSchema(this.factory.newSchema(this.getClass().getResource("/schema/inkml.xsd")));
-                dbFactory.setValidating(true);
+                dbFactory.setSchema(this.schemaFactory.newSchema(new StreamSource(this.getClass().getResourceAsStream("/schema/inkml.xsd"))));
             } else {
                 InkMLDOMParser.LOG.info("Validation using schema is disabled.");
-                dbFactory.setValidating(false);
             }
             final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             dBuilder.setErrorHandler(this);
@@ -950,7 +948,7 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
      */
     private boolean isSchemaValidationEnabled() {
         // check the JVM parameter java -DschemaValidation={"true"|"false"}
-        boolean isSchemaValidationEnabled = false;
+        boolean isSchemaValidationEnabled = true;
         final String validationStatus = StringUtils.trimToEmpty(System.getProperty("com.hp.hpl.inkml.SchemaValidation"));
         if (StringUtils.isNotEmpty(validationStatus)) {
             if ("true".equalsIgnoreCase(validationStatus)) {
@@ -968,7 +966,6 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
      * @param inkmlStr String markup data
      * @throws InkMLException
      */
-    @Override
     public void parseInkMLString(final String inkmlStrParam) throws InkMLException {
         final String inkmlStr;
         if (inkmlStrParam.indexOf("ink") == -1) {

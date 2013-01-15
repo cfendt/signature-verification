@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 
 public final class Trace implements TraceDataElement {
     private final Map<String, String> attributesMap;
-    private LinkedHashMap<String, List<Object>> traceData;
+    private Map<String, List<Object>> traceData;
 
     /**
      * This is used to qulaify if the trace is a penDown which means created using the pen in contact of the writing surface. pen up trace - trace created while
@@ -113,7 +113,7 @@ public final class Trace implements TraceDataElement {
     private TraceGroup parentTraceGroup;
 
     // Create logger instance for logging
-    private static Logger logger = Logger.getLogger(Trace.class.getName());
+    private static final Logger LOG = Logger.getLogger(Trace.class.getName());
 
     /**
      * No argument constructor. It is being used to construct the 'trace' object that comes as the result of a 'traceView' selection operation.
@@ -148,11 +148,11 @@ public final class Trace implements TraceDataElement {
         final TraceFormat traceFormat = this.getAssociatedContext().getTraceFormat();
         final List<Channel> channelList = traceFormat.getChannelList();
         final int nChannel = channelList.size();
-        final LinkedHashMap<String, List<Object>> newTraceData = new LinkedHashMap<String, List<Object>>();
+        final Map<String, List<Object>> newTraceData = new LinkedHashMap<String, List<Object>>();
         for (int i = 0; i < nChannel; i++) {
             final Channel chn = channelList.get(i);
             final String channelName = chn.getName();
-            newTraceData.put(channelName, new ArrayList<Object>());
+            newTraceData.put(channelName, new ArrayList<Object>()); // NOPMD - peuplement
         }
         final Trace traceObject = new Trace();
         // To Do: add contextRef and brushRef
@@ -786,7 +786,7 @@ public final class Trace implements TraceDataElement {
      * 
      * @param newTraceData
      */
-    public void setTraceData(final LinkedHashMap<String, List<Object>> newTraceData) {
+    public void setTraceData(final Map<String, List<Object>> newTraceData) {
         this.traceData = newTraceData;
     }
 
@@ -809,7 +809,7 @@ public final class Trace implements TraceDataElement {
     public void setTraceData(final String channelName, final long[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Long(data[i]));
+            dataList.add(Long.valueOf(data[i]));
         }
         this.traceData.put(channelName, dataList);
     }
@@ -884,7 +884,7 @@ public final class Trace implements TraceDataElement {
     public void addToTraceData(final String channelName, final long[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Long(data[i]));
+            dataList.add(Long.valueOf(data[i]));
         }
         this.traceData.get(channelName).addAll(dataList);
     }
@@ -973,7 +973,7 @@ public final class Trace implements TraceDataElement {
     public void setChanneldataLong(final String channelName, final long[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Long(data[i]));
+            dataList.add(Long.valueOf(data[i]));
         }
         this.traceData.put(channelName, dataList);
     }
@@ -1004,7 +1004,7 @@ public final class Trace implements TraceDataElement {
     public void setChanneldataFloat(final String channelName, final float[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Float(data[i]));
+            dataList.add(Float.valueOf(data[i]));
         }
         this.traceData.put(channelName, dataList);
     }
@@ -1019,7 +1019,7 @@ public final class Trace implements TraceDataElement {
     public void setChanneldataDouble(final String channelName, final double[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Double(data[i]));
+            dataList.add(Double.valueOf(data[i]));
         }
         this.traceData.put(channelName, dataList);
     }
@@ -1047,7 +1047,7 @@ public final class Trace implements TraceDataElement {
     @Override
     public void setAssociatedContext(final Context associatedContext) {
         if (null == associatedContext) {
-            Trace.logger.fine("Trace::setAssociatedContext, the given parameter context is null");
+            Trace.LOG.fine("Trace::setAssociatedContext, the given parameter context is null");
             return;
         }
         this.associatedContext = new Context(associatedContext);
@@ -1151,7 +1151,7 @@ public final class Trace implements TraceDataElement {
         final List<Object> channelValues = this.traceData.get(channelName);
         for (int i = 0; i < channelValues.size(); i++) {
             final double oldValue = ((Number) channelValues.get(i)).doubleValue();
-            channelValues.set(i, new Double(oldValue * factor));
+            channelValues.set(i, Double.valueOf(oldValue * factor));
         }
     }
 
@@ -1160,7 +1160,7 @@ public final class Trace implements TraceDataElement {
      * 
      * @return the traceData map
      */
-    public LinkedHashMap<String, List<Object>> getTraceData() {
+    public Map<String, List<Object>> getTraceData() {
         return this.traceData;
     }
 
@@ -1226,7 +1226,7 @@ public final class Trace implements TraceDataElement {
                 continuationAttr = Continuation.valueOf(continution);
             }
         } catch (final IllegalArgumentException illArgExp) {
-            Trace.logger.severe("The value = " + continution + "is illegeal for the 'continution' attribute of trace element.");
+            Trace.LOG.severe("The value = " + continution + "is illegeal for the 'continution' attribute of trace element.");
         }
 
         final String priorRefStr = this.attributesMap.get("priorRef");
@@ -1237,7 +1237,7 @@ public final class Trace implements TraceDataElement {
             }
         } else {
             if (Continuation.begin == continuationAttr) {
-                Trace.logger.severe("Problem in the definition of tarce:" + this.toString() + "The continuation attribute is either 'begin' "
+                Trace.LOG.severe("Problem in the definition of tarce:" + this.toString() + "The continuation attribute is either 'begin' "
                         + ", but a value is given for 'priorRef' attribute. The priorRef value is ignored.");
             }
         }
@@ -1247,7 +1247,7 @@ public final class Trace implements TraceDataElement {
         if ("".equals(traceDataStr)) {
             return;
         }
-        Trace.logger.fine("Trace data read from XML Doc: " + traceDataStr);
+        Trace.LOG.fine("Trace data read from XML Doc: " + traceDataStr);
         traceDataStr = traceDataStr.trim();
         traceDataStr = traceDataStr.replace('\n', ' ');
         traceDataStr = this.replaceString(traceDataStr, "\'-", " \'-");
@@ -1261,7 +1261,7 @@ public final class Trace implements TraceDataElement {
         traceDataStr = this.replaceString(traceDataStr, "\"", " \"");
         traceDataStr = this.replaceString(traceDataStr, "\\*", " \\* ");
         traceDataStr = this.replaceString(traceDataStr, "!", " !");
-        Trace.logger.fine("Trace data after inserting required spaces for clarity: " + traceDataStr);
+        Trace.LOG.fine("Trace data after inserting required spaces for clarity: " + traceDataStr);
 
         final StringTokenizer st = new StringTokenizer(traceDataStr, ",");
         final int nTraceSamples = st.countTokens();
@@ -1375,7 +1375,7 @@ public final class Trace implements TraceDataElement {
                 }
             }
         } catch (final NumberFormatException e) {
-            Trace.logger.severe("Invalid value to min/max attribute of channel " + channelName);
+            Trace.LOG.severe("Invalid value to min/max attribute of channel " + channelName);
         }
     }
 
@@ -1407,11 +1407,11 @@ public final class Trace implements TraceDataElement {
      * Method to log trace data in console window
      */
     public void printTrace() {
-        Trace.logger.fine("<trace>");
+        Trace.LOG.fine("<trace>");
         final String[] arr = this.getTraceDataAsString();
         for (int i = 0; i < arr.length; i++) {
-            Trace.logger.fine(" " + arr[i]);
+            Trace.LOG.fine(" " + arr[i]);
         }
-        Trace.logger.fine("</trace>");
+        Trace.LOG.fine("</trace>");
     }
 }

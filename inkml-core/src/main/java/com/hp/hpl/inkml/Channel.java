@@ -483,7 +483,7 @@ public final class Channel implements InkElement {
             try {
                 ChannelType.valueOf(attrValue.toUpperCase());
             } catch (final Exception exp) {
-                throw new InkMLException("The type attribute of channel " + this.getName() + " is invalid. Given value is " + attrValue);
+                throw new InkMLException("The type attribute of channel " + this.getName() + " is invalid. Given value is " + attrValue, exp);
             }
         }
         this.attributesMap.put(attrName, attrValue);

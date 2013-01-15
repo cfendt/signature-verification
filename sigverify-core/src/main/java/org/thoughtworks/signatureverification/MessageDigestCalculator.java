@@ -21,13 +21,6 @@ import org.apache.commons.codec.binary.Base64;
 
 public final class MessageDigestCalculator {
 
-    /**
-     * Constructor
-     */
-    public MessageDigestCalculator() {
-        super();
-    }
-
     public byte[] computeDigest(final String folderName, final String fileName) throws NoSuchAlgorithmException, IOException {
         final InputStream ip = new FileInputStream(folderName + File.separatorChar + fileName);
         try {

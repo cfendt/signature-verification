@@ -44,17 +44,6 @@ public class AnnotationXML implements InkMLSerializer {
         this.propertyElementsMap = new HashMap<String, String>();
     }
 
-    private HashMap<String, String> getPropertyElementsMapFromHrefElement(final String href) throws InkMLException {
-        throw new InkMLException("Feature (AnnotationXML:getPropertyElementsMapFromHrefElement) is not implimented.");
-        // HashMap<String, String> valueMap = null;
-
-        // Implementation of this method will be provided later.
-        // Element hrefElement = Util.getAnnotationXMLRefElement(href);
-        // process the referred element to populate the value Map
-
-        // return valueMap;
-    }
-
     /**
      * This method returns the value of the attribute of the property defined in the {@code <annotationXML>} by means of a child element with tage Name as the
      * value in the parameter 'property'. **Note: This method is not yet implemented.
@@ -224,20 +213,6 @@ public class AnnotationXML implements InkMLSerializer {
      */
     public void setEncoding(final String value) {
         this.encoding = value;
-    }
-
-    /**
-     * method to copy the definitions from the another XML object, perhaps a tree of xml data which is identified by the parameter string as URI Note: this
-     * feature is not yet implemented
-     * 
-     * @param ref
-     */
-    public void addAllToPropertyMap(final String ref) {
-        try {
-            this.propertyElementsMap.putAll(this.getPropertyElementsMapFromHrefElement(ref));
-        } catch (final InkMLException e) {
-            AnnotationXML.logger.severe("Problem in binding 'href' attribute of " + "AnnotationXML data.\nReason: " + e.getMessage());
-        }
     }
 
     /**

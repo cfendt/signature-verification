@@ -88,7 +88,7 @@ public final class Mapping implements InkElement {
      */
 
     public void setChannelFactor(final String channelName, final double factor) {
-        this.channelFactorMap.put(channelName, new Double(factor));
+        this.channelFactorMap.put(channelName, Double.valueOf(factor));
     }
 
     /**
@@ -140,7 +140,7 @@ public final class Mapping implements InkElement {
          */
         String mappingElement = new String("<mapping ");
         final Set<String> keySet = this.bindVarsMap.keySet();
-        if (this.type.equalsIgnoreCase("mathml") && 0 != keySet.size()) {
+        if (this.type.equalsIgnoreCase("mathml") && !keySet.isEmpty()) {
             mappingElement += new String("type='mathml'>");
             final Iterator<String> keys = keySet.iterator();
             final String[] applyElements = new String[keySet.size()];
@@ -155,7 +155,7 @@ public final class Mapping implements InkElement {
                 mappingElement += "\n   " + bindElmnt;
 
                 // create an apply element
-                final String applyElement = new String("<apply>\n  <times/>\n  " + "<cn type='integer' >" + String.valueOf(timesFactor) + "</cn>\n  " + "<ci>" + var + "</ci>\n  </apply>");
+                final String applyElement = new String("<apply>\n  <times/>\n  " + "<cn type='integer' >" + Double.toString(timesFactor) + "</cn>\n  " + "<ci>" + var + "</ci>\n  </apply>");
                 applyElements[applyElmntsIdx++] = applyElement;
             }
             String mathElement = new String("<math xmlns ='http://www.w3.org/1998/Math/MathML'>\n  ");

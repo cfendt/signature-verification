@@ -107,24 +107,24 @@ public final class InkMLProcessor {
      * @see #addInkMLEventListener(InkMLEventListener)
      * @see Ink.contextChangeStatus
      */
-    public void notifyContextChanged(final Context context, final List<Ink.contextChangeStatus> ctxChanges) {
+    public void notifyContextChanged(final Context context, final List<Ink.ContextChangeStatus> ctxChanges) {
         InkMLProcessor.LOG.finer("To notify - context changed");
         if (this.listenerList.isEmpty()) {
             return;
         }
-        if (0 != ctxChanges.size()) { // some context change occured
+        if (!ctxChanges.isEmpty()) { // some context change occured
             for (int i = 0; i < ctxChanges.size(); i++) {
-                if (ctxChanges.get(i) == Ink.contextChangeStatus.isBrushChanged) {
+                if (ctxChanges.get(i) == Ink.ContextChangeStatus.isBrushChanged) {
                     this.notifyBrushChangedEvent(context.getBrush());
-                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isCanvasChanged) {
+                } else if (ctxChanges.get(i) == Ink.ContextChangeStatus.isCanvasChanged) {
                     this.notifyCanvasChangedEvent(context.getCanvas());
-                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isCanvasTransformChanged) {
+                } else if (ctxChanges.get(i) == Ink.ContextChangeStatus.isCanvasTransformChanged) {
                     this.notifyCanvasTransformChangedEvent(context.getCanvasTransform());
-                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isInkSourceChanged) {
+                } else if (ctxChanges.get(i) == Ink.ContextChangeStatus.isInkSourceChanged) {
                     this.notifyInkSourceChangedEvent(context.getInkSource());
-                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isTimestampChanged) {
+                } else if (ctxChanges.get(i) == Ink.ContextChangeStatus.isTimestampChanged) {
                     this.notifyTimestampChangedEvent(context.getTimestamp());
-                } else if (ctxChanges.get(i) == Ink.contextChangeStatus.isTraceFormatChanged) {
+                } else if (ctxChanges.get(i) == Ink.ContextChangeStatus.isTraceFormatChanged) {
                     this.notifyTraceFormatChangedEvent(context.getTraceFormat());
                 }
             }

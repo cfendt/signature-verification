@@ -40,7 +40,7 @@ public final class Ink {
      * This indicate what kind of context change happened. The change in context happens wheneither or many of the following happens, brush, traceFormat,
      * inkSource, canvas, canvasTransform, timestamp. Default value none which is used to indicate no change in context.
      */
-    public enum contextChangeStatus {
+    public enum ContextChangeStatus {
         /**
          * Brush is changed
          */
@@ -97,8 +97,8 @@ public final class Ink {
      * @param context Context object to be compared with.
      * @throws InkMLException
      */
-    public List<contextChangeStatus> getContextChanges(final Context context) throws InkMLException {
-        final ArrayList<contextChangeStatus> ctxStatus = new ArrayList<contextChangeStatus>();
+    public List<ContextChangeStatus> getContextChanges(final Context context) throws InkMLException {
+        final ArrayList<ContextChangeStatus> ctxStatus = new ArrayList<ContextChangeStatus>();
         if (null == context) {
             return ctxStatus;
         }
@@ -112,22 +112,22 @@ public final class Ink {
         final Timestamp timestamp = context.getTimestamp();
 
         if (brush != null && !this.currentContext.getBrush().equals(brush)) {
-            ctxStatus.add(contextChangeStatus.isBrushChanged);
+            ctxStatus.add(ContextChangeStatus.isBrushChanged);
         }
         if (traceFormat != null && !this.currentContext.getTraceFormat().equals(traceFormat)) {
-            ctxStatus.add(contextChangeStatus.isTraceFormatChanged);
+            ctxStatus.add(ContextChangeStatus.isTraceFormatChanged);
         }
         if (inkSource != null && !this.currentContext.getInkSource().equals(inkSource)) {
-            ctxStatus.add(contextChangeStatus.isInkSourceChanged);
+            ctxStatus.add(ContextChangeStatus.isInkSourceChanged);
         }
         if (canvas != null && !this.currentContext.getCanvas().equals(canvas)) {
-            ctxStatus.add(contextChangeStatus.isCanvasChanged);
+            ctxStatus.add(ContextChangeStatus.isCanvasChanged);
         }
         if (canvasTransform != null && !this.currentContext.getCanvasTransform().equals(canvasTransform)) {
-            ctxStatus.add(contextChangeStatus.isCanvasTransformChanged);
+            ctxStatus.add(ContextChangeStatus.isCanvasTransformChanged);
         }
         if (timestamp != null && !this.currentContext.getTimestamp().equals(timestamp)) {
-            ctxStatus.add(contextChangeStatus.isTimestampChanged);
+            ctxStatus.add(ContextChangeStatus.isTimestampChanged);
         }
         return ctxStatus;
     }

@@ -13,6 +13,7 @@
 package com.hp.hpl.inkml;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -92,11 +93,11 @@ public final class TraceView implements TraceDataElement {
      * 
      * @return List of Trace Objects
      */
-    public ArrayList<Trace> getTraceList() throws InkMLException {
+    public List<Trace> getTraceList() throws InkMLException {
         if (this.selectedTree == null) {
             throw new InkMLException("Error: Call to TraceView.getTraceList() failed." + "Reason: the traceView selection sub-tree is not available");
         }
-        final ArrayList<Trace> traceList = new ArrayList<Trace>();
+        final List<Trace> traceList = new ArrayList<Trace>();
         if ("TraceGroup".equals(this.selectedTree.getInkElementType())) {
             traceList.addAll(((TraceGroup) this.selectedTree).getTraceList());
         } else {
@@ -249,7 +250,6 @@ public final class TraceView implements TraceDataElement {
         } else {
             TraceView.logger.severe("TraceView.toInkML method: Could not complete the operation." + "Reason: The selcted tree is NULL.");
         }
-        return;
     }
 
     /**

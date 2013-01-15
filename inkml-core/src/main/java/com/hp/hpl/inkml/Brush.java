@@ -268,23 +268,17 @@ public final class Brush implements InkElement, Cloneable {
      * @return cloned copy of the brush object
      */
     @Override
-    public Brush clone() {
-        Brush clone = null;
-        AnnotationXML propertyCollection;
-        try {
-            clone = (Brush) super.clone();
-            if (this.annotationXML != null) {
-                propertyCollection = new AnnotationXML();
-                // copy the property data
-                propertyCollection.override(this.annotationXML);
-            } else {
-                propertyCollection = null;
-            }
-            clone.setAnnotationXML(propertyCollection);
-        } catch (final CloneNotSupportedException ex) {
-            Brush.logger.info("System Error: Cloning Brush is not supported");
-            throw new InternalError(ex.toString());
+    public Brush clone() throws CloneNotSupportedException {
+        final AnnotationXML propertyCollection;
+        final Brush clone = (Brush) super.clone();
+        if (this.annotationXML != null) {
+            propertyCollection = new AnnotationXML();
+            // copy the property data
+            propertyCollection.override(this.annotationXML);
+        } else {
+            propertyCollection = null;
         }
+        clone.setAnnotationXML(propertyCollection);
         return clone;
     }
 

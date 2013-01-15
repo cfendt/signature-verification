@@ -60,6 +60,10 @@ public final class CanvasTransform implements InkElement {
         this.reverseMapping = Mapping.getDefaultMapping();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.hp.hpl.inkml.InkElement#getId()
+     */
     @Override
     public String getId() {
         final String idAttr = this.attributesMap.get("id");
@@ -70,6 +74,10 @@ public final class CanvasTransform implements InkElement {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.hp.hpl.inkml.InkElement#getInkElementType()
+     */
     @Override
     public String getInkElementType() {
         return "CanvasTransform";
@@ -115,7 +123,7 @@ public final class CanvasTransform implements InkElement {
         }
         final boolean isInvertible = this.isInvertible();
         if (isInvertible) {
-            canvasTransform += "invertible='" + String.valueOf(isInvertible) + "' ";
+            canvasTransform += "invertible='" + Boolean.toString(isInvertible) + "' ";
         }
         canvasTransform += ">";
         if (null != this.forwardMapping) {

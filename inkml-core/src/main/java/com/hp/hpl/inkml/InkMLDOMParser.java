@@ -15,7 +15,6 @@ package com.hp.hpl.inkml;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -127,7 +126,7 @@ public final class InkMLDOMParser implements ErrorHandler {
 
             context.deriveContextualChildrenData(ink.getDefinitions(), ink.getCurrentContext());
 
-            final List<Ink.contextChangeStatus> ctxChanges = ink.getContextChanges(context);
+            final List<Ink.ContextChangeStatus> ctxChanges = ink.getContextChanges(context);
             if (ctxChanges.isEmpty()) {
                 // no context change occured. Ignore this context element
                 return;
@@ -161,7 +160,7 @@ public final class InkMLDOMParser implements ErrorHandler {
             if (!"".equals(traceGroup.getId())) {
                 ink.getDefinitions().addToIndirectChildrenMap(traceGroup);
             }
-            final ArrayList<TraceDataElement> children = traceGroup.getTraceDataList();
+            final List<TraceDataElement> children = traceGroup.getTraceDataList();
             if (null != children) {
                 for (int i = 0; i < children.size(); i++) {
                     final TraceDataElement child = children.get(i);
@@ -587,7 +586,7 @@ public final class InkMLDOMParser implements ErrorHandler {
     protected InkSource.Latency getLatency(final Element element, final InkSource inkSrc) throws InkMLException {
         final String value = element.getAttribute("value");
         if ("".equals(value)) {
-            return inkSrc.new Latency(new Double(value).doubleValue());
+            return inkSrc.new Latency(Double.valueOf(value).doubleValue());
         }
         return null;
     }
@@ -611,10 +610,10 @@ public final class InkMLDOMParser implements ErrorHandler {
                 activeArea.setSize(attr.getNodeValue());
             }
             if ("height".equals(attrName)) {
-                activeArea.setHegiht(new Double(attr.getNodeValue()).doubleValue());
+                activeArea.setHegiht(Double.valueOf(attr.getNodeValue()).doubleValue());
             }
             if ("width".equals(attrName)) {
-                activeArea.setWidth(new Double(attr.getNodeValue()).doubleValue());
+                activeArea.setWidth(Double.valueOf(attr.getNodeValue()).doubleValue());
             }
             if ("units".equals(attrName)) {
                 activeArea.setUnits(attr.getNodeValue());
@@ -636,9 +635,9 @@ public final class InkMLDOMParser implements ErrorHandler {
         final String value = element.getAttribute("value");
         InkSource.SampleRate sampleRate;
         if ("".equals(isUniform)) {
-            sampleRate = inkSrc.new SampleRate(new Double(value).doubleValue());
+            sampleRate = inkSrc.new SampleRate(Double.valueOf(value).doubleValue());
         } else {
-            sampleRate = inkSrc.new SampleRate(new Double(value).doubleValue(), new Boolean(isUniform).booleanValue());
+            sampleRate = inkSrc.new SampleRate(Double.valueOf(value).doubleValue(), new Boolean(isUniform).booleanValue());
         }
         return sampleRate;
     }
@@ -681,9 +680,9 @@ public final class InkMLDOMParser implements ErrorHandler {
         final String value = element.getAttribute("value");
         final String units = element.getAttribute("units");
         if ("".equals(units)) {
-            chnProp = chnProps.new ChannelProperty(channel, name, new Double(value).doubleValue());
+            chnProp = chnProps.new ChannelProperty(channel, name, Double.valueOf(value).doubleValue());
         } else {
-            chnProp = chnProps.new ChannelProperty(channel, name, new Double(value).doubleValue(), units);
+            chnProp = chnProps.new ChannelProperty(channel, name, Double.valueOf(value).doubleValue(), units);
         }
         return chnProp;
     }
@@ -702,9 +701,9 @@ public final class InkMLDOMParser implements ErrorHandler {
         final String units = element.getAttribute("units");
         InkSource.SourceProperty srcProperty;
         if ("".equals(units)) {
-            srcProperty = inkSrc.new SourceProperty(name, new Double(value).doubleValue());
+            srcProperty = inkSrc.new SourceProperty(name, Double.valueOf(value).doubleValue());
         } else {
-            srcProperty = inkSrc.new SourceProperty(name, new Double(value).doubleValue(), units);
+            srcProperty = inkSrc.new SourceProperty(name, Double.valueOf(value).doubleValue(), units);
         }
         return srcProperty;
     }

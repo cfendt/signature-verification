@@ -13,7 +13,10 @@
 package com.hp.hpl.inkml;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
@@ -32,7 +35,7 @@ public final class TraceGroup implements TraceDataElement {
     private String brushRef = "";
 
     // List containing the traceData
-    ArrayList<TraceDataElement> traceDataList;
+    private List<TraceDataElement> traceDataList;
 
     // The references of the contextual objects that associated with this TraceGroup object
     private Context associatedContext;
@@ -529,7 +532,7 @@ public final class TraceGroup implements TraceDataElement {
      */
     @Override
     public void writeXML(final InkMLWriter writer) {
-        java.util.HashMap<String, String> attrs = new java.util.HashMap<String, String>();
+        Map<String, String> attrs = new HashMap<String, String>();
         if (!"".equals(this.id)) {
             attrs.put("id", this.id);
         }
@@ -539,7 +542,7 @@ public final class TraceGroup implements TraceDataElement {
         if (!"".equals(this.brushRef)) {
             attrs.put("brushRef", this.brushRef);
         }
-        if (0 == attrs.size()) {
+        if (attrs.isEmpty()) {
             attrs = null;
         }
         if (!this.traceDataList.isEmpty()) {
@@ -598,7 +601,7 @@ public final class TraceGroup implements TraceDataElement {
      * 
      * @return traceData list
      */
-    public ArrayList<TraceDataElement> getTraceDataList() {
+    public List<TraceDataElement> getTraceDataList() {
         return this.traceDataList;
     }
 
@@ -606,7 +609,7 @@ public final class TraceGroup implements TraceDataElement {
      * Method to log the traceGroup trace data
      */
     public void printTraceGroup() {
-        final ArrayList<TraceDataElement> list = this.getTraceDataList();
+        final List<TraceDataElement> list = this.getTraceDataList();
         if (null != list) {
             TraceGroup.logger.fine("<traceGroup>");
             final Iterator<TraceDataElement> itr = list.iterator();

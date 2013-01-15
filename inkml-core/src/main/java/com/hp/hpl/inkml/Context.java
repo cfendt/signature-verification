@@ -515,7 +515,7 @@ public final class Context implements InkElement, Cloneable {
     }
 
     // copy data From the given context object in the parameter
-    private void copyFromContext(final Context context) {
+    private void copyFromContext(final Context context) throws CloneNotSupportedException {
         this.brush = context.getBrush().clone();
         // To do: implement the clone method to other context child objects
         this.canvas = context.getCanvas();
@@ -528,7 +528,11 @@ public final class Context implements InkElement, Cloneable {
     // copy data From the given context reference object in the parameter
     private void copyFromContextReference(final Definitions defs, final String ctxRef) throws InkMLException {
         final Context refferedContext = defs.getContextRefElement(ctxRef);
-        this.copyFromContext(refferedContext);
+        try {
+            this.copyFromContext(refferedContext);
+        } catch (final CloneNotSupportedException ex) {
+            throw new InkMLException(ex);
+        }
     }
 
     /**

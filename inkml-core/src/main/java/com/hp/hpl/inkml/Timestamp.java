@@ -80,7 +80,6 @@ public final class Timestamp implements InkElement {
     @Override
     public void writeXML(final InkMLWriter writer) {
         Timestamp.LOG.warning("The timestamp.writeXML method not implemented.");
-        return;
     }
 
     /**
@@ -90,6 +89,5 @@ public final class Timestamp implements InkElement {
      */
     public void override(final Timestamp source) {
         Timestamp.LOG.warning("The timestamp.override method not implemented.");
-        return;
     }
 }

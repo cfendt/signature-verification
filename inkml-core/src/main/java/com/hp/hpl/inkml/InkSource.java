@@ -15,6 +15,7 @@ package com.hp.hpl.inkml;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
@@ -176,10 +177,12 @@ public final class InkSource implements InkElement {
          * @param value
          */
         public SampleRate(final double value) {
+            super();
             this.value = value;
         }
 
         public SampleRate(final double value, final boolean isUniform) {
+            super();
             this.value = value;
             this.isUniform = isUniform;
         }
@@ -247,6 +250,7 @@ public final class InkSource implements InkElement {
          * @param value
          */
         public Latency(final double value) {
+            super();
             this.value = value;
         }
 
@@ -405,6 +409,7 @@ public final class InkSource implements InkElement {
          * @param units
          */
         public SourceProperty(final String name, final double value, final String units) {
+            super();
             this.name = name;
             this.value = value;
             this.units = units;
@@ -496,13 +501,14 @@ public final class InkSource implements InkElement {
      * @author Muthuselvam Selvaraj
      */
     public class ChannelProperties {
-        private ArrayList<ChannelProperty> ChannelPropertyList;
+        private List<ChannelProperty> channelPropertyList;
 
         /**
          * Constructor for ChannelProperties child element of inkSource
          */
         public ChannelProperties() {
-            this.ChannelPropertyList = new ArrayList<ChannelProperty>();
+            super();
+            this.channelPropertyList = new ArrayList<ChannelProperty>();
         }
 
         /**
@@ -511,10 +517,10 @@ public final class InkSource implements InkElement {
          * @param property
          */
         public void addChannelProperty(final ChannelProperty property) {
-            if (null == this.ChannelPropertyList) {
-                this.ChannelPropertyList = new ArrayList<ChannelProperty>();
+            if (null == this.channelPropertyList) {
+                this.channelPropertyList = new ArrayList<ChannelProperty>();
             }
-            this.ChannelPropertyList.add(property);
+            this.channelPropertyList.add(property);
         }
 
         /**
@@ -524,9 +530,9 @@ public final class InkSource implements InkElement {
          * @param propertyName
          */
         public void removeChannelProperty(final String channelName, final String propertyName) {
-            if (null != this.ChannelPropertyList) {
-                this.ChannelPropertyList = new ArrayList<ChannelProperty>();
-                final Iterator<ChannelProperty> itr = this.ChannelPropertyList.iterator();
+            if (null != this.channelPropertyList) {
+                this.channelPropertyList = new ArrayList<ChannelProperty>();
+                final Iterator<ChannelProperty> itr = this.channelPropertyList.iterator();
                 while (itr.hasNext()) {
                     final ChannelProperty cp = itr.next();
                     if (channelName.equalsIgnoreCase(cp.getChannel()) && propertyName.equalsIgnoreCase(cp.getName())) {
@@ -544,9 +550,9 @@ public final class InkSource implements InkElement {
          * @param propertyValue
          */
         public void setChannelProperty(final String channelName, final String propertyName, final double propertyValue) {
-            if (null != this.ChannelPropertyList) {
-                this.ChannelPropertyList = new ArrayList<ChannelProperty>();
-                final Iterator<ChannelProperty> itr = this.ChannelPropertyList.iterator();
+            if (null != this.channelPropertyList) {
+                this.channelPropertyList = new ArrayList<ChannelProperty>();
+                final Iterator<ChannelProperty> itr = this.channelPropertyList.iterator();
                 while (itr.hasNext()) {
                     final ChannelProperty cp = itr.next();
                     if (channelName.equalsIgnoreCase(cp.getChannel()) && propertyName.equalsIgnoreCase(cp.getName())) {
@@ -688,10 +694,10 @@ public final class InkSource implements InkElement {
          * @param writer
          */
         public void writeXML(final InkMLWriter writer) {
-            if (0 != this.ChannelPropertyList.size()) {
+            if (0 != this.channelPropertyList.size()) {
                 writer.writeStartTag("channelProperties", null);
                 writer.incrementTagLevel();
-                final Iterator<ChannelProperty> itr = this.ChannelPropertyList.iterator();
+                final Iterator<ChannelProperty> itr = this.channelPropertyList.iterator();
                 while (itr.hasNext()) {
                     final ChannelProperty cp = itr.next();
                     cp.writeXML(writer);

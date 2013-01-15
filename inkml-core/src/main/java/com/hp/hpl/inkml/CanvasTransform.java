@@ -114,6 +114,10 @@ public final class CanvasTransform implements InkElement {
         return isEqual;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.hp.hpl.inkml.InkMLSerializer#toInkML()
+     */
     @Override
     public String toInkML() {
         String canvasTransform = "<canvasTransform ";
@@ -147,7 +151,7 @@ public final class CanvasTransform implements InkElement {
         final String invertibleAttr = this.attributesMap.get("invertible");
         if (invertibleAttr != null) {
             try {
-                final boolean status = new Boolean(invertibleAttr).booleanValue();
+                final boolean status = Boolean.valueOf(invertibleAttr).booleanValue();
                 return status;
             } catch (final Exception e) {
                 CanvasTransform.logger.severe("Improper value to 'invertible' attribute, value = " + invertibleAttr + ". Returning the default value of false.");

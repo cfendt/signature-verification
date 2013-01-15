@@ -7,10 +7,11 @@
 package org.thoughtworks.signatureverification.bean;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public final class SignatureData {
-    LinkedList<Double> x;
-    LinkedList<Double> y;
+    List<Double> x;
+    List<Double> y;
     int num;
     int penUp;
 
@@ -20,7 +21,7 @@ public final class SignatureData {
         this.y = new LinkedList<Double>();
     }
 
-    public SignatureData(final LinkedList<Double> xArg, final LinkedList<Double> yArg, final int penUp) {
+    public SignatureData(final List<Double> xArg, final List<Double> yArg, final int penUp) {
         super();
         this.x = xArg;
         this.y = yArg;
@@ -36,19 +37,19 @@ public final class SignatureData {
         this.penUp = penUp;
     }
 
-    public LinkedList<Double> getX() {
+    public List<Double> getX() {
         return this.x;
     }
 
-    public void setX(final LinkedList<Double> x) {
+    public void setX(final List<Double> x) {
         this.x = x;
     }
 
-    public LinkedList<Double> getY() {
+    public List<Double> getY() {
         return this.y;
     }
 
-    public void setY(final LinkedList<Double> y) {
+    public void setY(final List<Double> y) {
         this.y = y;
     }
 

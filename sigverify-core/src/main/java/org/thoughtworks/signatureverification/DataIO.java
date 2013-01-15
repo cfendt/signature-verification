@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -30,8 +31,8 @@ public final class DataIO {
     }
 
     public static SignatureData readData(final InputStream input) throws IOException {
-        final LinkedList<Double> xData = new LinkedList<Double>();
-        final LinkedList<Double> yData = new LinkedList<Double>();
+        final List<Double> xData = new LinkedList<Double>();
+        final List<Double> yData = new LinkedList<Double>();
         final Scanner sc = new Scanner(input);
         sc.useLocale(Locale.US);
         try {
@@ -46,8 +47,8 @@ public final class DataIO {
     }
 
     public static void writeData(final SignatureData signatureData, final String folderName, final String fileName) throws IOException {
-        final LinkedList<Double> x = signatureData.getX();
-        final LinkedList<Double> y = signatureData.getY();
+        final List<Double> x = signatureData.getX();
+        final List<Double> y = signatureData.getY();
         final File file = new File(folderName);
         if (!file.isDirectory()) {
             DataIO.createDir(folderName);

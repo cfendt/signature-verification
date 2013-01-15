@@ -8,7 +8,7 @@ package org.thoughtworks.signatureverification;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.thoughtworks.signatureverification.bean.SignatureData;
@@ -28,8 +28,8 @@ public final class Verification {
     public double verifySignature(final SignatureData signatureDataTest, final String folderName) throws IOException, NoSuchAlgorithmException {
         final DynamicTimeWarping dtw = new DynamicTimeWarping();
         final ER2 eRSquared = new ER2();
-        final LinkedList<Double> xtCopy = signatureDataTest.getX();
-        final LinkedList<Double> ytCopy = signatureDataTest.getY();
+        final List<Double> xtCopy = signatureDataTest.getX();
+        final List<Double> ytCopy = signatureDataTest.getY();
         final SignatureData signatureDataTestClone = new SignatureData(xtCopy, ytCopy, 0);
         double res1;
         double res2;

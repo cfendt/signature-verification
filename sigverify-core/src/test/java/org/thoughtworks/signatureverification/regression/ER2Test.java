@@ -1,7 +1,7 @@
 package org.thoughtworks.signatureverification.regression;
 
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -67,8 +67,8 @@ public class ER2Test {
 
     private SignatureData hackSignatureData(final SignatureData signatureDataSourceAndTest) {
         final SignatureData signatureDataHacked = new SignatureData();
-        final LinkedList<Double> xList = signatureDataSourceAndTest.getX();
-        final LinkedList<Double> yList = signatureDataSourceAndTest.getX();
+        final List<Double> xList = signatureDataSourceAndTest.getX();
+        final List<Double> yList = signatureDataSourceAndTest.getX();
         final int numList = signatureDataSourceAndTest.getNum();
         for (int i = 1; i <= 10; i++) {
             xList.remove(xList.size() - i);

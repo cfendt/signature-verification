@@ -127,7 +127,7 @@ public final class Trace implements TraceDataElement {
     private void initTraceDataStructure() {
         if (null != this.associatedContext) {
             final TraceFormat traceFormat = this.associatedContext.getTraceFormat();
-            final ArrayList<Channel> channelList = traceFormat.getChannelList();
+            final List<Channel> channelList = traceFormat.getChannelList();
             final int nChannel = channelList.size();
             this.traceData = new LinkedHashMap<String, List<Object>>();
             for (int i = 0; i < nChannel; i++) {
@@ -295,14 +295,14 @@ public final class Trace implements TraceDataElement {
                 if (null == previousValue) {
                     previousValue = channel.getDefaultValue();
                     if (channelType == Channel.ChannelType.DECIMAL) {
-                        previousValue = new Float((String) previousValue);
+                        previousValue = Float.valueOf((String) previousValue);
                     } else if (channelType == Channel.ChannelType.INTEGER) {
-                        previousValue = new Integer((String) previousValue);
+                        previousValue = Integer.valueOf((String) previousValue);
                     } else if (channelType == Channel.ChannelType.BOOLEAN) {
                         if ("F".equalsIgnoreCase((String) previousValue)) {
-                            previousValue = new Boolean("false");
+                            previousValue = Boolean.valueOf("false");
                         } else if ("T".equalsIgnoreCase((String) previousValue)) {
-                            previousValue = new Boolean("true");
+                            previousValue = Boolean.valueOf("true");
                         }
                     }
                 }
@@ -359,9 +359,9 @@ public final class Trace implements TraceDataElement {
             if (channelType == Channel.ChannelType.BOOLEAN) {
                 chnVal = null;
                 if ("F".equalsIgnoreCase(channelValue)) {
-                    chnVal = new Boolean("false");
+                    chnVal = Boolean.valueOf("false");
                 } else if ("T".equalsIgnoreCase(channelValue)) {
-                    chnVal = new Boolean("true");
+                    chnVal = Boolean.valueOf("true");
                 }
                 this.traceData.get(channelName).add(traceIndex, chnVal);
                 return;
@@ -373,9 +373,9 @@ public final class Trace implements TraceDataElement {
                 final Object previousValue = this.traceData.get(channelName).get(traceIndex - 1);
                 Object singleDiffVal = null;
                 if (channelType == Channel.ChannelType.DECIMAL) {
-                    singleDiffVal = new Float(channelValue);
+                    singleDiffVal = Float.valueOf(channelValue);
                 } else if (channelType == Channel.ChannelType.INTEGER) {
-                    singleDiffVal = new Integer(channelValue);
+                    singleDiffVal = Integer.valueOf(channelValue);
                 }
                 variableValueMap.put(channelName, singleDiffVal);
                 chnVal = null;
@@ -389,9 +389,9 @@ public final class Trace implements TraceDataElement {
                 // check if the current prefix is double difference a.k.a acceleration
                 Object doubleDiffVal = null;
                 if (channelType == Channel.ChannelType.DECIMAL) {
-                    doubleDiffVal = new Float(channelValue);
+                    doubleDiffVal = Float.valueOf(channelValue);
                 } else if (channelType == Channel.ChannelType.INTEGER) {
-                    doubleDiffVal = new Integer(channelValue);
+                    doubleDiffVal = Integer.valueOf(channelValue);
                 }
                 final Object currentVariableValue = variableValueMap.get(channelName);
                 Object newVariableValue = null;
@@ -414,9 +414,9 @@ public final class Trace implements TraceDataElement {
                 // It is an absolute value, meaning there is no 'prefix' used earlier
                 chnVal = null;
                 if (channelType == Channel.ChannelType.DECIMAL) {
-                    chnVal = new Float(channelValue);
+                    chnVal = Float.valueOf(channelValue);
                 } else if (channelType == Channel.ChannelType.INTEGER) {
-                    chnVal = new Integer(channelValue);
+                    chnVal = Integer.valueOf(channelValue);
                     // traceData.get(channelName).add(traceIndex, chnVal);
                 }
             }
@@ -429,11 +429,11 @@ public final class Trace implements TraceDataElement {
     private Object getChannelValueObject(final String channelValue, final Channel.ChannelType channelType) {
         Object chnVal = null;
         if (channelType == Channel.ChannelType.DECIMAL) {
-            chnVal = new Float(channelValue);
+            chnVal = Float.valueOf(channelValue);
         } else if (channelType == Channel.ChannelType.INTEGER) {
-            chnVal = new Integer(channelValue);
+            chnVal = Integer.valueOf(channelValue);
         } else if (channelType == Channel.ChannelType.BOOLEAN) {
-            chnVal = new Boolean(channelValue);
+            chnVal = Boolean.valueOf(channelValue);
         }
         return chnVal;
     }
@@ -823,7 +823,7 @@ public final class Trace implements TraceDataElement {
     public void setTraceData(final String channelName, final int[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Integer(data[i]));
+            dataList.add(Integer.valueOf(data[i]));
         }
         this.traceData.put(channelName, dataList);
     }
@@ -837,7 +837,7 @@ public final class Trace implements TraceDataElement {
     public void setTraceData(final String channelName, final float[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Float(data[i]));
+            dataList.add(Float.valueOf(data[i]));
         }
         this.traceData.put(channelName, dataList);
     }
@@ -851,7 +851,7 @@ public final class Trace implements TraceDataElement {
     public void setTraceData(final String channelName, final boolean[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Boolean(data[i]));
+            dataList.add(Boolean.valueOf(data[i]));
         }
         this.traceData.put(channelName, dataList);
     }
@@ -898,7 +898,7 @@ public final class Trace implements TraceDataElement {
     public void addToTraceData(final String channelName, final int[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Integer(data[i]));
+            dataList.add(Integer.valueOf(data[i]));
         }
         this.traceData.get(channelName).addAll(dataList);
     }
@@ -912,7 +912,7 @@ public final class Trace implements TraceDataElement {
     public void addToTraceData(final String channelName, final float[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Float(data[i]));
+            dataList.add(Float.valueOf(data[i]));
         }
         this.traceData.get(channelName).addAll(dataList);
     }
@@ -926,7 +926,7 @@ public final class Trace implements TraceDataElement {
     public void addToTraceData(final String channelName, final boolean[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Boolean(data[i]));
+            dataList.add(Boolean.valueOf(data[i]));
         }
         this.traceData.get(channelName).addAll(dataList);
     }
@@ -988,7 +988,7 @@ public final class Trace implements TraceDataElement {
     public void setChanneldataInt(final String channelName, final int[] data) {
         final List<Object> dataList = new ArrayList<Object>(data.length);
         for (int i = 0; i < data.length; i++) {
-            dataList.add(new Integer(data[i]));
+            dataList.add(Integer.valueOf(data[i]));
         }
         this.traceData.put(channelName, dataList);
 
@@ -1286,10 +1286,10 @@ public final class Trace implements TraceDataElement {
             // 'Vchn' value is the value used in computing the effective diference value -
             // to be added to the channel value when single/double difference prefix are used
             if (chn.getChannelType() == Channel.ChannelType.DECIMAL) {
-                variableValueMap.put(channelName, new Float(0));
+                variableValueMap.put(channelName, Float.valueOf(0));
             }
             if (chn.getChannelType() == Channel.ChannelType.INTEGER) {
-                variableValueMap.put(channelName, new Integer(0));
+                variableValueMap.put(channelName, Integer.valueOf(0));
             }
         }
 

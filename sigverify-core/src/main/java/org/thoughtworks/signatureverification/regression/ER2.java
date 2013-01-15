@@ -6,7 +6,7 @@
 
 package org.thoughtworks.signatureverification.regression;
 
-import java.util.LinkedList;
+import java.util.List;
 
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
@@ -24,7 +24,7 @@ public final class ER2 {
         return res;
     }
 
-    public void calculateMean(final LinkedList<Double> xr, final LinkedList<Double> yr, final int nr, final LinkedList<Double> xt, final LinkedList<Double> yt, final int nt) {
+    public void calculateMean(final List<Double> xr, final List<Double> yr, final int nr, final List<Double> xt, final List<Double> yt, final int nt) {
         double sumx = 0;
         double sumy = 0;
         for (int i = 0; i < nr; i++) {
@@ -43,14 +43,14 @@ public final class ER2 {
         this.ytBarTestData = sumy / nt;
     }
 
-    public double evaluateFormulae(final LinkedList<Double> xr, final LinkedList<Double> yr, final int nr, final LinkedList<Double> xt, final LinkedList<Double> yt, final int nt) {
+    public double evaluateFormulae(final List<Double> xr, final List<Double> yr, final int nr, final List<Double> xt, final List<Double> yt, final int nt) {
         double nume;
         nume = this.calculateNumerator(xr, yr, nr, xt, yt, nt);
         final double deno = this.calculateDenominator(xr, yr, nr, xt, yt, nt);
         return nume / deno;
     }
 
-    public double calculateNumerator(final LinkedList<Double> xr, final LinkedList<Double> yr, final int nr, final LinkedList<Double> xt, final LinkedList<Double> yt, final int nt) {
+    public double calculateNumerator(final List<Double> xr, final List<Double> yr, final int nr, final List<Double> xt, final List<Double> yt, final int nt) {
         double insum1 = 0;
         for (int i = 0; i < nr; i++) {
             insum1 += (xr.get(i) - this.xrBarSourceData) * (xt.get(i) - this.xtBarTestData);
@@ -63,7 +63,7 @@ public final class ER2 {
         return finalNumeSum * finalNumeSum;
     }
 
-    public double calculateDenominator(final LinkedList<Double> xr, final LinkedList<Double> yr, final int nr, final LinkedList<Double> xt, final LinkedList<Double> yt, final int nt) {
+    public double calculateDenominator(final List<Double> xr, final List<Double> yr, final int nr, final List<Double> xt, final List<Double> yt, final int nt) {
         double xsum1 = 0;
         for (int i = 0; i < nr; i++) {
             xsum1 += (xr.get(i) - this.xrBarSourceData) * (xr.get(i) - this.xrBarSourceData);

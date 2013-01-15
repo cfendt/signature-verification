@@ -13,9 +13,12 @@
 package com.hp.hpl.inkml;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class models the {@code <traceFormat>} InkML element.
@@ -44,7 +47,7 @@ public final class TraceFormat implements InkElement {
      * 
      * @param channelList
      */
-    public void setChannelList(final ArrayList<Channel> channelList) {
+    public void setChannelList(final List<Channel> channelList) {
         final Iterator<Channel> itr = channelList.iterator();
         while (itr.hasNext()) {
             final Channel channel = itr.next();
@@ -75,7 +78,7 @@ public final class TraceFormat implements InkElement {
      */
     public Channel getChannel(final String channelName) {
         Channel resultChannel = null;
-        final ArrayList<Channel> channelList = new ArrayList<Channel>();
+        final List<Channel> channelList = new ArrayList<Channel>();
         channelList.addAll(this.channelMap.values());
         for (final Channel channel : channelList) {
             if (channel.getName().equals(channelName)) {
@@ -90,8 +93,8 @@ public final class TraceFormat implements InkElement {
      * 
      * @return the Channels object List
      */
-    public ArrayList<Channel> getChannelList() {
-        final ArrayList<Channel> channelList = new ArrayList<Channel>();
+    public List<Channel> getChannelList() {
+        final List<Channel> channelList = new ArrayList<Channel>();
         channelList.addAll(this.channelMap.values());
         return channelList;
     }
@@ -101,9 +104,9 @@ public final class TraceFormat implements InkElement {
      * 
      * @return the list of name of Channels
      */
-    public ArrayList<String> getChannelsName() {
-        final ArrayList<Channel> channelList = (ArrayList<Channel>) this.channelMap.values();
-        final ArrayList<String> channelsName = new ArrayList<String>();
+    public List<String> getChannelsName() {
+        final Collection<Channel> channelList = this.channelMap.values();
+        final List<String> channelsName = new ArrayList<String>();
         for (final Channel channel : channelList) {
             channelsName.add(channel.getName());
         }
@@ -178,7 +181,7 @@ public final class TraceFormat implements InkElement {
         if (!"".equals(this.id)) {
             traceFormatElement += "id='" + this.id + "'>";
         }
-        final ArrayList<Channel> channelList = (ArrayList<Channel>) this.channelMap.values();
+        final List<Channel> channelList = (List<Channel>) this.channelMap.values();
         final int nChannel = channelList.size();
         if (0 != nChannel) {
             for (int i = 0; i < nChannel; i++) {
@@ -207,7 +210,7 @@ public final class TraceFormat implements InkElement {
      */
     @Override
     public void writeXML(final InkMLWriter writer) {
-        HashMap<String, String> attr = null;
+        Map<String, String> attr = null;
         if (!"".equals(this.id)) {
             attr = new HashMap<String, String>();
             attr.put("id", this.id);
@@ -217,17 +220,17 @@ public final class TraceFormat implements InkElement {
             attr.put("href", this.href);
             writer.writeEmptyStartTag("traceFormat", attr);
         } else {
-            final ArrayList<Channel> channelList = new ArrayList<Channel>();
+            final List<Channel> channelList = new ArrayList<Channel>();
             channelList.addAll(this.channelMap.values());
             final int nChannel = channelList.size();
             boolean isEqualToDefault = false;
             if (2 == nChannel) {
                 final TraceFormat defaultTF = TraceFormat.getDefaultTraceFormat();
-                final Channel chnVal1_1 = channelList.get(0);
-                final Channel chnVal2_1 = defaultTF.getChannel(chnVal1_1.getName());
-                final Channel chnVal1_2 = channelList.get(1);
-                final Channel chnVal2_2 = defaultTF.getChannel(chnVal1_2.getName());
-                if (chnVal1_1.equals(chnVal2_1) && chnVal1_2.equals(chnVal2_2)) {
+                final Channel chnVal11 = channelList.get(0);
+                final Channel chnVal21 = defaultTF.getChannel(chnVal11.getName());
+                final Channel chnVal12 = channelList.get(1);
+                final Channel chnVal22 = defaultTF.getChannel(chnVal12.getName());
+                if (chnVal11.equals(chnVal21) && chnVal12.equals(chnVal22)) {
                     isEqualToDefault = true;
                 }
             }
@@ -270,7 +273,7 @@ public final class TraceFormat implements InkElement {
      * @param format
      */
     public void override(final TraceFormat format) {
-        final ArrayList<Channel> channelList = format.getChannelList();
+        final List<Channel> channelList = format.getChannelList();
         for (final Channel ch : channelList) {
             this.channelMap.put(ch.getName(), ch);
         }

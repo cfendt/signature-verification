@@ -637,7 +637,7 @@ public final class InkMLDOMParser implements ErrorHandler {
         if ("".equals(isUniform)) {
             sampleRate = inkSrc.new SampleRate(Double.valueOf(value).doubleValue());
         } else {
-            sampleRate = inkSrc.new SampleRate(Double.valueOf(value).doubleValue(), new Boolean(isUniform).booleanValue());
+            sampleRate = inkSrc.new SampleRate(Double.valueOf(value).doubleValue(), Boolean.valueOf(isUniform).booleanValue());
         }
         return sampleRate;
     }

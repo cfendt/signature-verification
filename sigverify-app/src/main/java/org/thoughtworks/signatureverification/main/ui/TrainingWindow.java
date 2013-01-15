@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -71,10 +72,10 @@ public final class TrainingWindow extends JFrame {
     private JButton sig2SaveButton;
     private ImageIcon trainIcon;
 
-    private final LinkedList<Double> xr1 = new LinkedList<Double>();
-    private final LinkedList<Double> yr1 = new LinkedList<Double>();
-    private final LinkedList<Double> xr2 = new LinkedList<Double>();
-    private final LinkedList<Double> yr2 = new LinkedList<Double>();
+    private final List<Double> xr1 = new LinkedList<Double>();
+    private final List<Double> yr1 = new LinkedList<Double>();
+    private final List<Double> xr2 = new LinkedList<Double>();
+    private final List<Double> yr2 = new LinkedList<Double>();
     private boolean canCapture = false;
     private final MessageDigestCalculator messageDigestCalculator;
     private final Enroll enroll;

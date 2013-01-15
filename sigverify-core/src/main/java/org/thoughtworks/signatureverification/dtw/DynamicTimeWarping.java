@@ -7,26 +7,27 @@
 package org.thoughtworks.signatureverification.dtw;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.thoughtworks.signatureverification.bean.SignatureData;
 
 public final class DynamicTimeWarping {
 
-    private double[][] DTWMatrix;
+    private double[][] dtwMatrix;
     private int[][] wrapPath;
     private int warpLength = 0;
 
     public int performDTW(final SignatureData signatureDataStored, final SignatureData signatureDataTest) {
         double[][] distanceMatrix;
-        final LinkedList<Double> xStoredData = signatureDataStored.getX();
-        final LinkedList<Double> yStoredData = signatureDataStored.getY();
+        final List<Double> xStoredData = signatureDataStored.getX();
+        final List<Double> yStoredData = signatureDataStored.getY();
         int numStoredData = xStoredData.size();
-        final LinkedList<Double> xTestData = signatureDataTest.getX();
-        final LinkedList<Double> yTestData = signatureDataTest.getY();
+        final List<Double> xTestData = signatureDataTest.getX();
+        final List<Double> yTestData = signatureDataTest.getY();
         final int numTestData = xTestData.size();
-        this.DTWMatrix = null;
+        this.dtwMatrix = null;
         distanceMatrix = new double[numStoredData][numTestData];
-        this.DTWMatrix = new double[numStoredData][numTestData];
+        this.dtwMatrix = new double[numStoredData][numTestData];
         for (int i = 0; i < numStoredData; i++) {
             for (int j = 0; j < numTestData; j++) {
                 final double u = Math.sqrt(xStoredData.get(i) * xStoredData.get(i) + yStoredData.get(i) * yStoredData.get(i));
@@ -34,16 +35,16 @@ public final class DynamicTimeWarping {
                 distanceMatrix[i][j] = (u - v) * (u - v);
             }
         }
-        this.DTWMatrix[0][0] = distanceMatrix[0][0];
+        this.dtwMatrix[0][0] = distanceMatrix[0][0];
         for (int i = 1; i < numStoredData; i++) {
-            this.DTWMatrix[i][0] = distanceMatrix[i][0] + this.DTWMatrix[i - 1][0];
+            this.dtwMatrix[i][0] = distanceMatrix[i][0] + this.dtwMatrix[i - 1][0];
         }
         for (int i = 1; i < numTestData; i++) {
-            this.DTWMatrix[0][i] = distanceMatrix[0][i] + this.DTWMatrix[0][i - 1];
+            this.dtwMatrix[0][i] = distanceMatrix[0][i] + this.dtwMatrix[0][i - 1];
         }
         for (int i = 1; i < numStoredData; i++) {
             for (int j = 1; j < numTestData; j++) {
-                this.DTWMatrix[i][j] = distanceMatrix[i][j] + Math.min(this.DTWMatrix[i - 1][j], Math.min(this.DTWMatrix[i - 1][j - 1], this.DTWMatrix[i][j - 1]));
+                this.dtwMatrix[i][j] = distanceMatrix[i][j] + Math.min(this.dtwMatrix[i - 1][j], Math.min(this.dtwMatrix[i - 1][j - 1], this.dtwMatrix[i][j - 1]));
             }
         }
         this.warpLength = this.computePath(numStoredData, numTestData);
@@ -64,10 +65,10 @@ public final class DynamicTimeWarping {
             } else if (j == 1) {
                 i--;
             } else {
-                minimumValue = Math.min(this.DTWMatrix[i - 1][j], Math.min(this.DTWMatrix[i - 1][j - 1], this.DTWMatrix[i][j - 1]));
-                if (minimumValue == this.DTWMatrix[i - 1][j]) {
+                minimumValue = Math.min(this.dtwMatrix[i - 1][j], Math.min(this.dtwMatrix[i - 1][j - 1], this.dtwMatrix[i][j - 1]));
+                if (minimumValue == this.dtwMatrix[i - 1][j]) {
                     i--;
-                } else if (minimumValue == this.DTWMatrix[i][j - 1]) {
+                } else if (minimumValue == this.dtwMatrix[i][j - 1]) {
                     j--;
                 } else {
                     i--;
@@ -81,9 +82,9 @@ public final class DynamicTimeWarping {
         return numOptimalDistance;
     }
 
-    private int timeWarpSeries(final LinkedList<Double> xData, final LinkedList<Double> yData, final int indexInWarpMatrix) {
-        final LinkedList<Double> xTemp = new LinkedList<Double>();
-        final LinkedList<Double> yTemp = new LinkedList<Double>();
+    private int timeWarpSeries(final List<Double> xData, final List<Double> yData, final int indexInWarpMatrix) {
+        final List<Double> xTemp = new LinkedList<Double>();
+        final List<Double> yTemp = new LinkedList<Double>();
         for (int i = this.warpLength - 1; i >= 0; i--) {
             xTemp.add(xData.get(this.wrapPath[i][indexInWarpMatrix]));
             yTemp.add(yData.get(this.wrapPath[i][indexInWarpMatrix]));

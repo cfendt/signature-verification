@@ -13,12 +13,19 @@
 package com.hp.hpl.inkml;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.SchemaFactory;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,8 +37,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
-
 /**
  * This class provides DOM implementation of the InkMLParser interface. It uses the Xerces parser bundled with JDK 1.5 or higher versions.
  * 
@@ -41,12 +46,14 @@ import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 public class InkMLDOMParser implements InkMLParser, ErrorHandler {
     private Document inkmlDOMDocument;
     private final InkMLProcessor inkMLProcessor;
-    protected static final String VALIDATION_FEATURE_ID = "http://xml.org/sax/features/validation";
-    protected static final String SCHEMA_VALIDATION_FEATURE_ID = "http://apache.org/xml/features/validation/schema";
-    protected static final String DEFAULT_PARSER_NAME = "dom.wrappers.Xerces";
 
-    private static Logger logger = Logger.getLogger(InkMLDOMParser.class.getName());
+    private static Logger LOG = Logger.getLogger(InkMLDOMParser.class.getName());
 
+    /**
+     * Constructor
+     * 
+     * @param processor
+     */
     public InkMLDOMParser(final InkMLProcessor processor) {
         super();
         this.inkMLProcessor = processor;
@@ -59,9 +66,9 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
      * @param ink the ink document data object to be populated with parsing an inkml file
      */
     protected void bindData(final Ink ink) throws InkMLException {
-        InkMLDOMParser.logger.info("\nTo bind the parsed data to InkML data objects.\n");
+        InkMLDOMParser.LOG.info("\nTo bind the parsed data to InkML data objects.\n");
         if (null == this.inkmlDOMDocument) {
-            InkMLDOMParser.logger.warning("No parsed data available for data binding.");
+            InkMLDOMParser.LOG.warning("No parsed data available for data binding.");
             return;
         }
         final Element rootElmnt = this.inkmlDOMDocument.getDocumentElement();
@@ -198,21 +205,11 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
                 aXml.setType(attribute.getValue());
             } else if ("encoding".equals(attributeName)) {
                 aXml.setEncoding(attribute.getValue());
-            } else if ("href".equals(attributeName)) {
-                final String hRef = attribute.getValue();
-                try {
-                    aXml.setHref(new URI(hRef));
-                    if (!"".equals(hRef)) {
-                        aXml.addAllToPropertyMap(hRef);
-                    }
-                } catch (final InkMLException e) {
-                    throw new InkMLException("Problem in binding 'href' attribute of " + "AnnotationXML data.\nReason: " + e.getMessage());
-                }
             } else {
                 aXml.addToOtherAttributesMap(attributeName, attribute.getValue());
             }
         }
-        InkMLDOMParser.logger.finest("annotationXML received: " + element.toString());
+        InkMLDOMParser.LOG.finest("annotationXML received: " + element.toString());
         final NodeList list = element.getChildNodes();
         final int nChildren = list.getLength();
         if (nChildren > 0) {
@@ -229,7 +226,7 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
                 // propertyElementsMap.put(key, childElement);
                 // propertyElementsMap.put(key, value);
                 aXml.addToPropertyElementsMap(tagName, value);
-                InkMLDOMParser.logger.finer("The property with name = " + tagName + " is added to the propertyElementsMap.");
+                InkMLDOMParser.LOG.finer("The property with name = " + tagName + " is added to the propertyElementsMap.");
             }
         }
         return aXml;
@@ -454,7 +451,7 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
         final Mapping mapping = new Mapping();
         // Extract and set Attribute values
         final String type = element.getAttribute("type");
-        InkMLDOMParser.logger.info("mapping type=" + type);
+        InkMLDOMParser.LOG.info("mapping type=" + type);
         if (!"identity".equalsIgnoreCase(type) && !"unknown".equalsIgnoreCase(type)) {
             throw new InkMLException("Feature not implemented: 'Mapping' with 'type' attribute other than identity and unknown");
         }
@@ -875,6 +872,9 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
         return channel;
     }
 
+    /** Factory pour les schemas */
+    private final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI); // NOPMD - not transient
+
     /**
      * Method to parse the InkML file identified by the inkmlFilename given in the parameter and creates data objects. It performs validation with schema. It
      * must have "ink" as root element with InkML name space specified with xmlns="http://www.w3.org/2003/InkML". The schema location may be specified. If it is
@@ -889,73 +889,77 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
     public void parseInkMLFile(final String inkmlFileName) throws InkMLException {
 
         // Get the DOM document object by parsing the InkML input file
-        InputSource input = null;
+        FileInputStream inputStream = null; // NOPMD - init
         try {
-            input = new InputSource(new FileInputStream(inkmlFileName));
-        } catch (final FileNotFoundException e1) {
-            throw new InkMLException("The input inkml file (" + inkmlFileName + ") not found.");
-        }
-
-        final DOMParser parser = new DOMParser();
-        parser.setErrorHandler(this);
-
-        // check the JVM parameter java -DschemaValidation={"true"|"false"}
-        boolean isSchemaValidationEnabled = true;
-        String validationStatus = System.getProperty("com.hp.hpl.inkml.SchemaValidation");
-        if (null != validationStatus) {
-            validationStatus = validationStatus.trim().toLowerCase();
-            if ("true".equals(validationStatus)) {
-                isSchemaValidationEnabled = true;
-            } else if ("false".equals(validationStatus)) {
-                isSchemaValidationEnabled = false;
-            } else {
-                InkMLDOMParser.logger.warning("Invalid value to the JVM parameter '-Dcom.hp.hpl.inkml.SchemaValidation'.");
-                isSchemaValidationEnabled = false;
-            }
-        }
-
-        if (isSchemaValidationEnabled) {
-            InkMLDOMParser.logger.info("Validation using schema is enabled.");
-            try {
-                final java.net.URL schemaFile = this.getClass().getClassLoader().getResource("inkml.xsd");
-                if (null != schemaFile) {
-                    parser.setProperty("http://apache.org/xml/properties/schema/" + "external-schemaLocation", "http://www.w3.org/2003/InkML " + schemaFile.getPath());
-                } else {
-                    InkMLDOMParser.logger.severe("Failed to load Schema (inkml.xsd) file");
-                }
-            } catch (final Exception e) {
-                InkMLDOMParser.logger.info("Exception in loading schema file for validation. Reason - " + e.getMessage());
-            }
-            try {
-                try {
-                    parser.setFeature(InkMLDOMParser.VALIDATION_FEATURE_ID, true);
-                    parser.setFeature(InkMLDOMParser.SCHEMA_VALIDATION_FEATURE_ID, true);
-                } catch (final org.xml.sax.SAXNotRecognizedException e) {
-                    InkMLDOMParser.logger.severe("Unrecognized feature: " + InkMLDOMParser.SCHEMA_VALIDATION_FEATURE_ID);
-                } catch (final org.xml.sax.SAXNotSupportedException e) {
-                    InkMLDOMParser.logger.severe("Unsupported feature: " + InkMLDOMParser.SCHEMA_VALIDATION_FEATURE_ID);
-                }
-            } catch (final Exception e) {
-                InkMLDOMParser.logger.warning("Parser does not support feature (" + InkMLDOMParser.SCHEMA_VALIDATION_FEATURE_ID + ")");
-            }
-        } else {
-            InkMLDOMParser.logger.info("Validation using schema is disabled.");
-        }
-
-        try {
-            parser.parse(input);
-        } catch (final SAXException e) {
-            throw new InkMLException("Error in parsing Input InkML XML file.\n Message: " + e.getMessage());
+            inputStream = new FileInputStream(inkmlFileName);
+            this.parseInkMLFile(inputStream);
         } catch (final IOException e) {
-            throw new InkMLException("I/O error while parsing Input InkML XML file.\n Message: " + e.getMessage());
+            throw new InkMLException("I/O error while parsing Input InkML XML file.\n Message: " + e.getMessage(), e);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
         }
+    }
 
-        InkMLDOMParser.logger.info("\nInput InkML XML file parsing is completed.\n");
+    /**
+     * Method to parse the InkML file identified by the inkmlFilename given in the parameter and creates data objects. It performs validation with schema. It
+     * must have "ink" as root element with InkML name space specified with xmlns="http://www.w3.org/2003/InkML". The schema location may be specified. If it is
+     * not specified or if relative path of the InkML.xsd file is specified, then the InkML.xsd file path must be added to * CLASSPATH for the parser to locate
+     * it. An example of a typical header is, <ink xmlns="http://www.w3.org/2003/InkML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     * xsi:schemaLocation="http://www.w3.org/2003/InkML C:\project\schema\inkml.xsd">
+     * 
+     * @param inkmlFileName
+     * @throws InkMLException
+     */
+    @Override
+    public void parseInkMLFile(final InputStream inputStream) throws InkMLException {
 
-        // get the DOM document object of the input InkML XML file.
-        this.inkmlDOMDocument = parser.getDocument();
-        this.inkMLProcessor.beginInkSession();
-        this.bindData(this.inkMLProcessor.getInk());
+        // Get the DOM document object by parsing the InkML input file
+        try {
+            final InputSource input = new InputSource(inputStream);
+
+            // get the DOM document object of the input InkML XML file.
+            final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            dbFactory.setIgnoringComments(true);
+            dbFactory.setNamespaceAware(true);
+            dbFactory.setIgnoringElementContentWhitespace(true);
+            if (this.isSchemaValidationEnabled()) {
+                InkMLDOMParser.LOG.info("Validation using schema is enabled.");
+                dbFactory.setSchema(this.factory.newSchema(this.getClass().getResource("/schema/inkml.xsd")));
+                dbFactory.setValidating(true);
+            } else {
+                InkMLDOMParser.LOG.info("Validation using schema is disabled.");
+                dbFactory.setValidating(false);
+            }
+            final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            dBuilder.setErrorHandler(this);
+            this.inkmlDOMDocument = dBuilder.parse(input);
+            InkMLDOMParser.LOG.info("\nInput InkML XML file parsing is completed.\n");
+            this.inkMLProcessor.beginInkSession();
+            this.bindData(this.inkMLProcessor.getInk());
+        } catch (final ParserConfigurationException e) {
+            throw new InkMLException("Error in parsing Input InkML XML file.\n Message: " + e.getMessage(), e);
+        } catch (final SAXException e) {
+            throw new InkMLException("Error in parsing Input InkML XML file.\n Message: " + e.getMessage(), e);
+        } catch (final IOException e) {
+            throw new InkMLException("I/O error while parsing Input InkML XML file.\n Message: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * @return
+     */
+    private boolean isSchemaValidationEnabled() {
+        // check the JVM parameter java -DschemaValidation={"true"|"false"}
+        boolean isSchemaValidationEnabled = false;
+        final String validationStatus = StringUtils.trimToEmpty(System.getProperty("com.hp.hpl.inkml.SchemaValidation"));
+        if (StringUtils.isNotEmpty(validationStatus)) {
+            if ("true".equalsIgnoreCase(validationStatus)) {
+                isSchemaValidationEnabled = true;
+            } else {
+                isSchemaValidationEnabled = false;
+            }
+        }
+        return isSchemaValidationEnabled;
     }
 
     /**
@@ -965,26 +969,33 @@ public class InkMLDOMParser implements InkMLParser, ErrorHandler {
      * @throws InkMLException
      */
     @Override
-    public void parseInkMLString(String inkmlStr) throws InkMLException {
-        if (inkmlStr.indexOf("ink") == -1) {
+    public void parseInkMLString(final String inkmlStrParam) throws InkMLException {
+        final String inkmlStr;
+        if (inkmlStrParam.indexOf("ink") == -1) {
             // the given welformed inkmlStr does not contain complete <ink> document as string.
             // wrap it with a false root element, <inkMLFramgment>. It is called as fragment.
-            inkmlStr = "<inkMLFramgment>" + inkmlStr + " </inkMLFramgment>";
+            inkmlStr = "<inkMLFramgment>" + inkmlStrParam + " </inkMLFramgment>";
+        } else {
+            inkmlStr = inkmlStrParam;
         }
-        InkMLDOMParser.logger.fine(inkmlStr);
-        final DOMParser parser = new DOMParser();
-        parser.setErrorHandler(this);
-        InkMLDOMParser.logger.info("Validation using schema is disabled.");
+        InkMLDOMParser.LOG.fine(inkmlStr);
 
         try {
-            parser.parse(new InputSource(new StringReader(inkmlStr)));
-        } catch (final SAXException saxExp) {
-            InkMLDOMParser.logger.severe("InkProcessor::parseInk method. Error in parsing " + "Ink String data.\n" + saxExp.getMessage());
-        } catch (final IOException ioExp) {
-            InkMLDOMParser.logger.severe("InkProcessor::parseInk method. IO Error while " + "parsing Ink String data.\n" + ioExp.getMessage());
+            final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            dbFactory.setIgnoringComments(true);
+            dbFactory.setIgnoringElementContentWhitespace(true);
+            dbFactory.setValidating(false);
+            InkMLDOMParser.LOG.info("Validation using schema is disabled.");
+            final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            this.inkmlDOMDocument = dBuilder.parse(inkmlStr);
+            this.bindData(this.inkMLProcessor.getInk());
+        } catch (final ParserConfigurationException e) {
+            throw new InkMLException("Error in parsing Input InkML XML file.\n Message: " + e.getMessage(), e);
+        } catch (final SAXException e) {
+            throw new InkMLException("Error in parsing Input InkML XML file.\n Message: " + e.getMessage(), e);
+        } catch (final IOException e) {
+            throw new InkMLException("I/O error while parsing Input InkML XML file.\n Message: " + e.getMessage(), e);
         }
-        this.inkmlDOMDocument = parser.getDocument();
-        this.bindData(this.inkMLProcessor.getInk());
     }
 
     /** Prints the error message. */

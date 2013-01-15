@@ -14,6 +14,7 @@ package com.hp.hpl.inkml;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -35,14 +36,14 @@ public class InkMLProcessor {
     // private String defaultParser="com.hp.hpl.inkml.InkMLDOMParser"; -- will be used while implementing Factory for Parser creation etc.
 
     // Create logger instance for logging. Using JDK >1.4 logger
-    private static Logger logger = Logger.getLogger(InkMLProcessor.class.getName());
+    private static final Logger LOG = Logger.getLogger(InkMLProcessor.class.getName());
 
     /**
      * Constructor of the InkMLProcessor. In future, it would load the configuration XML file, config.xml and create InkMLProcessorConfig object which would be
      * useful for configuring the other components such as InkMLParser, InkMLWriter and etc.
      */
     public InkMLProcessor() {
-        // this.config = new InkMLProcessorConfig();
+        super();
     }
 
     /**
@@ -78,6 +79,19 @@ public class InkMLProcessor {
     }
 
     /**
+     * Method to parse an InkMLFile.
+     * 
+     * @param inkmlFile
+     * @throws InkMLException
+     */
+    public void parseInkMLFile(final InputStream inkmlFile) throws InkMLException {
+        // since the inkml file has <ink> ... </ink> data, it is a new Ink Session, create a blank Ink data object.
+        this.ink = new Ink();
+        final InkMLParser parser = new InkMLDOMParser(this); // hard coded :-(, later will change to Factory implementation
+        parser.parseInkMLFile(inkmlFile);
+    }
+
+    /**
      * This method parses and bind the InkML data given as String. It is useful in streaming scenario based applications. A complete InkML document that has
      * {@code <ink>} as root element can be given as input. And InkML fragments : a collection of well-formed child elements of InkML:Ink element, without
      * providing the root element {@code (<ink>)} can be given as input. e.g.:
@@ -104,7 +118,7 @@ public class InkMLProcessor {
      * @see Ink.contextChangeStatus
      */
     public void notifyContextChanged(final Context context, final ArrayList<Ink.contextChangeStatus> ctxChanges) {
-        InkMLProcessor.logger.finer("To notify - context changed");
+        InkMLProcessor.LOG.finer("To notify - context changed");
         if (0 == this.listenerList.size()) {
             return;
         }
@@ -134,7 +148,7 @@ public class InkMLProcessor {
      * @see #addInkMLEventListener(InkMLEventListener)
      */
     public void notifyTraceReceived(final Trace trace) {
-        InkMLProcessor.logger.finer("To notify - trace received");
+        InkMLProcessor.LOG.finer("To notify - trace received");
         if (0 == this.listenerList.size()) {
             return;
         }
@@ -183,7 +197,7 @@ public class InkMLProcessor {
      * @see #addInkMLEventListener(InkMLEventListener)
      */
     public void notifyBrushChangedEvent(final Brush brush) {
-        InkMLProcessor.logger.finer("To notify - brush changed");
+        InkMLProcessor.LOG.finer("To notify - brush changed");
         final InkMLEventListener[] listeners = this.listenerList.toArray(new InkMLEventListener[this.listenerList.size()]);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].brushChangedEvent(brush);

@@ -16,6 +16,8 @@ package com.hp.hpl.inkml;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * This clas models the <channel> InkML element.
  * 
@@ -74,10 +76,10 @@ public class Channel implements InkElement {
      * @param max the max dimension of the channel
      * @param units units of the channel
      * @param orientation to indicate the orientataion of the channel as Positive/Negative orientation.
-     * @param respectTo timestamp to specify the frame of reference for the traceData Sample having the channel value.
+     * @param respectToUri timestamp to specify the frame of reference for the traceData Sample having the channel value.
      * @throws InkMLException
      */
-    public Channel(final String name, final String id, final ChannelType type, final String min, final String max, final String units, final OrientationType orientation, final URI respectTo) {
+    public Channel(final String name, final String id, final ChannelType type, final String min, final String max, final String units, final OrientationType orientation, final String respectToUri) {
         this.attributesMap.put("name", name);
         this.attributesMap.put("id", id);
         this.attributesMap.put("type", type.toString());
@@ -85,8 +87,8 @@ public class Channel implements InkElement {
         this.attributesMap.put("max", max);
         this.attributesMap.put("units", units);
         this.attributesMap.put("orientation", orientation.toString());
-        if (null != respectTo) {
-            this.attributesMap.put("respectTo", respectTo.toString());
+        if (StringUtils.isNotEmpty(respectToUri)) {
+            this.attributesMap.put("respectTo", respectToUri);
         }
     }
 
@@ -246,21 +248,8 @@ public class Channel implements InkElement {
      * 
      * @param respectTo URI
      */
-    public void setRespectTo(final URI respectTo) {
-        if (null != respectTo) {
-            this.attributesMap.put("respectTo", respectTo.getURIString());
-        }
-    }
-
-    /**
-     * Method to set value for the 'respectTo' attribute which Specifies that the values are relative to another reference point.
-     * 
-     * @param respectTo String
-     */
-
     public void setRespectTo(final String respectTo) {
-        if (null != respectTo && !"".equals(respectTo)) {
-            // Have to check validity of string parameter if its a valid URIString
+        if (StringUtils.isNotEmpty(respectTo)) {
             this.attributesMap.put("respectTo", respectTo);
         }
     }

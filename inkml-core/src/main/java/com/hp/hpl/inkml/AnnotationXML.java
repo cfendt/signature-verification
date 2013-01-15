@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 public class AnnotationXML implements AnnotationElement {
     private String type = "";
     private String encoding = "";
-    // private URI href; // not implemented
     private final HashMap<String, String> otherAttributesMap;
     private final HashMap<String, String> propertyElementsMap;
 
@@ -224,23 +223,6 @@ public class AnnotationXML implements AnnotationElement {
      */
     public void setEncoding(final String value) {
         this.encoding = value;
-    }
-
-    /**
-     * method to set the 'href' attribute. Note: This feature is not yet implemented.
-     */
-    public void setHref(final URI value) throws InkMLException {
-        throw new InkMLException("Feature (AnnotationXML:setHref) is not implimented.");
-    }
-
-    /**
-     * method to get the 'href' attribute. Note: This feature is not yet imple
-     * 
-     * @return the URI from where user defined properties are loaded from
-     * @throws InkMLException
-     */
-    public URI getHref() throws InkMLException {
-        throw new InkMLException("Feature (AnnotationXML:getHref) is not implimented.");
     }
 
     /**

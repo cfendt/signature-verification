@@ -13,6 +13,8 @@
 
 package com.hp.hpl.inkml;
 
+import java.io.InputStream;
+
 /**
  * Interface modeling the XML parsing of the input InkML data and performs the data binding to create the InkML data objects.
  * 
@@ -27,6 +29,14 @@ interface InkMLParser {
      * @throws InkMLException
      */
     public void parseInkMLFile(final String inkmlFileName) throws InkMLException;
+
+    /**
+     * Method to parse the InkML file identified by the inkmlFilename given in the parameter and creates data objects.
+     * 
+     * @param inkmlFileName
+     * @throws InkMLException
+     */
+    public void parseInkMLFile(final InputStream inkmlFileName) throws InkMLException;
 
     /**
      * Method to parse the InkML string markup data identified by the inkmlStr given

@@ -617,6 +617,7 @@ public class Trace implements TraceDataElement {
         final int lineSize = 75;
         final Set<String> channelNames = this.traceData.keySet();
         final int nChannels = channelNames.size();
+        @SuppressWarnings("unchecked")
         final List<Object>[] channelValues = new List[nChannels];
         final Iterator<String> itr = channelNames.iterator();
         int index = 0;
@@ -1128,6 +1129,7 @@ public class Trace implements TraceDataElement {
         strInkML += ">";
 
         final Object keys[] = this.traceData.keySet().toArray();
+        @SuppressWarnings("unchecked")
         final List<Object> channels[] = new List[keys.length];
         for (int i = 0; i < keys.length; i++) {
             channels[i] = this.traceData.get(keys[i].toString());

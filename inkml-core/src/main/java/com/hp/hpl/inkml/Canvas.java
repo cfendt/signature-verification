@@ -53,11 +53,19 @@ public class Canvas implements ContextElement {
         this.traceFormat = traceFormat;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.hp.hpl.inkml.InkElement#getId()
+     */
     @Override
     public String getId() {
         return this.id;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.hp.hpl.inkml.InkElement#getInkElementType()
+     */
     @Override
     public String getInkElementType() {
         return "Canvas";

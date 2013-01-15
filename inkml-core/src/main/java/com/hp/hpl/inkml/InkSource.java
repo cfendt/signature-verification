@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * This class models the {@code <inkSource>} InkML Element.
  * 
@@ -708,27 +710,27 @@ public class InkSource implements ContextElement {
 
         String inkSourceResult = "<inkSource ";
         final String id = this.getId();
-        if (!id.equals("")) {
+        if (StringUtils.isNotEmpty(id)) {
             inkSourceResult += "id='" + id + "' ";
         }
         final String manufacturer = this.getManufacturer();
-        if (!manufacturer.equals("")) {
+        if (StringUtils.isNotEmpty(manufacturer)) {
             inkSourceResult += "manufacturer='" + manufacturer + "' ";
         }
         final String model = this.getModel();
-        if (!model.equals("")) {
+        if (StringUtils.isNotEmpty(model)) {
             inkSourceResult += "model='" + model + "' ";
         }
         final String serialNo = this.getSerialNo();
-        if (!serialNo.equals("")) {
+        if (StringUtils.isNotEmpty(serialNo)) {
             inkSourceResult += "serialNo='" + serialNo + "' ";
         }
-        final String specificationRef = this.getSpecificationRef().getURIString();
-        if (!specificationRef.equals("")) {
+        final String specificationRef = this.getSpecificationRef();
+        if (StringUtils.isNotEmpty(specificationRef)) {
             inkSourceResult += "specificationRef='" + specificationRef + "' ";
         }
         final String description = this.getDescription();
-        if (!description.equals("")) {
+        if (StringUtils.isNotEmpty(description)) {
             inkSourceResult += "description='" + description + "' ";
         }
         inkSourceResult += ">";
@@ -830,8 +832,8 @@ public class InkSource implements ContextElement {
      * 
      * @return specification URL
      */
-    public URI getSpecificationRef() {
-        return new URI(this.attributesMap.get("specificationRef"));
+    public String getSpecificationRef() {
+        return this.attributesMap.get("specificationRef");
     }
 
     /**
@@ -839,8 +841,8 @@ public class InkSource implements ContextElement {
      * 
      * @param specificationRef
      */
-    public void setSpecificationRef(final URI specificationRef) {
-        this.attributesMap.put("specificationRef", specificationRef.toString());
+    public void setSpecificationRef(final String specificationRef) {
+        this.attributesMap.put("specificationRef", specificationRef);
     }
 
     /**

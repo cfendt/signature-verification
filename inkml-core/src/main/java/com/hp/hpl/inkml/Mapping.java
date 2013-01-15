@@ -27,7 +27,7 @@ public class Mapping implements ContextElement {
     private String type = "";
     private final HashMap<String, Double> channelFactorMap;
     private final HashMap<String, String> bindVarsMap;
-    private URI mappingRef;
+    private String mappingRef;
 
     /**
      * Constructor creates a default mapping element with type set to 'unknown'.
@@ -236,17 +236,8 @@ public class Mapping implements ContextElement {
      * 
      * @return 'mappingRef' attribute value
      */
-    public URI getMappingRef() {
+    public String getMappingRef() {
         return this.mappingRef;
-    }
-
-    /**
-     * to set 'mappingRef' attribute value
-     * 
-     * @param mappingRef as URI
-     */
-    public void setMappingRef(final URI mappingRef) {
-        this.mappingRef = mappingRef;
     }
 
     /**
@@ -255,6 +246,6 @@ public class Mapping implements ContextElement {
      * @param mappingRef as String
      */
     public void setMappingRef(final String mappingRef) {
-        this.mappingRef = new URI(mappingRef);
+        this.mappingRef = mappingRef;
     }
 }

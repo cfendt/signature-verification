@@ -9,18 +9,30 @@ package org.thoughtworks.signatureverification.bean;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ */
 public final class SignatureData {
-    List<Double> x;
-    List<Double> y;
-    int num;
-    int penUp;
+    private List<Double> x;
+    private List<Double> y;
+    private int num;
+    private int penUp;
 
+    /**
+     * Constructor
+     */
     public SignatureData() {
         super();
         this.x = new LinkedList<Double>();
         this.y = new LinkedList<Double>();
     }
 
+    /**
+     * Constructor
+     * 
+     * @param xArg Points X coordinate list.
+     * @param yArg Points Y coordinate list.
+     * @param penUp "pen up" event count
+     */
     public SignatureData(final List<Double> xArg, final List<Double> yArg, final int penUp) {
         super();
         this.x = xArg;
@@ -61,6 +73,10 @@ public final class SignatureData {
         this.num = num;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -85,6 +101,10 @@ public final class SignatureData {
         return true;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         int result;
